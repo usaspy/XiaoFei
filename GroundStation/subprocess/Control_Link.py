@@ -41,6 +41,7 @@ def send_command(sock, addr):
             break
         else:
             cmd = "%s:%s"%("CMD",inp)
+            print(cmd)
             sock.send(cmd.encode("utf-8"))
     info.CONTROL_LINK_CLIENT = "未知"
     info.CONTROL_LINK_STATUS = 0
