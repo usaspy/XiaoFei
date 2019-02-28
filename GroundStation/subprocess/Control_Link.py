@@ -19,6 +19,7 @@ def start():
             while True:
                 sock, addr = sock_server.accept()
                 t = threading.Thread(target=send_command, args=(sock, addr))
+                print("[Control_Link]与飞行器连接成功...%s:%s" % addr)
                 t.start()
         except Exception as e:
             print(e)
@@ -31,7 +32,6 @@ def start():
 #控制链路客户端
 #所有命令格式为“CMD:命令字串”
 def send_command(sock, addr):
-    print("[Control_Link]飞行器与地面站链接成功...%s:%s"% addr)
     info.CONTROL_LINK_CLIENT = "%s:%s"% addr
     info.CONTROL_LINK_STATUS = 1
     while True:
