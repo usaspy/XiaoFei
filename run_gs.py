@@ -2,7 +2,8 @@
 # coding=utf-8
 #
 '''
-  地面站主进程
+  地面站
+  主进程
 '''
 from multiprocessing import Process
 from GroundStation.subprocess import Control_Link

@@ -9,7 +9,7 @@ from multiprocessing import Process
 from FlyControl import _1553b
 from FlyControl import _1553b_cmd
 from FlyControl.subprocess import Control_Link
-import affinity
+#import affinity
 
 if __name__ == "__main__":
     try:
@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
         p1.start()
 
-       # affinity.set_process_affinity_mask(p1.pid, 7L)
+        #affinity.set_process_affinity_mask(p1.pid, 7L)
 
         p1.join()
     except Exception as e:

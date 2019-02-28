@@ -10,10 +10,10 @@ import threading
 import GroundStation.Information as info
 
 def start():
-        print("[Control_Link]正在打开地面站发射器...")
+        print("[Control_Link]打开地面站发射器...等待链接...")
         try:
             sock_server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-            sock_server.bind(('127.0.0.1',13130))
+            sock_server.bind(('192.168.0.102',13130))
 
             sock_server.listen()
             while True:
@@ -31,14 +31,16 @@ def start():
 #控制链路客户端
 #所有命令格式为“CMD:命令字串”
 def send_command(sock, addr):
+    print("[Control_Link]飞行器与地面站链接成功...%s:%s"% addr)
     info.CONTROL_LINK_CLIENT = "%s:%s"% addr
     info.CONTROL_LINK_STATUS = 1
     while True:
-        inp = input("请输入命令: \n >>>")
+        #inp = input("请输入命令: \n >>>")
+        inp = "hello everyone"
         if inp == "quit":
             break
         else:
-            cmd = ":".join("CMD",inp)
+            cmd = "%s:%s"%("CMD",inp)
             sock.send(cmd.encode("utf-8"))
     info.CONTROL_LINK_CLIENT = "未知"
     info.CONTROL_LINK_STATUS = 0

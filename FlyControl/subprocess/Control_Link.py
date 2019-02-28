@@ -18,6 +18,7 @@ def start(_1553b,_1553b_cmd):
             sock_client.connect((server_ipaddr, server_port))
 
             #飞行控制器从地面站接收控制指令
+            print("[Control_Link]已连上遥控地面站...")
             recv_command(sock_client,_1553b_cmd)
 
             _1553b["p1_status"] = 1
@@ -39,6 +40,7 @@ def recv_command(sock,_1553b_cmd):
             try:
                 bts = bt.split(b':')
                 cmd = bts[1].decode("utf-8")
+                print(cmd)
                 _1553b_cmd.append(cmd)
             except Exception as e:
                 print(e)
