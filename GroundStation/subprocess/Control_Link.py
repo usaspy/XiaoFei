@@ -38,7 +38,7 @@ def send_command(sock, addr):
         if inp == "quit":
             break
         else:
-            cmd = "|".join("CMD",inp)
+            cmd = ":".join("CMD",inp)
             sock.send(cmd.encode("utf-8"))
     info.CONTROL_LINK_CLIENT = "未知"
     info.CONTROL_LINK_STATUS = 0

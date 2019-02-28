@@ -5,15 +5,13 @@
   地面站主进程
 '''
 from multiprocessing import Process
-from FlyControl import _1553b
-from FlyControl import _1553b_cmd
-from FlyControl.subprocess import Control_Link
-import affinity
+from GroundStation.subprocess import Control_Link
+#import affinity
 
 if __name__ == "__main__":
     try:
         #p1=链接地面站控制链路进程
-        p1 = Process(target=Control_Link.start,args=(_1553b,_1553b_cmd,),name='p1')
+        p1 = Process(target=Control_Link.start,args=(),name='p1')
 
         p1.daemon = True
 
