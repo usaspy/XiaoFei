@@ -69,6 +69,6 @@ t.pack()
 canvas = tk.Canvas(window, bg='blue',height=200, width=500)
 image_file = tk.PhotoImage(file='s3.png')
 image = canvas.create_image(0,0, anchor='nw', image=image_file)
-canvas.place(x=20,y=10,anchor='nw')
+canvas.place(x=200,y=100,anchor='nw')
 
 window.mainloop()
