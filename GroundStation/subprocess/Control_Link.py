@@ -18,8 +18,8 @@ def start():
             sock_server.listen()
             while True:
                 sock, addr = sock_server.accept()
-                t = threading.Thread(target=send_command, args=(sock, addr))
                 print("[Control_Link]与飞行器连接成功...%s:%s" % addr)
+                t = threading.Thread(target=send_command, args=(sock, addr))
                 t.start()
         except Exception as e:
             print(e)
