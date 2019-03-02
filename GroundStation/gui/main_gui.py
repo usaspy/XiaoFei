@@ -1,5 +1,7 @@
 import tkinter as tk
 import GroundStation.gui.function as fun
+import GroundStation.vars as vars
+
 window =tk.Tk()
 window.title('XiaoFei无人机遥控地面站')
 window.geometry('800x450')
@@ -14,24 +16,23 @@ y1=450
 menubar=tk.Menu(window)
 filemenu=tk.Menu(menubar,tearoff=0)
 menubar.add_cascade(label='功能',menu=filemenu)
-filemenu.add_command(label='打开发射器',command=fun.do_job)
-filemenu.add_command(label='关闭发射器',command=fun.do_job)
+filemenu.add_command(label='打开发射器',command=fun.open_transmitter)
+filemenu.add_command(label='关闭发射器',command=fun.close_transmitter)
 filemenu.add_separator()
 filemenu.add_command(label='Exit',command=window.quit)
 
 editmenu=tk.Menu(menubar,tearoff=0)
 menubar.add_cascade(label='帮助',menu=editmenu)
 editmenu.add_command(label='操控说明',command=fun.usermanual)
-editmenu.add_command(label='关于XiaoFei',command=fun.do_job)
 window.config(menu=menubar)
 
 #
-l = tk.Label(window,text="   状态",
+vars.label_1 = tk.Label(window,text="状态未知;Unknown",
              bg="Gold",
              anchor="w",
              font=('Arial',10),
              width=100,height=2)
-l.place(x=x0,y=y0,anchor='nw')
+vars.label_1.place(x=x0,y=y0,anchor='nw')
 
 offsetY=40
 offsetX=20
@@ -47,16 +48,36 @@ l = tk.Label(window,text="ROLL",
              font=('Arial',10),
              width=100,height=2)
 l.place(x=offsetX,y=offsetY+40,anchor='nw')
+vars.label_2 = tk.Label(window,text="3000",
+             anchor="w",
+             foreground='blue',
+             font=('Arial',12),
+             width=100,height=2)
+vars.label_2.place(x=offsetX+100,y=offsetY+40,anchor='nw')
+
 l = tk.Label(window,text="PITCH",
              anchor="w",
              font=('Arial',10),
              width=100,height=2)
 l.place(x=offsetX,y=offsetY+80,anchor='nw')
+vars.label_3 = tk.Label(window,text="3000",
+             anchor="w",
+             foreground='red',
+             font=('Arial',12),
+             width=100,height=2)
+vars.label_3.place(x=offsetX+100,y=offsetY+80,anchor='nw')
+
 l = tk.Label(window,text="YAW",
              anchor="w",
              font=('Arial',10),
              width=100,height=2)
 l.place(x=offsetX,y=offsetY+120,anchor='nw')
+vars.label_4 = tk.Label(window,text="3000",
+             anchor="w",
+             foreground='green',
+             font=('Arial',12),
+             width=100,height=2)
+vars.label_4.place(x=offsetX+100,y=offsetY+120,anchor='nw')
 
 #---气压 高度  温度
 l = tk.Label(window,text="气压",
@@ -64,24 +85,48 @@ l = tk.Label(window,text="气压",
              font=('Arial',14),
              width=100,height=2)
 l.place(x=offsetX+240,y=offsetY,anchor='nw')
+vars.label_5 = tk.Label(window,text="3000",
+             anchor="w",
+             foreground='red',
+             font=('Arial',12),
+             width=100,height=2)
+vars.label_5.place(x=offsetX+360,y=offsetY,anchor='nw')
 
 l = tk.Label(window,text="温度",
              anchor="w",
              font=('Arial',14),
              width=100,height=2)
 l.place(x=offsetX+240,y=offsetY+40,anchor='nw')
+vars.label_6 = tk.Label(window,text="3000",
+             anchor="w",
+             foreground='red',
+             font=('Arial',12),
+             width=100,height=2)
+vars.label_6.place(x=offsetX+360,y=offsetY+40,anchor='nw')
 
 l = tk.Label(window,text="海拔高度",
              anchor="w",
              font=('Arial',14),
              width=100,height=2)
 l.place(x=offsetX+240,y=offsetY+80,anchor='nw')
+vars.label_7 = tk.Label(window,text="3000",
+             anchor="w",
+             foreground='red',
+             font=('Arial',12),
+             width=100,height=2)
+vars.label_7.place(x=offsetX+360,y=offsetY+80,anchor='nw')
 
 l = tk.Label(window,text="离地高度",
              anchor="w",
              font=('Arial',14),
              width=100,height=2)
 l.place(x=offsetX+240,y=offsetY+120,anchor='nw')
+vars.label_8 = tk.Label(window,text="3000",
+             anchor="w",
+             foreground='red',
+             font=('Arial',12),
+             width=100,height=2)
+vars.label_8.place(x=offsetX+360,y=offsetY+120,anchor='nw')
 
 #显示加速度
 l = tk.Label(window,text="加速度",
@@ -95,90 +140,138 @@ l = tk.Label(window,text="X轴",
              font=('Arial',10),
              width=100,height=2)
 l.place(x=offsetX,y=offsetY+200,anchor='nw')
+vars.label_9 = tk.Label(window,text="3000",
+             anchor="w",
+             foreground='red',
+             font=('Arial',12),
+             width=100,height=2)
+vars.label_9.place(x=offsetX+100,y=offsetY+200,anchor='nw')
+
 l = tk.Label(window,text="Y轴",
              anchor="w",
              font=('Arial',10),
              width=100,height=2)
 l.place(x=offsetX,y=offsetY+240,anchor='nw')
+vars.label_10 = tk.Label(window,text="3000",
+             anchor="w",
+             foreground='red',
+             font=('Arial',12),
+             width=100,height=2)
+vars.label_10.place(x=offsetX+100,y=offsetY+240,anchor='nw')
+
 l = tk.Label(window,text="Z轴",
              anchor="w",
              font=('Arial',10),
              width=100,height=2)
 l.place(x=offsetX,y=offsetY+280,anchor='nw')
+vars.label_11 = tk.Label(window,text="3000",
+             anchor="w",
+             foreground='red',
+             font=('Arial',12),
+             width=100,height=2)
+vars.label_11.place(x=offsetX+100,y=offsetY+280,anchor='nw')
 
 l = tk.Label(window,text="传感器校准",
              anchor="w",
              font=('Arial',14),
              width=100,height=2)
 l.place(x=offsetX,y=offsetY+320,anchor='nw')
+vars.label_12 = tk.Label(window,text="3000",
+             anchor="w",
+             foreground='red',
+             font=('Arial',12),
+             width=100,height=2)
+vars.label_12.place(x=offsetX+140,y=offsetY+320,anchor='nw')
 #---经度、纬度
 l = tk.Label(window,text="GPS经度",
              anchor="w",
              font=('Arial',14),
              width=100,height=2)
 l.place(x=offsetX+240,y=offsetY+160,anchor='nw')
+vars.label_13 = tk.Label(window,text="3000",
+             anchor="w",
+             foreground='red',
+             font=('Arial',12),
+             width=100,height=2)
+vars.label_13.place(x=offsetX+360,y=offsetY+160,anchor='nw')
 
 l = tk.Label(window,text="GPS纬度",
              anchor="w",
              font=('Arial',14),
              width=100,height=2)
 l.place(x=offsetX+240,y=offsetY+200,anchor='nw')
-
+vars.label_14 = tk.Label(window,text="3000",
+             anchor="w",
+             foreground='red',
+             font=('Arial',12),
+             width=100,height=2)
+vars.label_14.place(x=offsetX+360,y=offsetY+200,anchor='nw')
 
 l = tk.Label(window,text="飞行时间",
              anchor="w",
              font=('Arial',14),
              width=100,height=2)
 l.place(x=offsetX+240,y=offsetY+240,anchor='nw')
-
+vars.label_15 = tk.Label(window,text="3000",
+             anchor="w",
+             foreground='red',
+             font=('Arial',12),
+             width=100,height=2)
+vars.label_15.place(x=offsetX+360,y=offsetY+240,anchor='nw')
 #-----------------
 offsetY=50
-b = tk.Button(window,
+vars.but_1 = tk.Button(window,
     text='打开地面站发射器',
     activeforeground='red',
     width=25, height=2,
     command=fun.open_transmitter)
-b.place(x=offsetX+540,y=offsetY,anchor='nw')
+vars.but_1.place(x=offsetX+540,y=offsetY,anchor='nw')
 
-b = tk.Button(window,
+vars.but_2 = tk.Button(window,
     text='显示飞行数据',
     activeforeground='red',
+    state='disabled',
     width=25, height=2,
-    command=fun.show_flydata)
-b.place(x=offsetX+540,y=offsetY+50,anchor='nw')
+    command=fun.do_job())
+vars.but_2.place(x=offsetX+540,y=offsetY+50,anchor='nw')
 
-b = tk.Button(window,
+vars.but_3 = tk.Button(window,
     text='显示实时图像',
     activeforeground='red',
+    state='disabled',
     width=25, height=2,
     command=fun.do_job())
-b.place(x=offsetX+540,y=offsetY+100,anchor='nw')
+vars.but_3.place(x=offsetX+540,y=offsetY+100,anchor='nw')
 
-b = tk.Button(window,
+vars.but_4 = tk.Button(window,
     text='一键起飞',
     activeforeground='red',
+    state='disabled',
     width=25, height=2,
     command=fun.do_job())
-b.place(x=offsetX+540,y=offsetY+150,anchor='nw')
+vars.but_4.place(x=offsetX+540,y=offsetY+150,anchor='nw')
 
-b = tk.Button(window,
+vars.but_5 = tk.Button(window,
     text='紧急降落',
     activeforeground='red',
+    state='disabled',
     width=25, height=2,
     command=fun.do_job())
-b.place(x=offsetX+540,y=offsetY+200,anchor='nw')
+vars.but_5.place(x=offsetX+540,y=offsetY+200,anchor='nw')
 
-b = tk.Button(window,
+vars.but_6 = tk.Button(window,
     text='传感器校准',
     activeforeground='red',
+    state='disabled',
     width=25, height=2,
     command=fun.do_job())
-b.place(x=offsetX+540,y=offsetY+250,anchor='nw')
+vars.but_6.place(x=offsetX+540,y=offsetY+250,anchor='nw')
 
-b = tk.Button(window,
+vars.but_7 = tk.Button(window,
     text='转速测试',
     activeforeground='red',
+    state='disabled',
     width=25, height=2,
     command=fun.do_job())
-b.place(x=offsetX+540,y=offsetY+300,anchor='nw')
+vars.but_7.place(x=offsetX+540,y=offsetY+300,anchor='nw')
 window.mainloop()

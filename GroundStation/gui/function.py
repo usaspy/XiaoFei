@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter import messagebox
 from GroundStation.subprocess import Control_Link
 import threading
+import GroundStation.vars as vars
+
+
 
 def do_job():
    # messagebox.showinfo(title='Info', message='等着吧。。')
@@ -22,11 +25,37 @@ def usermanual():
 
 def open_transmitter():
     try:
-        t = threading.Thread(target=Control_Link.start, args=())
-        t.start()
+        vars.transmitter = threading.Thread(target=Control_Link.start, args=())
+        vars.transmitter.setDaemon(True)
+        vars.transmitter.start()
+        vars.but_1.config(text="关闭地面站发射器")
+        vars.but_1.config(command=close_transmitter)
+        vars.but_2.config(state='normal')
+        vars.but_3.config(state='normal')
+        vars.but_4.config(state='normal')
+        vars.but_5.config(state='normal')
+        vars.but_6.config(state='normal')
+        vars.but_7.config(state='normal')
+
     except Exception as e:
         print(e)
+        vars.but_2.config(state='disabled')
+        vars.but_3.config(state='disabled')
+        vars.but_4.config(state='disabled')
+        vars.but_5.config(state='disabled')
+        vars.but_6.config(state='disabled')
+        vars.but_7.config(state='disabled')
 
+def close_transmitter():
+    vars.but_1.config(text="打开地面站发射器")
+    vars.but_1.config(command=open_transmitter)
+    vars.but_2.config(state='disabled')
+    vars.but_3.config(state='disabled')
+    vars.but_4.config(state='disabled')
+    vars.but_5.config(state='disabled')
+    vars.but_6.config(state='disabled')
+    vars.but_7.config(state='disabled')
+    vars.label_1.config(text="状态未知;Unknown")
 
 def show_flydata():
     pass
