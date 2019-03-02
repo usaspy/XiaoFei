@@ -7,7 +7,7 @@
 import time
 import socket
 import threading
-import GroundStation.Information as info
+import GroundStation.vars as vars
 
 def start():
         print("[Control_Link]打开地面站发射器...等待链接...")
@@ -25,15 +25,15 @@ def start():
             print(e)
             print("[Control_Link]地面站发射器发生异常，链接已断开...")
         finally:
-            info.CONTROL_LINK_CLIENT = "未知"
-            info.CONTROL_LINK_STATUS = 0
+            vars.CONTROL_LINK_CLIENT = "未知"
+            vars.CONTROL_LINK_STATUS = 0
             sock_server.close()
 
 #控制链路客户端
 #所有命令格式为“CMD:命令字串”
 def send_command(sock, addr):
-    info.CONTROL_LINK_CLIENT = "%s:%s"% addr
-    info.CONTROL_LINK_STATUS = 1
+    vars.CONTROL_LINK_CLIENT = "%s:%s"% addr
+    vars.CONTROL_LINK_STATUS = 1
     while True:
         #inp = input("请输入命令: \n >>>")
         inp = "hello everyone"
@@ -43,5 +43,5 @@ def send_command(sock, addr):
             cmd = "%s:%s"%("CMD",inp)
             print(cmd)
             sock.send(cmd.encode("utf-8"))
-    info.CONTROL_LINK_CLIENT = "未知"
-    info.CONTROL_LINK_STATUS = 0
+    vars.CONTROL_LINK_CLIENT = "未知"
+    vars.CONTROL_LINK_STATUS = 0
