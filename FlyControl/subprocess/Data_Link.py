@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # coding=utf-8
 '''
-    控制链路  飞机端
+    数据链路  飞行器端  UDP-CLIENT
 '''
 
 import time

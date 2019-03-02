@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # coding=utf-8
 '''
-    控制链路 地面站端
+    控制链路 地面站端 TCP-SERVER
 '''
 
 import time

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # coding=utf-8
 '''
-    控制链路 地面站端
+    数据链路 地面站端 UDP-Server
 '''
 
 import time
