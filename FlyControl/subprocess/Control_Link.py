@@ -13,7 +13,7 @@ def start(_1553b,_1553b_cmd):
         print("[Control_Link]正在尝试连接地面站...")
         try:
             sock_client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-            server_ipaddr = config.IPADDRESS_GS_CONTROL
+            server_ipaddr = config.IPADDRESS_GS
             server_port = config.PORT_GS_CONTROL
             sock_client.connect((server_ipaddr, server_port))
 

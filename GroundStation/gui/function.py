@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from GroundStation.subprocess import Control_Link
+from GroundStation.subprocess import Data_Link
 import threading
 import GroundStation.vars as vars
 
@@ -58,4 +59,6 @@ def close_transmitter():
     vars.label_1.config(text="状态未知;Unknown")
 
 def show_flydata():
-    pass
+    vars.flydataer = threading.Thread(target=Data_Link.start, args=())
+    vars.flydataer.setDaemon(True)
+    vars.flydataer.start()

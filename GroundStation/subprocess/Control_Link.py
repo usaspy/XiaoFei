@@ -32,7 +32,7 @@ def start():
             vars.CONTROL_LINK_STATUS = 0
             sock_server.close()
 
-#控制链路客户端
+#控制链路服务器端
 #所有命令格式为“CMD:命令字串”
 def send_command(sock, addr):
     vars.CONTROL_LINK_CLIENT = "%s:%s"% addr

@@ -3,6 +3,7 @@ CONTROL_LINK_STATUS = 0  #0链接断开 1链接建立
 CONTROL_LINK_CLIENT = "未知"  #remoteip
 
 transmitter = None
+flydataer = None
 
 #GUI界面变量
 label_1 = None
