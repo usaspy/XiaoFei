@@ -11,6 +11,7 @@ import GroundStation.vars as vars
 
 def start():
         print("[Control_Link]打开地面站发射器...等待链接...")
+        vars.label_1.config(text="[Control_Link]打开地面站发射器...等待链接...")
         try:
             sock_server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
             sock_server.bind(('0.0.0.0',13130))
@@ -19,10 +20,12 @@ def start():
             while True:
                 sock, addr = sock_server.accept()
                 print("[Control_Link]与飞行器连接成功...%s:%s" % addr)
+                vars.label_1.config(text="[Control_Link]与飞行器连接成功...%s:%s" % addr)
                 t = threading.Thread(target=send_command, args=(sock, addr))
                 t.start()
         except Exception as e:
             print(e)
+            vars.label_1.config(text="[Control_Link]地面站发射器发生异常，链接已断开...")
             print("[Control_Link]地面站发射器发生异常，链接已断开...")
         finally:
             vars.CONTROL_LINK_CLIENT = "未知"

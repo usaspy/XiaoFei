@@ -19,6 +19,7 @@ label_11 = None
 label_12 = None
 label_13 = None
 label_14 = None
+label_15 = None
 
 but_1 = None
 but_2 = None
