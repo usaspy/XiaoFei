@@ -143,7 +143,6 @@ b.place(x=offsetX+540,y=offsetY,anchor='nw')
 b = tk.Button(window,
     text='显示飞行数据',
     activeforeground='red',
-    state='disabled',
     width=25, height=2,
     command=fun.show_flydata)
 b.place(x=offsetX+540,y=offsetY+50,anchor='nw')
@@ -151,7 +150,6 @@ b.place(x=offsetX+540,y=offsetY+50,anchor='nw')
 b = tk.Button(window,
     text='显示实时图像',
     activeforeground='red',
-    state='disabled',
     width=25, height=2,
     command=fun.do_job())
 b.place(x=offsetX+540,y=offsetY+100,anchor='nw')
@@ -159,7 +157,6 @@ b.place(x=offsetX+540,y=offsetY+100,anchor='nw')
 b = tk.Button(window,
     text='一键起飞',
     activeforeground='red',
-    state='disabled',
     width=25, height=2,
     command=fun.do_job())
 b.place(x=offsetX+540,y=offsetY+150,anchor='nw')
@@ -167,7 +164,6 @@ b.place(x=offsetX+540,y=offsetY+150,anchor='nw')
 b = tk.Button(window,
     text='紧急降落',
     activeforeground='red',
-    state='disabled',
     width=25, height=2,
     command=fun.do_job())
 b.place(x=offsetX+540,y=offsetY+200,anchor='nw')
@@ -175,7 +171,6 @@ b.place(x=offsetX+540,y=offsetY+200,anchor='nw')
 b = tk.Button(window,
     text='传感器校准',
     activeforeground='red',
-    state='disabled',
     width=25, height=2,
     command=fun.do_job())
 b.place(x=offsetX+540,y=offsetY+250,anchor='nw')
@@ -183,7 +178,6 @@ b.place(x=offsetX+540,y=offsetY+250,anchor='nw')
 b = tk.Button(window,
     text='转速测试',
     activeforeground='red',
-    state='disabled',
     width=25, height=2,
     command=fun.do_job())
 b.place(x=offsetX+540,y=offsetY+300,anchor='nw')
