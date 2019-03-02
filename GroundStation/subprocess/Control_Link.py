@@ -13,7 +13,7 @@ def start():
         print("[Control_Link]打开地面站发射器...等待链接...")
         try:
             sock_server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-            sock_server.bind(('192.168.0.102',13130))
+            sock_server.bind(('0.0.0.0',13130))
 
             sock_server.listen()
             while True:

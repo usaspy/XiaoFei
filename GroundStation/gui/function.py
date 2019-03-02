@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
+from GroundStation.subprocess import Control_Link
+import threading
 
 def do_job():
    # messagebox.showinfo(title='Info', message='等着吧。。')
@@ -17,3 +19,14 @@ def usermanual():
                                                 '; 键：右转\n'
                                                 'N键：一键起飞\n'
                                                 'M键：紧急降落')
+
+def open_transmitter():
+    try:
+        t = threading.Thread(target=Control_Link.start, args=())
+        t.start()
+    except Exception as e:
+        print(e)
+
+
+def show_flydata():
+    pass

@@ -137,7 +137,7 @@ b = tk.Button(window,
     text='打开地面站发射器',
     activeforeground='red',
     width=25, height=2,
-    command=fun.do_job())
+    command=fun.open_transmitter)
 b.place(x=offsetX+540,y=offsetY,anchor='nw')
 
 b = tk.Button(window,
@@ -145,7 +145,7 @@ b = tk.Button(window,
     activeforeground='red',
     state='disabled',
     width=25, height=2,
-    command=fun.do_job())
+    command=fun.show_flydata)
 b.place(x=offsetX+540,y=offsetY+50,anchor='nw')
 
 b = tk.Button(window,
