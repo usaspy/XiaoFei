@@ -9,7 +9,7 @@ import socket
 import threading
 import GroundStation.vars as vars
 
-def start():
+def working():
         print("[Control_Link]打开地面站发射器...等待链接...")
         vars.label_1.config(text="[Control_Link]打开地面站发射器...等待链接...")
         try:
@@ -22,6 +22,7 @@ def start():
                 print("[Control_Link]与飞行器连接成功...%s:%s" % addr)
                 vars.label_1.config(text="[Control_Link]与飞行器连接成功...%s:%s" % addr)
                 t = threading.Thread(target=send_command, args=(sock, addr))
+                t.setDaemon(True)
                 t.start()
         except Exception as e:
             print(e)

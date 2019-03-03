@@ -8,13 +8,13 @@ import time
 import socket
 from FlyControl.param import config
 
-def start(_1553b,_1553b_cmd):
+def working(_1553b_data):
         try:
             sock_client = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
             server_ipaddr = config.IPADDRESS_GS
             server_port = config.PORT_GS_DATA
             while True:
-                data = generate_data()
+                data = generate_data(_1553b_data)
                 sock_client.sendto(data,(server_ipaddr, server_port))
 
         except Exception as e:

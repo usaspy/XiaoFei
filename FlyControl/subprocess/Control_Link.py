@@ -8,7 +8,7 @@ import time
 import socket
 from FlyControl.param import config
 
-def start(_1553b,_1553b_cmd):
+def working(_1553b_cmd):
     while True:
         print("[Control_Link]正在尝试连接地面站...")
         try:
@@ -21,9 +21,7 @@ def start(_1553b,_1553b_cmd):
             print("[Control_Link]已连上地面站...")
             recv_command(sock_client,_1553b_cmd)
 
-            _1553b["p1_status"] = 1
         except Exception as e:
-            _1553b["p1_status"] = 0
             del  _1553b_cmd[:]
             print(e)
             print("[Control_Link]地面站连接失败，等待1秒后尝试重连...")

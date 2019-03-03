@@ -8,8 +8,7 @@ import GroundStation.vars as vars
 
 
 def do_job():
-   # messagebox.showinfo(title='Info', message='等着吧。。')
-    pass
+    messagebox.showinfo(title='Info', message='等着吧。。')
 
 def usermanual():
     messagebox.showinfo(title='Manual', message='地面站与飞行器建立链接以后，玩家可以使用键盘操纵飞行器：\n'
@@ -26,7 +25,7 @@ def usermanual():
 
 def open_transmitter():
     try:
-        vars.transmitter = threading.Thread(target=Control_Link.start, args=())
+        vars.transmitter = threading.Thread(target=Control_Link.working, args=())
         vars.transmitter.setDaemon(True)
         vars.transmitter.start()
         vars.but_1.config(text="关闭地面站发射器")
@@ -59,6 +58,6 @@ def close_transmitter():
     vars.label_1.config(text="状态未知;Unknown")
 
 def show_flydata():
-    vars.flydataer = threading.Thread(target=Data_Link.start, args=())
+    vars.flydataer = threading.Thread(target=Data_Link.working, args=())
     vars.flydataer.setDaemon(True)
     vars.flydataer.start()
