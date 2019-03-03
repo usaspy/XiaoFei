@@ -23,7 +23,7 @@ def working(_1553b_data):
         finally:
             sock_client.close()
 
-#控制链路客户端
-#所有命令格式为“CMD:命令字串”
-def generate_data():
+#数据链路客户端
+#所有数据格式为“data:命令字串”
+def generate_data(_1553b_data):
     return "test"

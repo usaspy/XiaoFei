@@ -240,7 +240,7 @@ vars.but_3 = tk.Button(window,
     activeforeground='red',
     state='disabled',
     width=25, height=2,
-    command=fun.do_job())
+    command=fun.do_job)
 vars.but_3.place(x=offsetX+540,y=offsetY+100,anchor='nw')
 
 vars.but_4 = tk.Button(window,
@@ -248,7 +248,7 @@ vars.but_4 = tk.Button(window,
     activeforeground='red',
     state='disabled',
     width=25, height=2,
-    command=fun.do_job())
+    command=fun.do_job)
 vars.but_4.place(x=offsetX+540,y=offsetY+150,anchor='nw')
 
 vars.but_5 = tk.Button(window,
@@ -256,7 +256,7 @@ vars.but_5 = tk.Button(window,
     activeforeground='red',
     state='disabled',
     width=25, height=2,
-    command=fun.do_job())
+    command=fun.do_job)
 vars.but_5.place(x=offsetX+540,y=offsetY+200,anchor='nw')
 
 vars.but_6 = tk.Button(window,
@@ -264,7 +264,7 @@ vars.but_6 = tk.Button(window,
     activeforeground='red',
     state='disabled',
     width=25, height=2,
-    command=fun.do_job())
+    command=fun.do_job)
 vars.but_6.place(x=offsetX+540,y=offsetY+250,anchor='nw')
 
 vars.but_7 = tk.Button(window,
@@ -272,6 +272,6 @@ vars.but_7 = tk.Button(window,
     activeforeground='red',
     state='disabled',
     width=25, height=2,
-    command=fun.do_job())
+    command=fun.do_job)
 vars.but_7.place(x=offsetX+540,y=offsetY+300,anchor='nw')
 window.mainloop()
