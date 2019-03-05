@@ -38,14 +38,3 @@ def working():
 def send_command(sock, addr):
     vars.CONTROL_LINK_CLIENT = "%s:%s"% addr
     vars.CONTROL_LINK_STATUS = 1
-    while True:
-        #inp = input("请输入命令: \n >>>")
-        inp = "hello everyone"
-        if inp == "quit":
-            break
-        else:
-            cmd = "%s:%s"%("CMD",inp)
-            print(cmd)
-            sock.send(cmd.encode("utf-8"))
-    vars.CONTROL_LINK_CLIENT = "未知"
-    vars.CONTROL_LINK_STATUS = 0

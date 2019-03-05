@@ -6,14 +6,16 @@ import threading
 import time
 
 def start(_1553b,_1553a):
+    thread_list = []
     try:
-        t = threading.Thread(target=Control_Link.working, args=(_1553a,))
-        t.setDaemon(True)
-        t.start()
+        t1 = threading.Thread(target=Control_Link.working, args=(_1553a,))
+        t2 = threading.Thread(target=Data_Link.working, args=(_1553b,))
+        thread_list.append(t1)
+        thread_list.append(t2)
 
-        t = threading.Thread(target=Data_Link.working, args=(_1553b,))
-        t.setDaemon(True)
-        t.start()
+        for t in thread_list:
+            t.setDaemon(True)
+            t.start()
 
         while True:
             time.sleep(10)

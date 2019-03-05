@@ -58,6 +58,7 @@ def close_transmitter():
     vars.label_1.config(text="状态未知;Unknown")
 
 def show_flydata():
+    print("--------------------------------------------")
     vars.flydataer = threading.Thread(target=Data_Link.working, args=())
     vars.flydataer.setDaemon(True)
     vars.flydataer.start()

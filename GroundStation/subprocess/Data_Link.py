@@ -13,7 +13,7 @@ def working():
         print("[Data_Link]打开飞行数据回传链路...")
         try:
             sock_server = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-            sock_server.bind(('0.0.0.0',13133))
+            sock_server.bind(('192.168.0.105',13133))
 
             while True:
                 data,addr = sock_server.recvfrom(1024)

@@ -8,13 +8,15 @@ import time
 import socket
 from FlyControl.param import config
 
-def working(_1553b_data):
+def working(_1553b):
+        print("++++++++++++++++++++++++")
         try:
             sock_client = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
             server_ipaddr = config.IPADDRESS_GS
             server_port = config.PORT_GS_DATA
             while True:
-                data = generate_data(_1553b_data)
+                data = generate_data(_1553b)
+                print(data)
                 sock_client.sendto(data,(server_ipaddr, server_port))
 
         except Exception as e:
@@ -25,5 +27,6 @@ def working(_1553b_data):
 
 #数据链路客户端
 #所有数据格式为“data:命令字串”
-def generate_data(_1553b_data):
-    return "test"
+def generate_data(_1553b):
+    print(_1553b)
+    return _1553b
