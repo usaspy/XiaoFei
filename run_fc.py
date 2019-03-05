@@ -15,8 +15,9 @@ from FlyControl import sensor
 if __name__ == "__main__":
     try:
         print("系统开机...")
-        #p1=链接地面站控制链路进程
+        #p1链接地面站控制链路进程
         p1 = Process(target=communication.start,args=(_1553b,_1553a,),name='p1')
+        #p2传感器进程
         p2 = Process(target=sensor.start,args=(_1553b,),name='p2')
 
         p1.daemon = True
