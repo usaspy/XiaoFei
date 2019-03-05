@@ -57,9 +57,7 @@ def working(_1553b_data):
                 n = sr.inWaiting()
                 if n == 20:
                     rec = sr.read(n)
-                    print(rec)
                     __resolve_data(rec,_1553b_data)
-                    print(len(rec))
     except Exception as e:
         print(e)
         print("[GY-99]通过串口[%s]获取飞控数据时发生异常..."% config.SERIAL_PORT_GY99)
@@ -67,9 +65,6 @@ def working(_1553b_data):
         sr.close()
 
 def __resolve_data(data,_1553b_data):
-    data = b'ZZ\xf0\x0f\xda\xbd\xfd\xe7\xdc\xa5\x00\x91\xabR\x08j\xc3-\x0c\xab'
+    print(data)
+    print(len(data))
     pass
-
-
-if __name__ == "__main__":
-    __resolve_data(None,None)
