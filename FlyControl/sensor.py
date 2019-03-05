@@ -1,16 +1,12 @@
 #!/usr/bin/python3
 # coding=utf-8
-from FlyControl.subprocess import Control_Link
-from FlyControl.subprocess import Data_Link
+from FlyControl.subprocess import sim7600
+from FlyControl.subprocess import GY99
 import threading
 
-def start(_1553b_data,_1553b_cmd):
+def start(_1553b_data):
     try:
-        t = threading.Thread(target=Control_Link.working(), args=(_1553b_cmd))
-        t.setDaemon(True)
-        t.start()
-
-        t = threading.Thread(target=Data_Link.working(), args=(_1553b_data))
+        t = threading.Thread(target=GY99.working(), args=(_1553b_data))
         t.setDaemon(True)
         t.start()
     except Exception as e:
