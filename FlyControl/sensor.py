@@ -3,13 +3,17 @@
 from FlyControl.subprocess import sim7600
 from FlyControl.subprocess import GY99
 import threading
+import time
 
-def start(_1553b_data):
+def start(_1553b):
     try:
-        t = threading.Thread(target=GY99.working(), args=(_1553b_data))
+        t = threading.Thread(target=GY99.working, args=(_1553b,))
         t.setDaemon(True)
         t.start()
+
+        while True:
+            time.sleep(15)
     except Exception as e:
         print(e)
     finally:
-        pass
+        print("传感器数据采集进程停止...")
