@@ -16,8 +16,9 @@ def working(_1553b):
 
             while True:
                 #print(_1553b)
-                #将_1553b中得数据传给地面站
+                #将_1553b中得数据传给地面站,等待0.2秒？
                 sock_client.sendto(str(_1553b).encode("utf-8"),(server_ipaddr, server_port))
+                time.sleep(0.3)
 
         except Exception as e:
             print(e)
