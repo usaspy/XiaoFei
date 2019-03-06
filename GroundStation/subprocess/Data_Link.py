@@ -37,7 +37,7 @@ def resolve_data(data_bytes):
         vars.label_9.config(text=data['ROLL'])
         vars.label_10.config(text=data['ROLL'])
         vars.label_11.config(text=data['ROLL'])
-        vars.label_12.config(text=(data['Calibrated'] == 'yes' and  '已校准' or '校准失败'))
+        vars.label_12.config(text=(data['Calibrated'] == 0x3F and  '已校准' or '校准失败'))
         vars.label_13.config(text=data['ROLL'])
         vars.label_14.config(text=data['ROLL'])
         vars.label_15.config(text=data['ROLL'])

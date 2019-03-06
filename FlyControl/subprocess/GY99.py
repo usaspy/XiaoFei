@@ -89,7 +89,4 @@ def __resolve_data(data,_1553b):
         _1553b['Altitude'] = Altitude
 
         #已校准
-        Calibrated='no'
-        if data[18] == b'\x3F':
-            Calibrated='yes'
-        _1553b['Calibrated'] = Calibrated
+        _1553b['Calibrated'] = data[18]

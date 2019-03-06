@@ -171,7 +171,7 @@ vars.label_11 = tk.Label(window,text="3000",
              width=100,height=2)
 vars.label_11.place(x=offsetX+100,y=offsetY+280,anchor='nw')
 
-l = tk.Label(window,text="传感器校准",
+l = tk.Label(window,text="姿态传感器校准",
              anchor="w",
              font=('Arial',14),
              width=100,height=2)
