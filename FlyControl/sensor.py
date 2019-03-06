@@ -11,8 +11,7 @@ def start(_1553b):
         t.setDaemon(True)
         t.start()
 
-        while True:
-            time.sleep(15)
+        t.join()
     except Exception as e:
         print(e)
     finally:

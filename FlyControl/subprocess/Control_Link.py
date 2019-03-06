@@ -23,7 +23,6 @@ def working(_1553a):
 
         except Exception as e:
             del  _1553a[:]
-            print(e)
             print("[Control_Link]地面站连接失败，等待1秒后尝试重连...")
             time.sleep(1)
         finally:
@@ -36,8 +35,6 @@ def recv_command(sock,_1553a):
         bt = sock.recv(512)
         if bt:
             try:
-                bts = bt.split(b':')
-                cmd = bts[1].decode("utf-8")
-                _1553a.append(cmd)
+                _1553a.append(bt)
             except Exception as e:
                 print("[Control_Link]命令接收异常！")

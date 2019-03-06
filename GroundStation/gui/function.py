@@ -38,7 +38,7 @@ def open_transmitter():
         vars.but_7.config(state='normal')
 
     except Exception as e:
-        print(e)
+        print("打开地面站发射器发生异常")
         vars.but_2.config(state='disabled')
         vars.but_3.config(state='disabled')
         vars.but_4.config(state='disabled')
@@ -58,7 +58,6 @@ def close_transmitter():
     vars.label_1.config(text="状态未知;Unknown")
 
 def show_flydata():
-    print("--------------------------------------------")
     vars.flydataer = threading.Thread(target=Data_Link.working, args=())
     vars.flydataer.setDaemon(True)
     vars.flydataer.start()

@@ -16,12 +16,13 @@ def working(_1553b):
 
             while True:
                 #print(_1553b)
-                #将_1553b中得数据传给地面站,等待0.2秒？
-                sock_client.sendto(str(_1553b).encode("utf-8"),(server_ipaddr, server_port))
-                time.sleep(0.3)
+                #将_1553b中数据传给地面站,每隔0.5秒
+                bytes_1553b = str(_1553b).encode("utf-8")
+                sock_client.sendto(bytes_1553b,(server_ipaddr, server_port))
+                time.sleep(0.5)
 
         except Exception as e:
-            print(e)
+            print("[Data_Link]回传飞行数据时发生异常...")
             time.sleep(1)
         finally:
             sock_client.close()

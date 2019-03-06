@@ -61,7 +61,6 @@ def working(_1553b):
                         __resolve_data(rec,_1553b)
                         break
     except Exception as e:
-        print(e)
         print("[GY-99]通过串口[%s]获取飞控数据时发生异常..."% config.SERIAL_PORT_GY99)
     finally:
         sr.close()

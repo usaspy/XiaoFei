@@ -17,8 +17,8 @@ def start(_1553b,_1553a):
             t.setDaemon(True)
             t.start()
 
-        while True:
-            time.sleep(10)
+        for t in thread_list:
+            t.join()
     except Exception as e:
         print(e)
     finally:
