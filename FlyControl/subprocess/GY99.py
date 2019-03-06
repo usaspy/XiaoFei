@@ -22,8 +22,8 @@ cmd3 = b'\xA5\x58\x01\xFE'
 cmd4 = b'\xA5\x59\x01\xFF'
 # 加速度陀螺仪校准指令
 cmd5 = b'\xA5\x57\x01\xFD'
-# 磁力计校准指令
-cmd6 = b'\xA5\x57\x02\xFE'
+# 磁力计校准指令 (需人工操作，故不可轻易使用)
+#cmd6 = b'\xA5\x57\x02\xFE'
 # 保存设置
 cmd7 = b'\xA5\x5A\x01\x00'
 # 恢复出厂设置
@@ -46,8 +46,6 @@ def working(_1553b):
             sr.write(cmd4)
             time.sleep(0.2)
             sr.write(cmd5)
-            time.sleep(0.2)
-            sr.write(cmd6)
             time.sleep(0.2)
             sr.write(cmd7)
             time.sleep(0.5)
