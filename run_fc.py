@@ -31,7 +31,6 @@ if __name__ == "__main__":
 
         p1.join()
         p2.join()
-        print("开机成功，系统正在运行...")
     except Exception as e:
         print(e)
     finally:
