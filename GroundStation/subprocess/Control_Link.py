@@ -8,6 +8,8 @@ import time
 import socket
 import threading
 import GroundStation.vars as vars
+import pyHook
+import pythoncom
 
 def working():
         print("[Control_Link]打开地面站发射器...等待链接...")
@@ -35,6 +37,13 @@ def working():
             sock_server.close()
 
 #控制链路服务器端
-#所有命令格式为“CMD:命令字串”
+#所有命令格式为“命令字串”
 def send_command(sock, addr):
-    pass
+    hookmanager = pyHook.HookManager()
+    def onKeyDown(event):
+        sock.send((event.Key).encode("UTF-8"))
+        #print(str(event.Key) + ' is pressed')
+        return True
+    hookmanager.KeyDown = onKeyDown
+    hookmanager.HookKeyboard()
+    pythoncom.PumpMessages()

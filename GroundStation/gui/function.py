@@ -30,7 +30,6 @@ def open_transmitter():
         vars.transmitter.start()
         vars.but_1.config(text="关闭地面站发射器")
         vars.but_1.config(command=close_transmitter)
-        vars.but_2.config(state='normal')
         vars.but_3.config(state='normal')
         vars.but_4.config(state='normal')
         vars.but_5.config(state='normal')
@@ -39,7 +38,6 @@ def open_transmitter():
 
     except Exception as e:
         print("打开地面站发射器发生异常")
-        vars.but_2.config(state='disabled')
         vars.but_3.config(state='disabled')
         vars.but_4.config(state='disabled')
         vars.but_5.config(state='disabled')

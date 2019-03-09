@@ -230,7 +230,6 @@ vars.but_1.place(x=offsetX+540,y=offsetY,anchor='nw')
 vars.but_2 = tk.Button(window,
     text='显示飞行数据',
     activeforeground='red',
-    state='disabled',
     width=25, height=2,
     command=fun.show_flydata)
 vars.but_2.place(x=offsetX+540,y=offsetY+50,anchor='nw')
