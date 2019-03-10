@@ -207,7 +207,7 @@ vars.label_14 = tk.Label(window,text="3000",
              width=100,height=2)
 vars.label_14.place(x=offsetX+360,y=offsetY+200,anchor='nw')
 
-l = tk.Label(window,text="飞行时间",
+l = tk.Label(window,text="对地速度",
              anchor="w",
              font=('Arial',14),
              width=100,height=2)

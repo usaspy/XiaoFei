@@ -24,9 +24,9 @@ def working():
 
 #数据链路服务端
 def resolve_data(data_bytes):
-    print(data_bytes)
     try:
         data = eval(data_bytes.decode("utf-8"))
+        print(data)
         vars.label_2.config(text=data['ROLL'])
         vars.label_3.config(text=data['PITCH'])
         vars.label_4.config(text=data['YAW'])
@@ -38,8 +38,8 @@ def resolve_data(data_bytes):
         vars.label_10.config(text=data['ROLL'])
         vars.label_11.config(text=data['ROLL'])
         vars.label_12.config(text=(data['Calibrated'] == 0x3F and  '已校准' or '校准失败'))
-        vars.label_13.config(text=data['ROLL'])
-        vars.label_14.config(text=data['ROLL'])
-        vars.label_15.config(text=data['ROLL'])
+        vars.label_13.config(text=data['LOG'])
+        vars.label_14.config(text=data['LAT'])
+        vars.label_15.config(text=data['SPEED'])
     except Exception as e:
-        print("数据解析出错")
+        print("飞行数据解析出错")
