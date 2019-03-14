@@ -1,3 +1,22 @@
+b = b'\r\n+CGPSINFO: 3039.049728,N,10359.829396,E,090319,141329.0,612.5,0.0,328.9\r\n'
+s = b.decode("ascii")
+if s.find("\r\n+CGPSINFO:") == 0:
+    data = s[s.find(": ")+1:]
+    datas = data.split(",")
+    print(datas[0].strip())
+    # 获取纬度
+    LAT = datas[0] + "'" + datas[1]
+    # 获取经度
+    LOG = datas[2] + "'" + datas[3]
+    # 获取海拔高度
+    ALT = datas[6]
+    # 获取速度
+    SPEED = datas[7]
+
+pass
+s= "{'ROLL': 653.34, 'PITCH': 167118.53, 'Calibrated': 'no', 'YAW': 562.24, 'p2_status': 0, 'p1_status': 0, 'Pressure': 96.02383, 'Temp': 21.26, 'p3_status': 0, 'Altitude': 451.01}"
+d = eval(s)
+print(d)
 cmd0= "5A 5A"
 s = bytes.fromhex(cmd0)
 print(s)
