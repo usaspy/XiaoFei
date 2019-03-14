@@ -6,11 +6,11 @@
  主进程
 '''
 from multiprocessing import Process
-from e import _1553b
-from e import _1553a
-from e import communication
-from e import engine
-from e import sensor
+from FlyControl import _1553b
+from FlyControl import _1553a
+from FlyControl import communication
+from FlyControl import engine
+from FlyControl import sensor
 #import affinity
 
 if __name__ == "__main__":
@@ -21,7 +21,7 @@ if __name__ == "__main__":
         #p2传感器进程
         p2 = Process(target=sensor.start,args=(_1553b,),name='p2')
         #p3 引擎进程
-        p3 = Process(target=engine.init,args=(_1553b,_1553a,),name='p3')
+        p3 = Process(target=engine.init,args=(_1553a,),name='p3')
 
         p1.daemon = True
         p2.daemon = True

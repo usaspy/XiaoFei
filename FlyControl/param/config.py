@@ -23,7 +23,14 @@ SERIAL_PORT_GPRS="/dev/ttyUSB3"
 #指南针补偿角度
 COMPASS_COMPENSATE = -37.2
 
-#动力系统  4轴初始油门 =0
+
+#马达GPIO
+MOTOR_01_GPIO = 29
+MOTOR_02_GPIO = 31
+MOTOR_03_GPIO = 33
+MOTOR_04_GPIO = 35
+
+#动力系统  4轴初始油门 =0 从1%~100%
 MOTOR_01 = 0
 MOTOR_02 = 0
 MOTOR_03 = 0
