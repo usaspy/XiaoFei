@@ -5,13 +5,13 @@ import threading
 import time
 import RPi.GPIO as GPIO
 
-def init(_1553a):
+def init(_1553b,_1553a):
     thread_list = []
     try:
-        t1 = threading.Thread(target=Motor.working, args=(_1553a,))
-        t2 = threading.Thread(target=Motor.working, args=(_1553a,))
-        t3 = threading.Thread(target=Motor.working, args=(_1553a,))
-        t4 = threading.Thread(target=Motor.working, args=(_1553a,))
+        t1 = threading.Thread(target=Motor.working, args=(_1553b,_1553a,))
+        t2 = threading.Thread(target=Motor.working, args=(_1553b,_1553a,))
+        t3 = threading.Thread(target=Motor.working, args=(_1553b,_1553a,))
+        t4 = threading.Thread(target=Motor.working, args=(_1553b,_1553a,))
         thread_list.append(t1)
         thread_list.append(t2)
         thread_list.append(t3)
