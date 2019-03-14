@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # coding=utf-8
-from e.subprocess import Control_Link
-from e.subprocess import Data_Link
+from FlyControl.subprocess import Control_Link
+from FlyControl.subprocess import Data_Link
 import threading
 import time
 

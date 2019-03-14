@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # coding=utf-8
-from e.subprocess import sim7600
-from e.subprocess import GY99
+from FlyControl.subprocess import sim7600
+from FlyControl.subprocess import GY99
 import threading
 import time
 

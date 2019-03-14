@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # coding=utf-8
-from e.subprocess import MotorX
+from FlyControl.subprocess import MotorX
 import threading
 import time
 import RPi.GPIO as GPIO
