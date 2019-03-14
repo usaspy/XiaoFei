@@ -20,7 +20,7 @@ if __name__ == "__main__":
         p1 = Process(target=communication.start,args=(_1553b,_1553a,),name='p1')
         #p2传感器进程
         p2 = Process(target=sensor.start,args=(_1553b,),name='p2')
-        #p3 引擎进程
+        #p3 马达动力进程
         p3 = Process(target=engine.init,args=(_1553b,_1553a,),name='p3')
 
         p1.daemon = True
