@@ -9,6 +9,7 @@
 import RPi.GPIO as GPIO
 import time
 from FlyControl.lib import libmotor
+from FlyControl.param import config
 
 #马达工作
 def working(No):
