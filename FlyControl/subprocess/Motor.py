@@ -11,6 +11,16 @@ import time
 from FlyControl.lib import libmotor
 from FlyControl.param import config
 
+#开机后引擎状态初始化，然后设置安全锁
+def motor_init(No):
+    pin = libmotor.get_gpio(No)
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(pin, GPIO.OUT, initial=False)
+    p = GPIO.PWM(pin, 50)
+    p.start(libmotor.convert_power(0))
+
+    return p
+
 #马达工作
 def working(No):
     try:

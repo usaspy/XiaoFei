@@ -44,15 +44,7 @@ def convert_power(curr_power):
     #由于接了光耦模块，故取反 用100-v
     return 100 - v
 
-#开机后引擎状态初始化，然后设置安全锁
-def motor_init(No):
-    pin = get_gpio(No)
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(pin, GPIO.OUT, initial=False)
-    p = GPIO.PWM(pin, 50)
-    p.start(convert_power(0))
 
-    return p
 
 
 
