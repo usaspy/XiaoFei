@@ -25,17 +25,19 @@ COMPASS_OFFSET = -37.2
 
 
 #-------------------------------------------------飞控变量-----------------------------------------
+MOTOR = {}
 #马达GPIO
-MOTOR_01_GPIO = 29
-MOTOR_02_GPIO = 31
-MOTOR_03_GPIO = 33
-MOTOR_04_GPIO = 35
+MOTOR[1]['GPIO'] = 29
+MOTOR[2]['GPIO'] = 31
+MOTOR[3]['GPIO'] = 33
+MOTOR[4]['GPIO'] = 35
 
 #动力系统  4轴初始油门 =0 从1%~100%
-CURR_POWER_01 = 0
-CURR_POWER_02 = 0
-CURR_POWER_03 = 0
-CURR_POWER_04 = 0
+MOTOR[1]['CURR_POWER'] = 0
+MOTOR[2]['CURR_POWER'] = 0
+MOTOR[3]['CURR_POWER'] = 0
+MOTOR[4]['CURR_POWER'] = 0
+
 
 #动力安全锁
 MOTOR_LOCK = True
