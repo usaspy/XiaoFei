@@ -48,7 +48,7 @@ l = tk.Label(window,text="ROLL",
              font=('Arial',10),
              width=100,height=2)
 l.place(x=offsetX,y=offsetY+40,anchor='nw')
-vars.label_2 = tk.Label(window,text="3000",
+vars.label_2 = tk.Label(window,text="N/A",
              anchor="w",
              foreground='blue',
              font=('Arial',12),
@@ -60,7 +60,7 @@ l = tk.Label(window,text="PITCH",
              font=('Arial',10),
              width=100,height=2)
 l.place(x=offsetX,y=offsetY+80,anchor='nw')
-vars.label_3 = tk.Label(window,text="3000",
+vars.label_3 = tk.Label(window,text="N/A",
              anchor="w",
              foreground='red',
              font=('Arial',12),
@@ -72,7 +72,7 @@ l = tk.Label(window,text="YAW",
              font=('Arial',10),
              width=100,height=2)
 l.place(x=offsetX,y=offsetY+120,anchor='nw')
-vars.label_4 = tk.Label(window,text="3000",
+vars.label_4 = tk.Label(window,text="N/A",
              anchor="w",
              foreground='green',
              font=('Arial',12),
@@ -85,7 +85,7 @@ l = tk.Label(window,text="气压",
              font=('Arial',14),
              width=100,height=2)
 l.place(x=offsetX+240,y=offsetY,anchor='nw')
-vars.label_5 = tk.Label(window,text="3000",
+vars.label_5 = tk.Label(window,text="N/A",
              anchor="w",
              foreground='red',
              font=('Arial',12),
@@ -97,7 +97,7 @@ l = tk.Label(window,text="温度",
              font=('Arial',14),
              width=100,height=2)
 l.place(x=offsetX+240,y=offsetY+40,anchor='nw')
-vars.label_6 = tk.Label(window,text="3000",
+vars.label_6 = tk.Label(window,text="N/A",
              anchor="w",
              foreground='red',
              font=('Arial',12),
@@ -109,7 +109,7 @@ l = tk.Label(window,text="海拔高度",
              font=('Arial',14),
              width=100,height=2)
 l.place(x=offsetX+240,y=offsetY+80,anchor='nw')
-vars.label_7 = tk.Label(window,text="3000",
+vars.label_7 = tk.Label(window,text="N/A",
              anchor="w",
              foreground='red',
              font=('Arial',12),
@@ -121,7 +121,7 @@ l = tk.Label(window,text="离地高度",
              font=('Arial',14),
              width=100,height=2)
 l.place(x=offsetX+240,y=offsetY+120,anchor='nw')
-vars.label_8 = tk.Label(window,text="3000",
+vars.label_8 = tk.Label(window,text="N/A",
              anchor="w",
              foreground='red',
              font=('Arial',12),
@@ -129,7 +129,7 @@ vars.label_8 = tk.Label(window,text="3000",
 vars.label_8.place(x=offsetX+360,y=offsetY+120,anchor='nw')
 
 #显示加速度
-l = tk.Label(window,text="加速度",
+l = tk.Label(window,text="角速度GYRO",
              anchor="w",
              font=('Arial',14),
              width=100,height=2)
@@ -140,7 +140,7 @@ l = tk.Label(window,text="X轴",
              font=('Arial',10),
              width=100,height=2)
 l.place(x=offsetX,y=offsetY+200,anchor='nw')
-vars.label_9 = tk.Label(window,text="3000",
+vars.label_9 = tk.Label(window,text="N/A",
              anchor="w",
              foreground='red',
              font=('Arial',12),
@@ -152,7 +152,7 @@ l = tk.Label(window,text="Y轴",
              font=('Arial',10),
              width=100,height=2)
 l.place(x=offsetX,y=offsetY+240,anchor='nw')
-vars.label_10 = tk.Label(window,text="3000",
+vars.label_10 = tk.Label(window,text="N/A",
              anchor="w",
              foreground='red',
              font=('Arial',12),
@@ -164,7 +164,7 @@ l = tk.Label(window,text="Z轴",
              font=('Arial',10),
              width=100,height=2)
 l.place(x=offsetX,y=offsetY+280,anchor='nw')
-vars.label_11 = tk.Label(window,text="3000",
+vars.label_11 = tk.Label(window,text="N/A",
              anchor="w",
              foreground='red',
              font=('Arial',12),
@@ -176,7 +176,7 @@ l = tk.Label(window,text="姿态传感器校准",
              font=('Arial',14),
              width=100,height=2)
 l.place(x=offsetX,y=offsetY+320,anchor='nw')
-vars.label_12 = tk.Label(window,text="3000",
+vars.label_12 = tk.Label(window,text="N/A",
              anchor="w",
              foreground='red',
              font=('Arial',12),
@@ -188,7 +188,7 @@ l = tk.Label(window,text="GPS经度",
              font=('Arial',14),
              width=100,height=2)
 l.place(x=offsetX+240,y=offsetY+160,anchor='nw')
-vars.label_13 = tk.Label(window,text="3000",
+vars.label_13 = tk.Label(window,text="N/A",
              anchor="w",
              foreground='red',
              font=('Arial',12),
@@ -200,7 +200,7 @@ l = tk.Label(window,text="GPS纬度",
              font=('Arial',14),
              width=100,height=2)
 l.place(x=offsetX+240,y=offsetY+200,anchor='nw')
-vars.label_14 = tk.Label(window,text="3000",
+vars.label_14 = tk.Label(window,text="N/A",
              anchor="w",
              foreground='red',
              font=('Arial',12),
@@ -212,7 +212,7 @@ l = tk.Label(window,text="地速",
              font=('Arial',14),
              width=100,height=2)
 l.place(x=offsetX+240,y=offsetY+240,anchor='nw')
-vars.label_15 = tk.Label(window,text="3000",
+vars.label_15 = tk.Label(window,text="N/A",
              anchor="w",
              foreground='red',
              font=('Arial',12),
