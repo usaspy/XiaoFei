@@ -36,6 +36,6 @@ def recv_command(sock,_1553a):
         if bt:
             try:
                 _1553a.append(bt)
-                print
+                print(_1553a)
             except Exception as e:
                 print("[Control_Link]命令接收异常！")

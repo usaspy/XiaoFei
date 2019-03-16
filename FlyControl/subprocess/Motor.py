@@ -29,7 +29,6 @@ def working():
         motor_init([1,2,3,4])
 
         while True:
-            print("ready%s"% config.MOTOR)
             config.MOTOR[1]['OBJ'].ChangeDutyCycle(config.MOTOR[1]['CURR_POWER'])
             config.MOTOR[2]['OBJ'].ChangeDutyCycle(config.MOTOR[2]['CURR_POWER'])
             config.MOTOR[3]['OBJ'].ChangeDutyCycle(config.MOTOR[3]['CURR_POWER'])
