@@ -3,7 +3,7 @@
 '''
     GY-99传感器，获取以下数据并同步到_1553b_data总线：
     1）欧拉角 Roll  Pitch  Yaw
-    2）加速度 X  Y  Z
+    2）角速度GYRO X  Y  Z
     3）温度
     4）气压
     5）海拔高度
@@ -12,8 +12,8 @@ import serial
 import time
 from FlyControl.param import config
 
-# 输出数据设置指令,0xFO=输出后四位参数
-cmd1 = b'\xA5\x55\xF0\xEA'
+# 输出数据设置指令,0xFF=输出全部参数
+cmd1 = b'\xA5\x55\xFF\xF9'
 # 自动输出数据指令
 cmd2 = b'\xA5\x56\x02\xFD'
 # 波特率设置指=115200
@@ -23,7 +23,7 @@ cmd4 = b'\xA5\x59\x01\xFF'
 # 加速度陀螺仪校准指令
 cmd5 = b'\xA5\x57\x01\xFD'
 # 磁力计校准指令 (需人工操作，故不可轻易使用)
-#cmd6 = b'\xA5\x57\x02\xFE'
+cmd6 = b'\xA5\x57\x02\xFE'
 # 保存设置
 cmd7 = b'\xA5\x5A\x01\x00'
 # 恢复出厂设置
@@ -47,44 +47,55 @@ def working(_1553b):
             time.sleep(0.2)
             sr.write(cmd5)
             time.sleep(0.2)
-            sr.write(cmd7)
-            time.sleep(0.5)
 
             while True:
                 sr.flushInput()
                 while True:
                     n = sr.inWaiting()
-                    if n == 20:
+                    if n == 46:
                         rec = sr.read(n)
                         __resolve_data(rec,_1553b)
                         break
+                    elif n > 46:
+                        break
     except Exception as e:
+        print(e)
         print("[GY-99]通过串口[%s]获取飞控数据时发生异常..."% config.SERIAL_PORT_GY99)
     finally:
         sr.close()
 
 #处理数据并写入_1553b数据总线
 def __resolve_data(data,_1553b):
-    if data[:4] == b'\x5A\x5A\xF0\x0F':
+    if data[:4] == b'\x5A\x5A\xFF\x29':
+        #获取陀螺仪 (角度/秒)  >>为什么除以16.4? 看http://www.openedv.com/forum.php?mod=viewthread&tid=80200&page=1
+        GYRO_X = ((data[10]<< 8) | data[11]) / 16.4
+        _1553b['GYRO_X'] = round(GYRO_X)
+        GYRO_Y = ((data[12] << 16) | data[13]) / 16.4
+        _1553b['GYRO_Y'] = round(GYRO_Y)
+        GYRO_Z = ((data[14] << 8) | data[15]) / 16.4
+        _1553b['GYRO_Z'] = round(GYRO_Z)
+
         #获取欧拉角 (度)
-        ROLL = ((data[4]<< 8) | data[5]) / 100
+        ROLL = ((data[30]<< 8) | data[31]) / 100
         _1553b['ROLL'] = ROLL
-        PITCH = ((data[6] << 16) | data[7]) / 100
+        PITCH = ((data[32] << 16) | data[33]) / 100
         _1553b['PITCH'] = PITCH
-        YAW = ((data[8] << 8) | data[9]) / 100
+        YAW = ((data[34] << 8) | data[35]) / 100
         _1553b['YAW'] = YAW
 
-        #获取气压(kpa)
-        Pressure = ((data[10] << 24) | (data[11] << 16) | (data[12] << 8) | data[13]) / 100 / 1000
-        _1553b['Pressure'] = Pressure
+        #获取气压(KPa)
+        Pressure = ((data[36] << 24) | (data[37] << 16) | (data[38] << 8) | data[39]) / 100 / 1000
+        _1553b['Pressure'] = round(Pressure,3)
 
         #获取温度(摄氏度)
-        Temp = ((data[14] << 8) | data[15]) / 100
-        _1553b['Temp'] = Temp
+        Temp = ((data[40] << 8) | data[41]) / 100
+        _1553b['Temp'] = round(Temp,1)
 
         #获取海拔(米)
-        Altitude = ((data[16] << 8) | data[17]) / 100
-        _1553b['Altitude'] = Altitude
+        Altitude = ((data[42] << 8) | data[43]) / 100
+        _1553b['Altitude'] = round(Altitude,2)
 
         #已校准
-        _1553b['Calibrated'] = data[18]
+        _1553b['Calibrated'] = data[44]
+
+        print(_1553b)
