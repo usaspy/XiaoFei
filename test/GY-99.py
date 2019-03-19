@@ -11,7 +11,7 @@ if len(plist) > 0:
         print(list(plist[0]))
 
 #打开串口
-ser = serial.Serial(port="/dev/ttyAMAO",baudrate=115200,timeout=15,bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=1)
+ser = serial.Serial(port="/dev/ttyAMA0",baudrate=115200,timeout=15,bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=1)
 try:
     # 输出数据设置指令,0xFO=输出后四位参数
     cmd1=b'\xA5\x55\xF0\xEA'
@@ -44,6 +44,12 @@ try:
         ser.write(cmd4)
         time.sleep(0.5)
 
+
+        ser.write(cmd5)
+        time.sleep(0.5)
+        ser.write(cmd6)
+        time.sleep(0.5)
+
         ser.write(cmd7)
         time.sleep(0.5)
 
@@ -56,8 +62,6 @@ try:
                 #print(rec)
 
                 ser.flushInput()
-                b = b'ZZ\xf0\x0f\xffM\x01\xb0\xbd\x99\x00\x93\x95\xb4\x06\x9e\x98\x8f?\xec'
-                print(type(b))
            # time.sleep(1)
 except KeyboardInterrupt as e:
     print(e)
