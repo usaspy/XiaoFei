@@ -10,7 +10,7 @@ while [ 1 ]; do
 
            if [ ${times} == 5 ]; then
                 echo "start reconnect"
-                #ppp call gprs &
+                ppp call gprs &
                 ip a | grep ppp0 &> /dev/null
                 if [ $? == 0 ]; then
                    route del default dev ppp0
