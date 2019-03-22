@@ -64,12 +64,13 @@ def working(_1553b):
     finally:
         sr.close()
 
+# 根据十六进制数转化为带符号的十进制数
 # 最高位是符号位，最高为位1是负数， 为0是正数
-def __hex2dec(hexData):
-    if hexData & 0x8000 == 0x8000:
-        hexData = hexData ^ 0xFFFF   #异或，相同为0，不同为1
-        hexData = ~hexData   #~符号表示运算：~hexData = -(hexData+1)
-    return hexData
+def __hex2dec(d):
+    if d & 0x8000 == 0x8000:
+        d = d ^ 0xFFFF   #异或，相同为0，不同为1
+        d = ~d   #~符号表示运算：~d = -(d+1)
+    return d
 
 
 #处理数据并写入_1553b数据总线

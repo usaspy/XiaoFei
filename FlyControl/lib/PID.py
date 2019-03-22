@@ -47,11 +47,18 @@ class PID(object):
     '''
     def update(self,curr_angle=0.0,curr_gyro=0.0):
         #1.外环计算期望角速度
-        angle_error = self.expect_angle - curr_angle #当前角度误差 = 期望角度（自稳时为常量0） - 当前角度
+        angle_error = self.expect_angle - curr_angle # 外环输入参数       当前角度误差 = 期望角度（自稳时为常量0） - 当前角度
         self.curr_time = time.time()  #设置当前时间
         duration = self.curr_time - self.last_time  # 上次调用到本次调用的时间间隔，积微分用
 
         if duration >= self.sample_time:
             self.PTerm0 = self.outer_Kp * angle_error  #外环Kp * 当前角度误差
+            self.ITerm0 += angle_error * duration #误差积分
+
+            if self.ITerm0 > self.limited_angle_max:
+                self.ITerm0 = self.limited_angle_max
+            elif self.ITerm0 < -self.limited_angle_max:
+                self.ITerm0 = -self.limited_angle_max
+
         #2.内环计算PWM
         pass
