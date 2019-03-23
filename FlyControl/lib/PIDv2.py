@@ -31,39 +31,40 @@ def engine_fly(_1553b,_1553a):
     zv_sum = 0.0
 
     while True:
-        #当前欧拉角
-        x_curr =  0 + _1553b['ROLL']
-        y_curr =  0 + _1553b['PITCH']
-        z_curr =  0 + _1553b['YAW']
-        # 当前角速度值
-        xv_curr = 0 + _1553b['GYRO_X']
-        yv_curr = 0 + _1553b['GYRO_Y']
-        zv_curr = 0 + _1553b['GYRO_Z']
+        # 传感器测量的当前角度
+        x_curr =  _1553b['ROLL']
+        y_curr =  _1553b['PITCH']
+        z_curr =  _1553b['YAW']
+        # 传感器测量的当前角速度
+        xv_curr = _1553b['GYRO_X']
+        yv_curr = _1553b['GYRO_Y']
+        zv_curr = _1553b['GYRO_Z']
 
-        #外环PID根据欧拉角控制期望角速度
+        #外环PID根据欧拉角计算出期望角速度
         #这里应该是期望角度 - 当前实际角度，所以这里为 0 - x_et
-        xv_et = engine_outside_pid(-x_curr,-x_last,x_sum)
-        yv_et = engine_outside_pid(-y_curr,-y_last,y_sum)
-        zv_et = engine_outside_pid(-z_curr,-z_last,None)
+        xv_et = engine_outside_pid(-x_curr, -x_last, x_sum)
+        yv_et = engine_outside_pid(-y_curr, -y_last, y_sum)
+        zv_et = engine_outside_pid(-z_curr, -z_last, None)
 
-        #内环输入调整：期望角速度 = 期望角速度 - 当前角速度
+        #内环输入调整：实际期望角速度 = 期望角速度 - 当前角速度 （补偿当前角速度）
         xv_et -= xv_curr
         yv_et -= yv_curr
         zv_et -= zv_curr
 
-        x_pwm = engine_inside_pid(xv_et,xv_last,xv_sum)
-        y_pwm = engine_inside_pid(yv_et,yv_last,yv_sum)
-        z_pwm = engine_inside_pid(zv_et,zv_last,None)
+        #内环PID根据角速度误差计算出PWM调整量
+        x_pwm = engine_inside_pid(xv_et, xv_last, xv_sum)
+        y_pwm = engine_inside_pid(yv_et, yv_last, yv_sum)
+        z_pwm = engine_inside_pid(zv_et, zv_last, None)
 
         #记录欧拉角的上一次读数
-        x_last = x_curr;
-        y_last = y_curr;
-        z_last = z_curr;
+        x_last = x_curr
+        y_last = y_curr
+        z_last = z_curr
 
         #记录角速度的上一次读数
-        xv_last = xv_et;
-        yv_last = yv_et;
-        zv_last = zv_et;
+        xv_last = xv_et
+        yv_last = yv_et
+        zv_last = zv_et
 
         motor_process(_1553b,x_pwm,y_pwm,z_pwm)
 
@@ -78,12 +79,18 @@ et2:上一次角度误差
 def engine_outside_pid(et,et2,sum):
     #输出期望角速度
     palstance = 0.0
+    if sum == None:
+        #Z轴PID中只做P和D
+        palstance = cfg.kp * et + cfg.kd * (et - et2)
+        palstance = engine_limit_palstance(palstance)
+        return palstance
     sum += cfg.ki * et * 0.01
     #积分限幅
-    engine_limit_palstance(sum)
+    sum = engine_limit_palstance(sum)
+    #XY轴PID反馈控制
     palstance = cfg.kp * et + sum + cfg.kd * (et - et2)
-    engine_limit_palstance(palstance)
-
+    #输出限幅
+    palstance = engine_limit_palstance(palstance)
     return palstance
 
 '''
@@ -95,7 +102,10 @@ et2:上一次角速度误差
 def engine_inside_pid(et,et2,sum):
     #输出期望PWM值
     pwm = 0.0
-
+    if sum == None:
+        pwm = cfg.v_kp * et + cfg.v_kd * (et -et2)
+        engine_limit_pwm(pwm)
+        return pwm
     sum += cfg.v_ki * et * 0.01
     engine_limit_pwm(sum)
     pwm = cfg.v_kp * et + sum + cfg.v_kd * (et - et2)
@@ -104,29 +114,29 @@ def engine_inside_pid(et,et2,sum):
 
 #外环角速度限幅
 def engine_limit_palstance(palstance):
-    max_palstance = 40  #度/秒
-    if palstance > max_palstance:
-        return max_palstance
-    elif 0 <= palstance <= max_palstance:
+    MAX_PALSTANCE = 40  #允许的最大角速度（度/秒）
+    if palstance > MAX_PALSTANCE:
+        return MAX_PALSTANCE
+    elif 0 <= palstance <= MAX_PALSTANCE:
         return palstance
-    elif -max_palstance < palstance < 0:
+    elif -MAX_PALSTANCE < palstance < 0:
         return palstance
-    elif palstance < -max_palstance:
-        return -max_palstance
+    elif palstance < -MAX_PALSTANCE:
+        return -MAX_PALSTANCE
 
 
 #内环PWM限幅
 #实际限制的是油门0~100%,最
 def engine_limit_pwm(pwm):
-    max_pwm = 100  # 油门大小：0~100%
-    if pwm > max_pwm:
-        return max_pwm
-    elif 0 <= pwm <= max_pwm:
+    MAX_PWM = 100  # 油门大小：0~100%
+    if pwm > MAX_PWM:
+        return MAX_PWM
+    elif 0 <= pwm <= MAX_PWM:
         return pwm
-    elif -max_pwm < pwm < 0:
+    elif -MAX_PWM < pwm < 0:
         return pwm
-    elif pwm < -max_pwm:
-        return -max_pwm
+    elif pwm < -MAX_PWM:
+        return -MAX_PWM
 
 '''
 PWM发送到1553b总线，交给电机执行
