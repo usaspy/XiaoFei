@@ -1,26 +1,16 @@
-from pynput.mouse import Button, Controller
+import timeit
+def a():
+    i = 0
+    b(i)
 
-mouse = Controller()
+def b(i):
+    i= 1
 
-# Read pointer position
-print('The current pointer position is {0}'.format(
-    mouse.position))
-
-# Set pointer position
-mouse.position = (10, 20)
-print('Now we have moved it to {0}'.format(
-    mouse.position))
-
-# Move pointer relative to current position
-mouse.move(5, -5)
-
-# Press and release
-mouse.press(Button.left)
-mouse.release(Button.left)
-
-# Double click; this is different from pressing and releasing
-# twice on Mac OSX
-mouse.click(Button.left, 2)
-
-# Scroll two steps down
-mouse.scroll(0, 2)
+def z():
+    i =2
+    i =i+1
+    print(i)
+if __name__ == '__main__':
+    #t1 = timeit.Timer("a()", "from __main__ import a")  # 程序运行时test.py此文件是main
+   # print("if== ", t1.timeit(number=1000000), "seconds")
+   z()
