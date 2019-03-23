@@ -79,7 +79,7 @@ def __resolve_data(data,_1553b):
         #获取陀螺仪 (角度/秒)  >>为什么除以16.4? 看http://www.openedv.com/forum.php?mod=viewthread&tid=80200&page=1
         GYRO_X = (__hex2dec((data[10]<< 8) | data[11])) / 16.4
         _1553b['GYRO_X'] = round(GYRO_X,2)
-        GYRO_Y = (__hex2dec((data[12] << 16) | data[13])) / 16.4
+        GYRO_Y = (__hex2dec((data[12] << 8) | data[13])) / 16.4
         _1553b['GYRO_Y'] = round(GYRO_Y,2)
         GYRO_Z = (__hex2dec((data[14] << 8) | data[15])) / 16.4
         _1553b['GYRO_Z'] = round(GYRO_Z,2)
@@ -87,7 +87,7 @@ def __resolve_data(data,_1553b):
         #获取欧拉角 (度)
         ROLL = (__hex2dec((data[30]<< 8) | data[31])) / 100
         _1553b['ROLL'] = ROLL
-        PITCH = (__hex2dec((data[32] << 16) | data[33])) / 100
+        PITCH = (__hex2dec((data[32] << 8) | data[33])) / 100
         _1553b['PITCH'] = PITCH
         YAW = (__hex2dec((data[34] << 8) | data[35])) / 100
         _1553b['YAW'] = YAW
