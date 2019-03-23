@@ -10,6 +10,7 @@ import RPi.GPIO as GPIO
 import time
 from FlyControl.lib import libmotor
 from FlyControl.param import config
+from FlyControl.lib import PIDv2 as PID
 
 #https://blog.csdn.net/qq_22169787/article/details/83379935
 #开机后引擎状态初始化，然后设置安全锁
@@ -48,4 +49,4 @@ def working():
 
 #马达控制器工作
 def controller(_1553b,_1553a):
-    pass
+    PID.engine_fly(_1553b,_1553a)
