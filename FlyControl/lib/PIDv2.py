@@ -32,13 +32,13 @@ def engine_fly(_1553b,_1553a):
 
     while True:
         # 传感器测量的当前角度
-        x_curr =  _1553b['ROLL']
-        y_curr =  _1553b['PITCH']
-        z_curr =  _1553b['YAW']
+        x_curr =  _1553b.get('ROLL',0)
+        y_curr =  _1553b.get('PITCH',0)
+        z_curr =  _1553b.get('YAW',0)
         # 传感器测量的当前角速度
-        xv_curr = _1553b['GYRO_X']
-        yv_curr = _1553b['GYRO_Y']
-        zv_curr = _1553b['GYRO_Z']
+        xv_curr = _1553b.get('GYRO_X',0)
+        yv_curr = _1553b.get('GYRO_Y',0)
+        zv_curr = _1553b.get('GYRO_Z',0)
 
         #外环PID根据欧拉角计算出期望角速度
         #这里应该是期望角度 - 当前实际角度，所以这里为 0 - x_et
@@ -83,7 +83,7 @@ def engine_outside_pid(et,et2,sum):
         #Z轴PID中只做P和D
         palstance = [cfg.kp * et + cfg.kd * (et - et2)]
         engine_limit_palstance(palstance)
-        return palstance
+        return palstance[0]
     sum[0] += cfg.ki * et * 0.01
     #积分限幅
     engine_limit_palstance(sum)
@@ -103,12 +103,12 @@ def engine_inside_pid(et,et2,sum):
     #输出期望PWM值
     pwm = 0.0
     if sum == None:
-        pwm = cfg.v_kp * et + cfg.v_kd * (et -et2)
+        pwm = [cfg.v_kp * et + cfg.v_kd * (et -et2)]
         engine_limit_pwm(pwm)
-        return pwm
+        return pwm[0]
     sum[0] += cfg.v_ki * et * 0.01
     engine_limit_pwm(sum)
-    pwm = [cfg.v_kp * et + sum + cfg.v_kd * (et - et2)]
+    pwm = [cfg.v_kp * et + sum[0] + cfg.v_kd * (et - et2)]
     engine_limit_pwm(pwm)
     return pwm[0]
 
@@ -134,4 +134,4 @@ def engine_limit_pwm(pwm):
 PWM发送到1553b总线，交给电机执行
 '''
 def motor_process(_1553b,x_pwm,y_pwm,z_pwm):
-    print("x=%d,y=d%,z=d%"%(x_pwm,y_pwm,z_pwm))
+    print("x=%d,y=%d,z=%d"%(x_pwm,y_pwm,z_pwm))
