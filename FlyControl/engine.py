@@ -13,9 +13,9 @@ def init(_1553b,_1553a):
     thread_list = []
     try:
         t0 = threading.Thread(target=Motor.controller, args=(_1553b,_1553a,))
-        t1 = threading.Thread(target=Motor.working, args=())
+        #t1 = threading.Thread(target=Motor.working, args=())
         thread_list.append(t0)
-        thread_list.append(t1)
+        #thread_list.append(t1)
 
         for t in thread_list:
             t.setDaemon(True)

@@ -27,12 +27,29 @@ COMPASS_OFFSET = -37.2
 #-------------------------------------------------飞控变量-----------------------------------------
 #马达GPIO
 #动力系统  4轴初始油门 =0 从1%~100%
-MOTOR = {1:{'GPIO':29,'CURR_POWER':0,'OBJ':None},2:{'GPIO':31,'CURR_POWER':0,'OBJ':None},3:{'GPIO':33,'CURR_POWER':0,'OBJ':None},4:{'GPIO':35,'CURR_POWER':0,'OBJ':None}}
+#马达插脚
+MOTOR1 = 29
+MOTOR2 = 31
+MOTOR3 = 33
+MOTOR4 = 35
+
+#马达实例
+MOTOR1_OBJ = None
+MOTOR2_OBJ = None
+MOTOR3_OBJ = None
+MOTOR4_OBJ = None
+
+#马达功率
+MOTOR1_POWER_PER = 0
+MOTOR2_POWER_PER = 0
+MOTOR3_POWER_PER = 0
+MOTOR4_POWER_PER = 0
+
 
 #动力安全锁
 MOTOR_LOCK = True
 
-FLY_MODE='test'   #'work' or 'test'
+FLY_MODE='test'   #'fly' or 'test'
 
 
 #-------------------------------------------------PID---------------------------------------

@@ -9,43 +9,56 @@
 import RPi.GPIO as GPIO
 import time
 from FlyControl.lib import libmotor
-from FlyControl.param import config
+from FlyControl.param import config as cfg
 from FlyControl.lib import PIDv2 as PID
 
 #https://blog.csdn.net/qq_22169787/article/details/83379935
 #开机后引擎状态初始化，然后设置安全锁
-def motor_init(motors):
+def __motor_init():
     GPIO.setmode(GPIO.BOARD)
-    for motorId in motors:
-        pin = config.MOTOR[motorId]['GPIO']
-        GPIO.setup(pin, GPIO.OUT, initial=False)
-        p = GPIO.PWM(pin, 50)
-        p.start(libmotor.convert_power(0))
-        config.MOTOR[motorId]['OBJ'] = p
+    GPIO.setup(cfg.MOTOR1, GPIO.OUT, initial=False)
+    GPIO.setup(cfg.MOTOR2, GPIO.OUT, initial=False)
+    GPIO.setup(cfg.MOTOR3, GPIO.OUT, initial=False)
+    GPIO.setup(cfg.MOTOR4, GPIO.OUT, initial=False)
+
+    p1 = GPIO.PWM(cfg.MOTOR1, 50)
+    p2 = GPIO.PWM(cfg.MOTOR2, 50)
+    p3 = GPIO.PWM(cfg.MOTOR3, 50)
+    p4 = GPIO.PWM(cfg.MOTOR4, 50)
+
+    p1.start(libmotor.real_pwm(0))
+    p2.start(libmotor.real_pwm(0))
+    p3.start(libmotor.real_pwm(0))
+    p4.start(libmotor.real_pwm(0))
+
+    cfg.MOTOR1_OBJ = p1
+    cfg.MOTOR2_OBJ = p2
+    cfg.MOTOR3_OBJ = p3
+    cfg.MOTOR4_OBJ = p4
 
 #马达工作
 def working():
     try:
         #马达初始化
-        motor_init([1,2,3,4])
+        __motor_init()
 
         while True:
-            config.MOTOR[1]['OBJ'].ChangeDutyCycle(config.MOTOR[1]['CURR_POWER'])
-            config.MOTOR[2]['OBJ'].ChangeDutyCycle(config.MOTOR[2]['CURR_POWER'])
-            config.MOTOR[3]['OBJ'].ChangeDutyCycle(config.MOTOR[3]['CURR_POWER'])
-            config.MOTOR[4]['OBJ'].ChangeDutyCycle(config.MOTOR[4]['CURR_POWER'])
+            cfg.MOTOR1_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR1_POWER_PER))
+            cfg.MOTOR2_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR2_POWER_PER))
+            cfg.MOTOR3_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR3_POWER_PER))
+            cfg.MOTOR4_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR4_POWER_PER))
             time.sleep(0.1)
     except Exception as e:
         print(e)
     finally:
-        config.MOTOR[1]['OBJ'].stop()
-        config.MOTOR[2]['OBJ'].stop()
-        config.MOTOR[3]['OBJ'].stop()
-        config.MOTOR[4]['OBJ'].stop()
-        GPIO.cleanup(config.MOTOR[1]['GPIO'])
-        GPIO.cleanup(config.MOTOR[2]['GPIO'])
-        GPIO.cleanup(config.MOTOR[3]['GPIO'])
-        GPIO.cleanup(config.MOTOR[4]['GPIO'])
+        cfg.MOTOR1_OBJ.stop()
+        cfg.MOTOR2_OBJ.stop()
+        cfg.MOTOR3_OBJ.stop()
+        cfg.MOTOR4_OBJ.stop()
+        GPIO.cleanup(cfg.MOTOR1)
+        GPIO.cleanup(cfg.MOTOR2)
+        GPIO.cleanup(cfg.MOTOR3)
+        GPIO.cleanup(cfg.MOTOR4)
 
 #马达控制器工作
 def controller(_1553b,_1553a):

@@ -13,7 +13,7 @@ def get_gpio(No):
     return config.MOTOR[No]['GPIO']
 
 #换算成马达的PWM值 传入电调 油门范围在0%~100%之间
-def convert_power(curr_power):
+def real_pwm(curr_power):
     #输入电调的PWM值
     v = (100 + curr_power)/20
     #由于接了光耦模块，故取反 用100-v
