@@ -120,9 +120,9 @@ def engine_limit_palstance(val):
 
 
 #内环PWM限幅
-#实际限制的是油门0~100%,最
+#实际限制的是油门的15%,
 def engine_limit_pwm(pwm):
-    MAX_PWM = 100  # 油门大小：0~100%
+    MAX_PWM = 15  # 对油门的调整幅度不能超过15%
     if pwm[0] > MAX_PWM:
         pwm[0] = MAX_PWM
     elif pwm[0] < -MAX_PWM:
