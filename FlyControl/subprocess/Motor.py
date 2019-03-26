@@ -9,6 +9,7 @@
 import RPi.GPIO as GPIO
 import time
 from FlyControl.lib import libmotor
+from FlyControl.lib import PIDv2
 from FlyControl.param import config as cfg
 from FlyControl.lib import PIDv2 as PID
 
@@ -36,18 +37,18 @@ def __motor_init():
     cfg.MOTOR3_OBJ = p3
     cfg.MOTOR4_OBJ = p4
 
-#马达工作
-def working():
+#马达控制器工作
+def controller(_1553b,_1553a):
     try:
         #马达初始化
         __motor_init()
 
         while True:
-            cfg.MOTOR1_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR1_POWER_PER))
-            cfg.MOTOR2_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR2_POWER_PER))
-            cfg.MOTOR3_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR3_POWER_PER))
-            cfg.MOTOR4_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR4_POWER_PER))
-            time.sleep(0.1)
+            PIDv2.calculate(_1553b,_1553a)
+            cfg.MOTOR1_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR1_POWER))
+            cfg.MOTOR2_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR2_POWER))
+            cfg.MOTOR3_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR3_POWER))
+            cfg.MOTOR4_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR4_POWER))
     except Exception as e:
         print(e)
     finally:
@@ -59,7 +60,3 @@ def working():
         GPIO.cleanup(cfg.MOTOR2)
         GPIO.cleanup(cfg.MOTOR3)
         GPIO.cleanup(cfg.MOTOR4)
-
-#马达控制器工作
-def controller(_1553b,_1553a):
-    PID.engine_fly(_1553b,_1553a)

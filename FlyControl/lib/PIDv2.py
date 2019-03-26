@@ -8,7 +8,7 @@
 import time
 from FlyControl.param import config as cfg
 
-def engine_fly(_1553b,_1553a):
+def calculate(_1553b,_1553a):
     #外环输入：欧拉角的上一次误差
     x_last = 0.0
     y_last = 0.0
@@ -66,10 +66,8 @@ def engine_fly(_1553b,_1553a):
         yv_last = yv_et
         zv_last = zv_et
 
-        motor_process(_1553b,x_pwm,y_pwm,z_pwm)
+        set_power(x_pwm,y_pwm,z_pwm)
 
-        #电机每0.1秒调整一次
-        time.sleep(0.1)
 '''
 外环PID输入角度输出角速度
 et:当前角度误差
@@ -131,7 +129,12 @@ def engine_limit_pwm(pwm):
         pwm[0] = -MAX_PWM
 
 '''
-PWM发送到1553b总线，交给电机执行
+根据x、y、z方向上的补偿值计算每个电机实际调整幅度
 '''
-def motor_process(_1553b,x_pwm,y_pwm,z_pwm):
-    print("x=%d,y=%d,z=%d"%(x_pwm,y_pwm,z_pwm))
+def set_power(x_pwm,y_pwm,z_pwm):
+    cfg.MOTOR1_POWER = cfg.MOTOR1_POWER + x_pwm - z_pwm
+    cfg.MOTOR2_POWER = cfg.MOTOR2_POWER + y_pwm + z_pwm
+    cfg.MOTOR3_POWER = cfg.MOTOR3_POWER - x_pwm - z_pwm
+    cfg.MOTOR4_POWER = cfg.MOTOR4_POWER - y_pwm + z_pwm
+
+    print("MOTOR1=%d,MOTOR2=%d,MOTOR3=%d,MOTOR4=%d"%(cfg.MOTOR1_POWER,cfg.MOTOR2_POWER,cfg.MOTOR3_POWER,cfg.MOTOR4_POWER))
