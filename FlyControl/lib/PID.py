@@ -66,6 +66,7 @@ class PID(object):
         cfg.MOTOR3_POWER = cfg.MOTOR3_POWER - x_pwm - z_pwm
         cfg.MOTOR4_POWER = cfg.MOTOR4_POWER - y_pwm + z_pwm
 
+        print("MOTOR1=%d,MOTOR2=%d,MOTOR3=%d,MOTOR4=%d" % (cfg.MOTOR1_POWER, cfg.MOTOR2_POWER, cfg.MOTOR3_POWER, cfg.MOTOR4_POWER))
     '''
     外环PID输入角度输出角速度
     et:当前角度误差
