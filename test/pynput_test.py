@@ -1,16 +1,11 @@
-import timeit
-def a():
-    i = 0
-    b(i)
+a= {'test':1}
 
-def b(i):
-    i= 1
+print(a.get('xxx','333'))
 
-def z():
-    i =2
-    i =i+1
-    print(i)
-if __name__ == '__main__':
-    #t1 = timeit.Timer("a()", "from __main__ import a")  # 程序运行时test.py此文件是main
-   # print("if== ", t1.timeit(number=1000000), "seconds")
-   z()
+
+a = [5*3+2+5+6*(1-0.2)]
+print(a)
+x_pwm=1
+y_pwm=2
+z_pwm=3
+print("x=%d y=%d z=%d"%(x_pwm,y_pwm,z_pwm))
