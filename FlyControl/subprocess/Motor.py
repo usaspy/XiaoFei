@@ -11,7 +11,7 @@ import time
 from FlyControl.lib import libmotor
 from FlyControl.lib import PIDv2
 from FlyControl.param import config as cfg
-from FlyControl.lib import PIDv2 as PID
+from FlyControl.lib import PID as PID
 
 #https://blog.csdn.net/qq_22169787/article/details/83379935
 #开机后引擎状态初始化，然后设置安全锁
@@ -42,9 +42,10 @@ def controller(_1553b,_1553a):
     try:
         #马达初始化
         __motor_init()
-
+        #初始化PID引擎
+        pid = PID()
         while True:
-            PIDv2.calculate(_1553b,_1553a)
+            pid.calculate(_1553b,_1553a)
             cfg.MOTOR1_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR1_POWER))
             cfg.MOTOR2_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR2_POWER))
             cfg.MOTOR3_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR3_POWER))
