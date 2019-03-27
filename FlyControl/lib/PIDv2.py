@@ -8,28 +8,28 @@
 import time
 from FlyControl.param import config as cfg
 
+
 def calculate(_1553b,_1553a):
-    #外环输入：欧拉角的上一次误差
+    # 外环输入：欧拉角的上一次误差
     x_last = 0.0
     y_last = 0.0
     z_last = 0.0
-    #外环输入：欧拉角的积分参数
+    # 外环输入：欧拉角的积分参数
     x_sum = [0.0]
     y_sum = [0.0]
     z_sum = [0.0]
-    #外环输出：角速度期望值
+    # 外环输出：角速度期望值
     xv_et = 0.0
     yv_et = 0.0
     zv_et = 0.0
-    #内环输入：角速度的上一次误差
+    # 内环输入：角速度的上一次误差
     xv_last = 0.0
     yv_last = 0.0
     zv_last = 0.0
-    #内环输入：角速度的积分参数
+    # 内环输入：角速度的积分参数
     xv_sum = [0.0]
     yv_sum = [0.0]
     zv_sum = [0.0]
-
     while True:
         # 传感器测量的当前角度
         x_curr =  _1553b.get('ROLL',0)
@@ -67,6 +67,7 @@ def calculate(_1553b,_1553a):
         zv_last = zv_et
 
         set_power(x_pwm,y_pwm,z_pwm)
+        break
 
 '''
 外环PID输入角度输出角速度
