@@ -3,7 +3,7 @@
 from FlyControl.subprocess import sim7600
 from FlyControl.subprocess import GY99
 import threading
-import time
+
 
 def start(_1553b):
     thread_list = []

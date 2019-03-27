@@ -3,7 +3,7 @@
 from FlyControl.subprocess import Control_Link
 from FlyControl.subprocess import Data_Link
 import threading
-import time
+
 
 def start(_1553b,_1553a):
     thread_list = []
