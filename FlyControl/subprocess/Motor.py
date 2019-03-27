@@ -11,7 +11,7 @@ import time
 from FlyControl.lib import libmotor
 from FlyControl.lib import PIDv2
 from FlyControl.param import config as cfg
-from FlyControl.lib import PID as PID
+from FlyControl.lib.PID import PID
 
 #https://blog.csdn.net/qq_22169787/article/details/83379935
 #开机后引擎状态初始化，然后设置安全锁
