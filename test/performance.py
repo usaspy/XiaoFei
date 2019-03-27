@@ -1,4 +1,6 @@
 import timeit
+import FlyControl.lib.PIDv2 as PID
+
 s=1
 def get_curr_power(No):
     global  s
@@ -31,6 +33,9 @@ def test2():
 def test3():
     get_curr_power3('0')
 
+def test():
+    _1553b = {'ROLL':1,'PITCH':2,'YAW':2,'GYRO_X':2,'GYRO_Y':2,'GYRO_Z':4}
+    PID.calculate(_1553b,None)
 
 t1 = timeit.Timer("test1()", "from __main__ import test1")#程序运行时test.py此文件是main
 t2 = timeit.Timer("test2()", "from __main__ import test2")#程序运行时test.py此文件是main
