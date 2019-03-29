@@ -107,4 +107,4 @@ def __resolve_data(data,_1553b):
         #已校准
         _1553b['Calibrated'] = data[44]
 
-        print(_1553b)
+        #print(_1553b)

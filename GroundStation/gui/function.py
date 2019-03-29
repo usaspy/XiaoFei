@@ -10,6 +10,7 @@ import GroundStation.vars as vars
 def do_job():
     messagebox.showinfo(title='Info', message='等着吧。。')
 
+
 def usermanual():
     messagebox.showinfo(title='Manual', message='地面站与飞行器建立链接以后，玩家可以使用键盘操纵飞行器：\n'
                                                 'W键：前进\n'
@@ -59,3 +60,7 @@ def show_flydata():
     vars.flydataer = threading.Thread(target=Data_Link.working, args=())
     vars.flydataer.setDaemon(True)
     vars.flydataer.start()
+
+
+def test_motor():
+    pass

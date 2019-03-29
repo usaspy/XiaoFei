@@ -26,7 +26,7 @@ def working():
 def resolve_data(data_bytes):
     try:
         data = eval(data_bytes.decode("utf-8"))
-        print(data)
+        #print(data)
         vars.label_2.config(text=data.get('ROLL'))
         vars.label_3.config(text=data.get('PITCH'))
         vars.label_4.config(text=data.get('YAW'))

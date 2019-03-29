@@ -267,10 +267,10 @@ vars.but_6 = tk.Button(window,
 vars.but_6.place(x=offsetX+540,y=offsetY+250,anchor='nw')
 
 vars.but_7 = tk.Button(window,
-    text='转速测试',
+    text='电机测试',
     activeforeground='red',
     state='disabled',
     width=25, height=2,
-    command=fun.do_job)
+    command=fun.test_motor)
 vars.but_7.place(x=offsetX+540,y=offsetY+300,anchor='nw')
 window.mainloop()
