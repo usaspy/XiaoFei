@@ -116,10 +116,10 @@ class PID(object):
        输出：无
     '''
     def calculate(self,_1553b,_1553a):
-        # 传感器测量的当前角度
-        x = _1553b.get('ROLL', 0)
-        y = _1553b.get('PITCH', 0)
-        z = _1553b.get('YAW', 0)
+        # GY-99传感器测量的当前角度
+        x = _1553b.get('ROLL', 0)   #横滚角 X  -180~+180
+        y = _1553b.get('PITCH', 0)  #俯仰角 Y  -90~+90
+        z = _1553b.get('YAW', 0)  #偏移角 Z    -180~+180
         # 传感器测量的当前角速度
         xv = _1553b.get('GYRO_X', 0)
         yv = _1553b.get('GYRO_Y', 0)
