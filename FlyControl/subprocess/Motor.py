@@ -31,6 +31,7 @@ def __motor_init():
     p2.start(libmotor.real_pwm(0))
     p3.start(libmotor.real_pwm(0))
     p4.start(libmotor.real_pwm(0))
+    time.sleep(2)
 
     cfg.MOTOR1_OBJ = p1
     cfg.MOTOR2_OBJ = p2
