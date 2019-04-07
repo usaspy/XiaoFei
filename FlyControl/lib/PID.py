@@ -66,6 +66,7 @@ class PID(object):
         cfg.MOTOR3_POWER = cfg.MOTOR3_POWER - x_pwm - z_pwm
         cfg.MOTOR4_POWER = cfg.MOTOR4_POWER - y_pwm + z_pwm
 
+        print("X_PWM=%d,Y_PWM=%d,Z_PWM=%d" % (x_pwm,y_pwm,z_pwm))
         print("MOTOR1=%d,MOTOR2=%d,MOTOR3=%d,MOTOR4=%d" % (cfg.MOTOR1_POWER, cfg.MOTOR2_POWER, cfg.MOTOR3_POWER, cfg.MOTOR4_POWER))
     '''
     外环PID输入角度输出角速度
@@ -104,7 +105,7 @@ class PID(object):
             pwm = self.engine_limit_pwm(pwm)
             return pwm
         sum[0] += self.v_ki * et * 0.01
-        sum[0] = self.engine_limit_pwm(sum)
+        sum[0] = self.engine_limit_pwm(sum[0])
         pwm = self.v_kp * et + sum[0] + self.v_kd * (et - et2)
         pwm = self.engine_limit_pwm(pwm)
         return pwm
