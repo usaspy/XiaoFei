@@ -51,6 +51,7 @@ def controller(_1553b,_1553a):
             cfg.MOTOR2_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR2_POWER))
             cfg.MOTOR3_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR3_POWER))
             cfg.MOTOR4_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR4_POWER))
+            time.sleep(1)
     except Exception as e:
         print(e)
     finally:
