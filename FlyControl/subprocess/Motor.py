@@ -38,7 +38,7 @@ def __motor_init():
     cfg.MOTOR3_OBJ = p3
     cfg.MOTOR4_OBJ = p4
 
-#马达控制器工作
+#飞行控制器主线程
 def controller(_1553b,_1553a):
     try:
         #马达初始化

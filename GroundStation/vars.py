@@ -2,7 +2,13 @@
 CONTROL_LINK_STATUS = 0  #0链接断开 1链接建立
 CONTROL_LINK_CLIENT = "未知"  #remoteip
 
+#上行指令通道（OUTPUT）
 transmitter = None
+#上行指令通道socket
+remote_sock = None
+#上行指令通道addr（远端）
+remote_addr = None
+#下行数据通道（INPUT）
 flydataer = None
 
 #GUI界面变量

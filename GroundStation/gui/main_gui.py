@@ -247,7 +247,7 @@ vars.but_4 = tk.Button(window,
     activeforeground='red',
     state='disabled',
     width=25, height=2,
-    command=fun.do_job)
+    command=fun.do_launch)
 vars.but_4.place(x=offsetX+540,y=offsetY+150,anchor='nw')
 
 vars.but_5 = tk.Button(window,
@@ -255,7 +255,7 @@ vars.but_5 = tk.Button(window,
     activeforeground='red',
     state='disabled',
     width=25, height=2,
-    command=fun.do_job)
+    command=fun.do_landing)
 vars.but_5.place(x=offsetX+540,y=offsetY+200,anchor='nw')
 
 vars.but_6 = tk.Button(window,

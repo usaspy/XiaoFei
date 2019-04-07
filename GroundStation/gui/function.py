@@ -10,6 +10,23 @@ import GroundStation.vars as vars
 def do_job():
     messagebox.showinfo(title='Info', message='等着吧。。')
 
+#一键起飞
+def do_launch():
+    launch_cmd = b'\x20\x19\x04\xFD'
+    try:
+        vars.remote_sock.send(launch_cmd)
+    except Exception as e:
+        print(e)
+        vars.remote_sock.close()
+
+#紧急降落
+def do_landing():
+    launch_cmd = b'\x20\x19\x09\xA7'
+    try:
+        vars.remote_sock.send(launch_cmd)
+    except Exception as e:
+        print(e)
+        vars.remote_sock.close()
 
 def usermanual():
     messagebox.showinfo(title='Manual', message='地面站与飞行器建立链接以后，玩家可以使用键盘操纵飞行器：\n'
