@@ -10,23 +10,25 @@ import GroundStation.vars as vars
 def do_job():
     messagebox.showinfo(title='Info', message='等着吧。。')
 
-#一键起飞
+'''
+一键起飞
+'''
 def do_launch():
-    launch_cmd = b'\x20\x19\x04\xFD'
+    CMD = b'\x20\x19\x04\xFD'
     try:
-        vars.remote_sock.send(launch_cmd)
+        vars.remote_sock.send(CMD)
     except Exception as e:
         print(e)
-        vars.remote_sock.close()
 
-#紧急降落
+'''
+紧急降落
+'''
 def do_landing():
-    launch_cmd = b'\x20\x19\x09\xA7'
+    CMD = b'\x20\x19\x09\xA7'
     try:
-        vars.remote_sock.send(launch_cmd)
+        vars.remote_sock.send(CMD)
     except Exception as e:
         print(e)
-        vars.remote_sock.close()
 
 def usermanual():
     messagebox.showinfo(title='Manual', message='地面站与飞行器建立链接以后，玩家可以使用键盘操纵飞行器：\n'
@@ -40,7 +42,9 @@ def usermanual():
                                                 '; 键：右转\n'
                                                 'N键：一键起飞\n'
                                                 'M键：紧急降落')
-
+'''
+打开控制链路
+'''
 def open_transmitter():
     try:
         vars.transmitter = threading.Thread(target=Control_Link.working, args=())
@@ -73,6 +77,10 @@ def close_transmitter():
     vars.but_7.config(state='disabled')
     vars.label_1.config(text="状态未知;Unknown")
 
+'''
+打开数据回传链路
+显示飞行数据
+'''
 def show_flydata():
     vars.flydataer = threading.Thread(target=Data_Link.working, args=())
     vars.flydataer.setDaemon(True)
