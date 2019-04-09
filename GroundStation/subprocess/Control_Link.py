@@ -21,6 +21,8 @@ def working():
             sock_server.listen()
             while True:
                 sock, addr = sock_server.accept()
+                vars.remote_sock = sock
+                vars.remote_addr = addr
                 print("[Control_Link]与飞行器连接成功...%s:%s" % addr)
                 vars.label_1.config(text="[Control_Link]与飞行器连接成功...%s:%s" % addr)
                 vars.CONTROL_LINK_CLIENT = "%s:%s" % addr
