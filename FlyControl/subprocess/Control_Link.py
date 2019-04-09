@@ -6,7 +6,7 @@
 
 import time
 import socket
-from FlyControl.param import config
+from FlyControl.param import config as cfg
 
 def working(_1553a):
     while True:
@@ -14,8 +14,8 @@ def working(_1553a):
         print("[Control_Link]正在尝试连接地面站...")
         try:
             sock_client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-            server_ipaddr = config.IPADDRESS_GS
-            server_port = config.PORT_GS_CONTROL
+            server_ipaddr = cfg.IPADDRESS_GS
+            server_port = cfg.PORT_GS_CONTROL
             sock_client.connect((server_ipaddr, server_port))
 
             #飞行控制器从地面站接收控制指令

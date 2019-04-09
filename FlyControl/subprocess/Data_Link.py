@@ -6,13 +6,13 @@
 
 import time
 import socket
-from FlyControl.param import config
+from FlyControl.param import config as cfg
 
 def working(_1553b):
         try:
             sock_client = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-            server_ipaddr = config.IPADDRESS_GS
-            server_port = config.PORT_GS_DATA
+            server_ipaddr = cfg.IPADDRESS_GS
+            server_port = cfg.PORT_GS_DATA
 
             while True:
                 #print(_1553b)

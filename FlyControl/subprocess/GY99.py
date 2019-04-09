@@ -10,7 +10,7 @@
 '''
 import serial
 import time
-from FlyControl.param import config
+from FlyControl.param import config as cfg
 
 # 输出数据设置指令,0xFF=输出全部参数
 cmd1 = b'\xA5\x55\xFF\xF9'
@@ -31,11 +31,11 @@ cmd8 = b'\xA5\x5A\x02\x01'
 
 def working(_1553b):
     try:
-        sr = serial.Serial(port=config.SERIAL_PORT_GY99, baudrate=115200, timeout=15, bytesize=serial.EIGHTBITS,
+        sr = serial.Serial(port=cfg.SERIAL_PORT_GY99, baudrate=115200, timeout=15, bytesize=serial.EIGHTBITS,
                             parity=serial.PARITY_NONE, stopbits=1)
 
         if sr.isOpen():
-            print("串口%s已经打开"% config.SERIAL_PORT_GY99)
+            print("串口%s已经打开"% cfg.SERIAL_PORT_GY99)
             #首先输出设置
             sr.write(cmd1)
             time.sleep(0.2)
@@ -60,7 +60,7 @@ def working(_1553b):
                         break
     except Exception as e:
         print(e)
-        print("[GY-99]通过串口[%s]获取飞控数据时发生异常..."% config.SERIAL_PORT_GY99)
+        print("[GY-99]通过串口[%s]获取飞控数据时发生异常..."% cfg.SERIAL_PORT_GY99)
     finally:
         sr.close()
 
