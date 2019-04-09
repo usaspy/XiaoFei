@@ -10,6 +10,7 @@ from FlyControl.param import config
 
 def working(_1553a):
     while True:
+        time.sleep(1)
         print("[Control_Link]正在尝试连接地面站...")
         try:
             sock_client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -23,8 +24,7 @@ def working(_1553a):
 
         except Exception as e:
             del  _1553a[:]
-            print("[Control_Link]地面站连接失败，等待1秒后尝试重连...")
-            time.sleep(1)
+            print("[Control_Link]地面站连接失败，正尝试重连...")
         finally:
             sock_client.close()
 
