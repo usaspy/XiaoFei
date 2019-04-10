@@ -11,9 +11,9 @@ def do_job():
     messagebox.showinfo(title='Info', message='等着吧。。')
 
 '''
-一键起飞
+解除安全锁
 '''
-def do_launch():
+def remove_lock():
     CMD = b'\x20\x19\x04\xFD'
     try:
         vars.remote_sock.send(CMD)

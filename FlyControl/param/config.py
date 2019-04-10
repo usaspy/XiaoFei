@@ -46,9 +46,9 @@ MOTOR3_POWER = 0
 MOTOR4_POWER = 0
 
 
-#动力安全锁
-MOTOR_LOCK = True
-
-FLY_MODE='test'   #'fly' or 'test'
+#引擎安全锁
+FLY_LOCKED = True
+#飞行状态
+FLY_STATUS = 0   # 1: 'running' 0: 'stopped'
 
 

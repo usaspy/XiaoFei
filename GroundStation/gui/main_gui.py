@@ -243,11 +243,11 @@ vars.but_3 = tk.Button(window,
 vars.but_3.place(x=offsetX+540,y=offsetY+100,anchor='nw')
 
 vars.but_4 = tk.Button(window,
-    text='一键起飞',
+    text='解除安全锁',
     activeforeground='red',
     state='disabled',
     width=25, height=2,
-    command=fun.do_launch)
+    command=fun.remove_lock)
 vars.but_4.place(x=offsetX+540,y=offsetY+150,anchor='nw')
 
 vars.but_5 = tk.Button(window,

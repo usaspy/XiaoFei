@@ -3,8 +3,8 @@
 '''
     四轴飞行器动力系统
     按顺时针方向排序
-    01 03 一组
-    02 04 一组
+    1 3 一组
+    2 4 一组
 '''
 import RPi.GPIO as GPIO
 import time
@@ -38,7 +38,15 @@ def __motor_init():
     cfg.MOTOR3_OBJ = p3
     cfg.MOTOR4_OBJ = p4
 
-#飞行控制器主线程
+'''
+飞行控制器主线程 
+大循环
+
+1）系统开机后首先初始化所有马达，马达油门归零
+2）if FLY_LOCKED = False and FLY_STATUS = 1 计算自平衡时的PID值，然后马达执行步长=1
+3）if FLY_LOCKED = True  只输出PID值，马达不执行
+4）if FLY_LOCKED = False and 
+'''
 def controller(_1553b,_1553a):
     try:
         #马达初始化
