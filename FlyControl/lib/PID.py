@@ -7,6 +7,7 @@
 """
 import time
 from FlyControl.param import config as cfg
+from FlyControl.lib import libmotor as lm
 
 class PID(object):
     # 外环输入：欧拉角的上一次误差
@@ -61,10 +62,10 @@ class PID(object):
     根据x、y、z方向上的补偿值计算每个电机实际调整幅度
     '''
     def set_power(self,x_pwm, y_pwm, z_pwm):
-        cfg.MOTOR1_POWER = cfg.MOTOR1_POWER + x_pwm - z_pwm
-        cfg.MOTOR2_POWER = cfg.MOTOR2_POWER + y_pwm + z_pwm
-        cfg.MOTOR3_POWER = cfg.MOTOR3_POWER - x_pwm - z_pwm
-        cfg.MOTOR4_POWER = cfg.MOTOR4_POWER - y_pwm + z_pwm
+        cfg.MOTOR1_POWER = lm.limit_power_range(cfg.MOTOR1_POWER + x_pwm - z_pwm)
+        cfg.MOTOR2_POWER = lm.limit_power_range(cfg.MOTOR2_POWER + y_pwm + z_pwm)
+        cfg.MOTOR3_POWER = lm.limit_power_range(cfg.MOTOR3_POWER - x_pwm - z_pwm)
+        cfg.MOTOR4_POWER = lm.limit_power_range(cfg.MOTOR4_POWER - y_pwm + z_pwm)
 
         print("X_PWM=%d,Y_PWM=%d,Z_PWM=%d" % (x_pwm,y_pwm,z_pwm))
         print("MOTOR1=%d,MOTOR2=%d,MOTOR3=%d,MOTOR4=%d" % (cfg.MOTOR1_POWER, cfg.MOTOR2_POWER, cfg.MOTOR3_POWER, cfg.MOTOR4_POWER))

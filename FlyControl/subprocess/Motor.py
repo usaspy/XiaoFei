@@ -8,7 +8,7 @@
 '''
 import RPi.GPIO as GPIO
 import time
-from FlyControl.lib import libmotor
+from FlyControl.lib import libmotor as lm
 from FlyControl.lib import PIDv2
 from FlyControl.param import config as cfg
 from FlyControl.lib.PID import PID
@@ -27,10 +27,10 @@ def __motor_init():
     p3 = GPIO.PWM(cfg.MOTOR3, 50)
     p4 = GPIO.PWM(cfg.MOTOR4, 50)
 
-    p1.start(libmotor.real_pwm(0))
-    p2.start(libmotor.real_pwm(0))
-    p3.start(libmotor.real_pwm(0))
-    p4.start(libmotor.real_pwm(0))
+    p1.start(lm.real_pwm(0))
+    p2.start(lm.real_pwm(0))
+    p3.start(lm.real_pwm(0))
+    p4.start(lm.real_pwm(0))
     time.sleep(2)
 
     cfg.MOTOR1_OBJ = p1
@@ -54,12 +54,53 @@ def controller(_1553b,_1553a):
         #初始化PID引擎
         pid = PID()
         while True:
-            pid.calculate(_1553b,_1553a)
-            cfg.MOTOR1_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR1_POWER))
-            cfg.MOTOR2_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR2_POWER))
-            cfg.MOTOR3_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR3_POWER))
-            cfg.MOTOR4_OBJ.ChangeDutyCycle(libmotor.real_pwm(cfg.MOTOR4_POWER))
-            time.sleep(1)
+            if cfg.FLY_LOCKED is False:  #如果安全锁打开，则允许飞行
+                cmd = _1553a.pop(0) if _1553a else None
+                if cmd == b'\x20\x19\x04\xFE':  # 关闭安全锁
+                    cfg.FLY_LOCKED = True
+                    continue
+                elif cmd == b'\x20\x19\x09\xA7':  # 紧急降落
+                    #执行紧急降落程序
+                    #阻塞
+                    continue
+                elif cmd == b'O': #加油门 每一个O 油门+1
+                    cfg.MOTOR1_POWER = lm.limit_power_range(cfg.MOTOR1_POWER + 1)
+                    cfg.MOTOR2_POWER = lm.limit_power_range(cfg.MOTOR2_POWER + 1)
+                    cfg.MOTOR3_POWER = lm.limit_power_range(cfg.MOTOR3_POWER + 1)
+                    cfg.MOTOR4_POWER = lm.limit_power_range(cfg.MOTOR4_POWER + 1)
+                elif cmd == b'P': #减油门
+                    cfg.MOTOR1_POWER = lm.limit_power_range(cfg.MOTOR1_POWER - 1)
+                    cfg.MOTOR2_POWER = lm.limit_power_range(cfg.MOTOR2_POWER - 1)
+                    cfg.MOTOR3_POWER = lm.limit_power_range(cfg.MOTOR3_POWER - 1)
+                    cfg.MOTOR4_POWER = lm.limit_power_range(cfg.MOTOR4_POWER - 1)
+                elif cmd == b'K': #左转  不可长按
+                    cfg.MOTOR1_POWER = lm.limit_power_range(cfg.MOTOR1_POWER + 2)
+                    cfg.MOTOR2_POWER = lm.limit_power_range(cfg.MOTOR2_POWER - 2)
+                    cfg.MOTOR3_POWER = lm.limit_power_range(cfg.MOTOR3_POWER + 2)
+                    cfg.MOTOR4_POWER = lm.limit_power_range(cfg.MOTOR4_POWER - 2)
+                elif cmd == b'L': #右转
+                    cfg.MOTOR1_POWER = lm.limit_power_range(cfg.MOTOR1_POWER - 2)
+                    cfg.MOTOR2_POWER = lm.limit_power_range(cfg.MOTOR2_POWER + 2)
+                    cfg.MOTOR3_POWER = lm.limit_power_range(cfg.MOTOR3_POWER - 2)
+                    cfg.MOTOR4_POWER = lm.limit_power_range(cfg.MOTOR4_POWER + 2)
+                elif cmd == b'W': #前进
+                    #修改期望角度
+                    pass
+                elif cmd == b'S': #后退
+                    #修改期望角度
+                    pass
+                elif cmd is None: #当前没有新指令，维持自稳状态
+                    pid.calculate(_1553b, _1553a)
+                cfg.MOTOR1_OBJ.ChangeDutyCycle(lm.real_pwm(cfg.MOTOR1_POWER))
+                cfg.MOTOR2_OBJ.ChangeDutyCycle(lm.real_pwm(cfg.MOTOR2_POWER))
+                cfg.MOTOR3_OBJ.ChangeDutyCycle(lm.real_pwm(cfg.MOTOR3_POWER))
+                cfg.MOTOR4_OBJ.ChangeDutyCycle(lm.real_pwm(cfg.MOTOR4_POWER))
+                time.sleep(1)
+            else: #如果安全锁关闭，则不能执行任何飞行指令
+                cmd = _1553a.pop(0) if _1553a else None
+                if cmd == b'\x20\x19\x04\xFD': #解除安全锁
+                    cfg.FLY_LOCKED = False
+                time.sleep(2)
     except Exception as e:
         print(e)
     finally:
