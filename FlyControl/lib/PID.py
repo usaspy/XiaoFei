@@ -14,7 +14,7 @@ class PID(object):
     x_last = 0.0
     y_last = 0.0
     z_last = 0.0
-    # 外环输入：欧拉角的积分参数
+    # 外环输入：欧拉角的积分变量  累计误差
     x_sum = [0.0]
     y_sum = [0.0]
     z_sum = [0.0]
