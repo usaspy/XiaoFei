@@ -56,7 +56,7 @@ def controller(_1553b,_1553a):
         while True:
             if cfg.FLY_LOCKED is False:  #如果安全锁打开，则允许飞行
                 cmd = _1553a.pop(0) if _1553a else None
-                if cmd == b'\x20\x19\x04\xFE':  # 关闭安全锁
+                if cmd == b'\x20\x19\x04\xFE':  # 上锁
                     cfg.FLY_LOCKED = True
                     continue
                 elif cmd == b'\x20\x19\x09\xA7':  # 紧急降落
@@ -95,10 +95,10 @@ def controller(_1553b,_1553a):
                 cfg.MOTOR2_OBJ.ChangeDutyCycle(lm.real_pwm(cfg.MOTOR2_POWER))
                 cfg.MOTOR3_OBJ.ChangeDutyCycle(lm.real_pwm(cfg.MOTOR3_POWER))
                 cfg.MOTOR4_OBJ.ChangeDutyCycle(lm.real_pwm(cfg.MOTOR4_POWER))
-                time.sleep(1)
+                time.sleep(0.1)
             else: #如果安全锁关闭，则不能执行任何飞行指令
                 cmd = _1553a.pop(0) if _1553a else None
-                if cmd == b'\x20\x19\x04\xFD': #解除安全锁
+                if cmd == b'\x20\x19\x04\xFD': #开锁
                     cfg.FLY_LOCKED = False
                 time.sleep(2)
     except Exception as e:
