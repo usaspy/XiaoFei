@@ -22,6 +22,7 @@ def working(_1553b):
                 time.sleep(0.3)
 
         except Exception as e:
+            print(e)
             print("[Data_Link]回传飞行数据时发生异常...")
             #发生故障不能重新发送？
         finally:
