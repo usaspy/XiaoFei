@@ -85,12 +85,21 @@ def controller(_1553b,_1553a):
                     cfg.MOTOR4_POWER = lm.limit_power_range(cfg.MOTOR4_POWER + 2)
                 elif cmd == b'W': #前进
                     #修改期望角度
+                    cfg.ROLL_SET = 0
+                    cfg.PITCH_SET = -30
+                    cfg.YAW_SET = 0
                     pass
                 elif cmd == b'S': #后退
-                    #修改期望角度
+                    # 修改期望角度
+                    cfg.ROLL_SET = 0
+                    cfg.PITCH_SET = +30
+                    cfg.YAW_SET = 0
                     pass
-                elif cmd is None: #当前没有新指令，维持自稳状态
-                    pid.calculate(_1553b, _1553a)
+                else: #当前没有新指令,或输入了无效指令时，维持自稳状态
+                    cfg.ROLL_SET = 0
+                    cfg.PITCH_SET = 0
+                    cfg.YAW_SET = 0
+                pid.calculate(_1553b, _1553a)
                 cfg.MOTOR1_OBJ.ChangeDutyCycle(lm.real_pwm(cfg.MOTOR1_POWER))
                 cfg.MOTOR2_OBJ.ChangeDutyCycle(lm.real_pwm(cfg.MOTOR2_POWER))
                 cfg.MOTOR3_OBJ.ChangeDutyCycle(lm.real_pwm(cfg.MOTOR3_POWER))
