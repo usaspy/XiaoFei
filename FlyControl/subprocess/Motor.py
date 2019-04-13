@@ -99,7 +99,7 @@ def controller(_1553b,_1553a):
                     cfg.ROLL_SET = 0
                     cfg.PITCH_SET = 0
                     cfg.YAW_SET = 0
-                pid.calculate(_1553b, _1553a)
+                pid.calculate(_1553b)
                 cfg.MOTOR1_OBJ.ChangeDutyCycle(lm.real_pwm(cfg.MOTOR1_POWER))
                 cfg.MOTOR2_OBJ.ChangeDutyCycle(lm.real_pwm(cfg.MOTOR2_POWER))
                 cfg.MOTOR3_OBJ.ChangeDutyCycle(lm.real_pwm(cfg.MOTOR3_POWER))
