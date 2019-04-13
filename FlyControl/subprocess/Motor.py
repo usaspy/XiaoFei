@@ -73,28 +73,26 @@ def controller(_1553b,_1553a):
                     cfg.MOTOR2_POWER = lm.limit_power_range(cfg.MOTOR2_POWER - 1)
                     cfg.MOTOR3_POWER = lm.limit_power_range(cfg.MOTOR3_POWER - 1)
                     cfg.MOTOR4_POWER = lm.limit_power_range(cfg.MOTOR4_POWER - 1)
-                elif cmd == b'K': #左转  不可长按
-                    cfg.MOTOR1_POWER = lm.limit_power_range(cfg.MOTOR1_POWER + 2)
-                    cfg.MOTOR2_POWER = lm.limit_power_range(cfg.MOTOR2_POWER - 2)
-                    cfg.MOTOR3_POWER = lm.limit_power_range(cfg.MOTOR3_POWER + 2)
-                    cfg.MOTOR4_POWER = lm.limit_power_range(cfg.MOTOR4_POWER - 2)
-                elif cmd == b'L': #右转
-                    cfg.MOTOR1_POWER = lm.limit_power_range(cfg.MOTOR1_POWER - 2)
-                    cfg.MOTOR2_POWER = lm.limit_power_range(cfg.MOTOR2_POWER + 2)
-                    cfg.MOTOR3_POWER = lm.limit_power_range(cfg.MOTOR3_POWER - 2)
-                    cfg.MOTOR4_POWER = lm.limit_power_range(cfg.MOTOR4_POWER + 2)
-                elif cmd == b'W': #前进
+                elif cmd == b'K': #左转45°
+                    # 修改期望角度
+                    cfg.ROLL_SET = 0
+                    cfg.PITCH_SET = 0
+                    cfg.YAW_SET = -45 #################################
+                elif cmd == b'L': #持续右转
+                    # 修改期望角度
+                    cfg.ROLL_SET = 0
+                    cfg.PITCH_SET = 0
+                    cfg.YAW_SET = +45 #################################
+                elif cmd == b'W': #设置前倾30°，前进
                     #修改期望角度
                     cfg.ROLL_SET = 0
                     cfg.PITCH_SET = -30
                     cfg.YAW_SET = 0
-                    pass
-                elif cmd == b'S': #后退
+                elif cmd == b'S': #设置后倾30°，后退
                     # 修改期望角度
                     cfg.ROLL_SET = 0
                     cfg.PITCH_SET = +30
                     cfg.YAW_SET = 0
-                    pass
                 else: #当前没有新指令,或输入了无效指令时，维持自稳状态
                     cfg.ROLL_SET = 0
                     cfg.PITCH_SET = 0
