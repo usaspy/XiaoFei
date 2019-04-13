@@ -32,17 +32,17 @@ class PID(object):
     zv_sum = [0.0]
     def __init__(self):
         # 外环pid参数
-        self.kp = 0.7
-        self.ki = 0.2
-        self.kd = 0.3
+        self.kp = 1
+        self.ki = 0.1
+        self.kd = 1
         # 内环pid参数
-        self.v_kp = 0.2
+        self.v_kp = 1
         self.v_ki = 0.1
-        self.v_kd = 0.3
+        self.v_kd = 1
 
     # 外环角速度限幅
     def engine_limit_palstance(self,val):
-        MAX_PALSTANCE = 40  # 允许的最大角速度（度/秒）
+        MAX_PALSTANCE = 60  # 允许的最大角速度（度/秒）
         if val > MAX_PALSTANCE:
             return MAX_PALSTANCE
         elif val < -MAX_PALSTANCE:
@@ -83,7 +83,7 @@ class PID(object):
             palstance = self.kp * et + self.kd * (et - et2)
             palstance = self.engine_limit_palstance(palstance)
             return palstance
-        sum[0] += self.ki * et * 0.01
+        sum[0] += self.ki * et
         # 积分限幅
         sum[0] = self.engine_limit_palstance(sum[0])
         # XY轴PID反馈控制
@@ -105,7 +105,7 @@ class PID(object):
             pwm = self.v_kp * et + self.v_kd * (et - et2)
             pwm = self.engine_limit_pwm(pwm)
             return pwm
-        sum[0] += self.v_ki * et * 0.01
+        sum[0] += self.v_ki * et
         sum[0] = self.engine_limit_pwm(sum[0])
         pwm = self.v_kp * et + sum[0] + self.v_kd * (et - et2)
         pwm = self.engine_limit_pwm(pwm)
@@ -150,14 +150,14 @@ class PID(object):
         z_pwm = self.engine_inside_pid(zv_et, self.zv_last, None)
 
         # 记录欧拉角的上一次读数
-        x_last = x_et
-        y_last = y_et
-        z_last = z_et
+        self.x_last = x_et
+        self.y_last = y_et
+        self.z_last = z_et
 
         # 记录角速度的上一次读数
-        xv_last = xv_et
-        yv_last = yv_et
-        zv_last = zv_et
+        self.xv_last = xv_et
+        self.yv_last = yv_et
+        self.zv_last = zv_et
 
         self.set_power(x_pwm, y_pwm, z_pwm)
         return
