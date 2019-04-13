@@ -26,7 +26,7 @@ class PID(object):
     xv_last = 0.0
     yv_last = 0.0
     zv_last = 0.0
-    # 内环输入：角速度的积分参数
+    # 内环输入：角速度的积分变量  累计误差
     xv_sum = [0.0]
     yv_sum = [0.0]
     zv_sum = [0.0]
@@ -50,9 +50,9 @@ class PID(object):
         return val
 
     # 内环PWM限幅
-    # 实际限制的是油门的15%,
+    # 实际限制的是油门的10%,
     def engine_limit_pwm(self,pwm):
-        MAX_PWM = 15  # 对油门的调整幅度不能超过15%
+        MAX_PWM = 10  # 对油门的调整幅度不能超过10%
         if pwm > MAX_PWM:
             return MAX_PWM
         elif pwm < -MAX_PWM:
@@ -67,8 +67,8 @@ class PID(object):
         cfg.MOTOR3_POWER = lm.limit_power_range(cfg.MOTOR3_POWER - x_pwm - z_pwm)
         cfg.MOTOR4_POWER = lm.limit_power_range(cfg.MOTOR4_POWER - y_pwm + z_pwm)
 
-        print("X_PWM=%d,Y_PWM=%d,Z_PWM=%d" % (x_pwm,y_pwm,z_pwm))
-        print("MOTOR1=%d,MOTOR2=%d,MOTOR3=%d,MOTOR4=%d" % (cfg.MOTOR1_POWER, cfg.MOTOR2_POWER, cfg.MOTOR3_POWER, cfg.MOTOR4_POWER))
+        print("油门调整幅度：X_PWM=%d,Y_PWM=%d,Z_PWM=%d" % (x_pwm,y_pwm,z_pwm))
+        print("调整后的油门：MOTOR1=%d,MOTOR2=%d,MOTOR3=%d,MOTOR4=%d" % (cfg.MOTOR1_POWER, cfg.MOTOR2_POWER, cfg.MOTOR3_POWER, cfg.MOTOR4_POWER))
     '''
     外环PID输入角度输出角速度
     et:当前角度误差
@@ -112,16 +112,22 @@ class PID(object):
         return pwm
 
     '''
-       主函数 计算x,y,z的PWM调整幅度，
-       输入：指令队列_1553a
+       飞控核心自平衡算法 计算x,y,z三个向量上得PWM调整幅度，
+       输入：指令队列_1553a （移除）
              传感器数据队列_1553b
        输出：无
     '''
-    def calculate(self,_1553b,_1553a):
+    def calculate(self,_1553b):
         # GY-99传感器测量的当前角度
-        x = _1553b.get('ROLL', 0)   #横滚角 X  -180~+180
-        y = _1553b.get('PITCH', 0)  #俯仰角 Y  -90~+90
-        z = _1553b.get('YAW', 0)  #偏移角 Z    -180~+180
+        x = _1553b.get('ROLL', 0)  #横滚角 X  -180~+180
+        y = _1553b.get('PITCH', 0) #俯仰角 Y  -90~+90
+        z = _1553b.get('YAW', 0) #偏移角 Z    -180~+180
+
+        # GY-99传感器测量的当前角度 + 遥控器得指令角度 = 当前实际角度误差
+        x_et = cfg.ROLL_SET - x
+        y_et = cfg.PITCH_SET - y
+        z_et = cfg.YAW_SET  - z
+
         # 传感器测量的当前角速度
         xv = _1553b.get('GYRO_X', 0)
         yv = _1553b.get('GYRO_Y', 0)
@@ -129,9 +135,9 @@ class PID(object):
 
         # 外环PID根据欧拉角计算出期望角速度
         # 这里应该是期望角度 - 当前实际角度，所以这里为 0 - x_et
-        xv_et = self.engine_outside_pid(-x, -self.x_last, self.x_sum)
-        yv_et = self.engine_outside_pid(-y, -self.y_last, self.y_sum)
-        zv_et = self.engine_outside_pid(-z, -self.z_last, None)
+        xv_et = self.engine_outside_pid(x_et, self.x_last, self.x_sum)
+        yv_et = self.engine_outside_pid(y_et, self.y_last, self.y_sum)
+        zv_et = self.engine_outside_pid(z_et, self.z_last, None)
 
         # 内环输入调整：实际期望角速度 = 期望角速度 - 当前角速度 （补偿当前角速度）
         xv_et -= xv
@@ -144,9 +150,9 @@ class PID(object):
         z_pwm = self.engine_inside_pid(zv_et, self.zv_last, None)
 
         # 记录欧拉角的上一次读数
-        x_last = x
-        y_last = y
-        z_last = z
+        x_last = x_et
+        y_last = y_et
+        z_last = z_et
 
         # 记录角速度的上一次读数
         xv_last = xv_et
