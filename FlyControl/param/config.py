@@ -51,4 +51,16 @@ FLY_LOCKED = True
 #飞行状态
 FLY_STATUS = 0   # 1: 'running' 0: 'stopped'
 
+'''
+用户操作变量 ,自稳时默认没有偏移量
+前进时 设置俯仰角 = -30
+后退时 设置俯仰角 = +30
+左滑时 设置ROLL = -30
+右滑时 设置ROLL = +30
+转向时，设置YAW到指定得方位(需补偿COMPASS_OFFSET)
+'''
+ROLL_SET = 0
+PITCH_SET = 0
+YAW_SET = 0
+
 
