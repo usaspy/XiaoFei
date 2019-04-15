@@ -149,8 +149,7 @@ class PID(object):
         x_pwm = self.engine_inside_pid(xv_et, self.xv_last, self.xv_sum)
         y_pwm = self.engine_inside_pid(yv_et, self.yv_last, self.yv_sum)
         z_pwm = self.engine_inside_pid(zv_et, self.zv_last, None)
-        print("----------------------------yv=%f,et=%f,et2=%f,sum=%f,pwm=%f" % (
-        yv, yv_et, self.yv_last, self.yv_sum[0], y_pwm))
+        #print("----------------------------yv=%f,et=%f,et2=%f,sum=%f,pwm=%f" % (yv, yv_et, self.yv_last, self.yv_sum[0], y_pwm))
 
         # 记录欧拉角的上一次读数
         self.x_last = x_et
