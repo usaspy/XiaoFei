@@ -119,27 +119,26 @@ class PID(object):
     '''
     def calculate(self,_1553b):
         # GY-99传感器测量的当前角度
-        x = _1553b.get('ROLL', 0)  #横滚角 X  -180~+180
-        y = _1553b.get('PITCH', 0) #俯仰角 Y  -90~+90
-        z = _1553b.get('YAW', 0) #偏移角 Z    -180~+180
+        x = int(_1553b.get('ROLL', 0))  #横滚角 X  -180~+180
+        y = int(_1553b.get('PITCH', 0)) #俯仰角 Y  -90~+90
+        z = int(_1553b.get('YAW', 0)) #偏移角 Z    -180~+180
 
         # GY-99传感器测量的当前角度 + 遥控器得指令角度 = 当前实际角度误差
         x_et = cfg.ROLL_SET - x
         y_et = cfg.PITCH_SET - y
-        #z_et = cfg.YAW_SET  - z
-        z_et = 0
+        z_et = cfg.YAW_SET  - z
 
         # 传感器测量的当前角速度
-        xv = _1553b.get('GYRO_X', 0)
-        yv = _1553b.get('GYRO_Y', 0)
-        #zv = _1553b.get('GYRO_Z', 0)
-        zv = 0
+        xv = int(_1553b.get('GYRO_X', 0))
+        yv = int(_1553b.get('GYRO_Y', 0))
+        zv = int(_1553b.get('GYRO_Z', 0))
 
         # 外环PID根据欧拉角计算出期望角速度
         # 这里应该是期望角度 - 当前实际角度，所以这里为 0 - x_et
         xv_et = self.engine_outside_pid(x_et, self.x_last, self.x_sum)
         yv_et = self.engine_outside_pid(y_et, self.y_last, self.y_sum)
         zv_et = self.engine_outside_pid(z_et, self.z_last, None)
+        # print(y_et,self.y_last,self.y_sum,yv_et)
 
         # 内环输入调整：实际期望角速度 = 期望角速度 - 当前角速度 （补偿当前角速度）
         xv_et -= xv
@@ -150,6 +149,8 @@ class PID(object):
         x_pwm = self.engine_inside_pid(xv_et, self.xv_last, self.xv_sum)
         y_pwm = self.engine_inside_pid(yv_et, self.yv_last, self.yv_sum)
         z_pwm = self.engine_inside_pid(zv_et, self.zv_last, None)
+        print("----------------------------yv=%f,et=%f,et2=%f,sum=%f,pwm=%f" % (
+        yv, yv_et, self.yv_last, self.yv_sum[0], y_pwm))
 
         # 记录欧拉角的上一次读数
         self.x_last = x_et
