@@ -126,7 +126,7 @@ class PID(object):
         # GY-99传感器测量的当前角度 + 遥控器得指令角度 = 当前实际角度误差
         x_et = cfg.ROLL_SET - x
         y_et = cfg.PITCH_SET - y
-        z_et = cfg.YAW_SET  - z
+        z_et = cfg.YAW_SET  + cfg.COMPASS_OFFSET - z
 
         # 传感器测量的当前角速度
         xv = int(_1553b.get('GYRO_X', 0))
