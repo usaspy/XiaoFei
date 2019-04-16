@@ -5,10 +5,10 @@ def set_curr_power(No,new_value):
     config.MOTOR[No]['CURR_POWER'] = new_value
 
 '''
-油门限制，在20%~100%之间
+油门限制，在5%~100%之间
 '''
 def limit_power_range(power):
-    MIN_POWER=20
+    MIN_POWER=5
     MAX_POWER=100
     if power > MAX_POWER:
         return MAX_POWER
