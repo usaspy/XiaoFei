@@ -73,7 +73,7 @@ def controller(_1553b,_1553a):
                     cfg.MOTOR2_POWER = lm.limit_power_range(cfg.MOTOR2_POWER - 1)
                     cfg.MOTOR3_POWER = lm.limit_power_range(cfg.MOTOR3_POWER - 1)
                     cfg.MOTOR4_POWER = lm.limit_power_range(cfg.MOTOR4_POWER - 1)
-                elif cmd == b'K': #左转45°
+                elif cmd == b'K': #持续左转
                     # 修改期望角度
                     cfg.ROLL_SET = 0
                     cfg.PITCH_SET = 0
