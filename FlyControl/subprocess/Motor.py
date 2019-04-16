@@ -107,6 +107,8 @@ def controller(_1553b,_1553a):
                 cmd = _1553a.pop(0) if _1553a else None
                 if cmd == b'\x20\x19\x04\xFD': #开锁
                     cfg.FLY_LOCKED = False
+                    #指南针补偿角
+                    cfg.COMPASS_OFFSET = int(_1553b.get('YAW', 0))
                 time.sleep(2)
     except Exception as e:
         print(e)
