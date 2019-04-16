@@ -43,9 +43,14 @@ def working():
 def send_command(sock, addr):
     hookmanager = pyHook.HookManager()
     def onKeyDown(event):
-        sock.send((event.Key).encode("UTF-8"))
-        print(str(event.Key) + ' is pressed')
-        return True
+        try:
+            sock.send((event.Key).encode("UTF-8"))
+            print(str(event.Key) + ' is pressed')
+        except Exception as e:
+            print(e)
+            print("[Control_Link]人工指令发送失败")
+        finally:
+            return True
     hookmanager.KeyDown = onKeyDown
     hookmanager.HookKeyboard()
     pythoncom.PumpMessages()
