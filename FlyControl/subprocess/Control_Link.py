@@ -23,7 +23,6 @@ def working(_1553a):
             recv_command(sock_client,_1553a)
 
         except Exception as e:
-            del  _1553a[:]
             print("[Control_Link]地面站连接失败，正尝试重连...")
         finally:
             sock_client.close()
@@ -32,10 +31,12 @@ def working(_1553a):
 #所有命令格式为“CMD:命令字串”
 def recv_command(sock,_1553a):
     while True:
-        bt = sock.recv(512)
-        if bt:
-            try:
+        try:
+            bt = sock.recv(512)
+            if bt:
                 _1553a.append(bt)
-                print(_1553a)
-            except Exception as e:
-                print("[Control_Link]命令接收异常！")
+                #print(_1553a)
+        except Exception as e:
+            del  _1553a[:]
+            print("[Control_Link]指令接收异常！")
+            break
