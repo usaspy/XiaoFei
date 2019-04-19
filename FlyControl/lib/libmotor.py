@@ -26,6 +26,13 @@ def real_pwm(curr_power):
     return 100 - v
 
 
+def exec_plan_b(cfg):
+    cfg.MOTOR1_POWER = 0
+    cfg.MOTOR2_POWER = 0
+    cfg.MOTOR3_POWER = 0
+    cfg.MOTOR4_POWER = 0
+    pass
+
 
 
 
