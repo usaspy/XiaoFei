@@ -62,7 +62,8 @@ def controller(_1553b,_1553a):
                 elif cmd == b'\x20\x19\x09\xA7':  # 紧急降落
                     #执行紧急降落程序
                     #阻塞
-                    continue
+                    lm.exec_plan_b(cfg)
+                    break
                 elif cmd == b'O': #加油门 每一个O 油门+1
                     cfg.MOTOR1_POWER = lm.limit_power_range(cfg.MOTOR1_POWER + 1)
                     cfg.MOTOR2_POWER = lm.limit_power_range(cfg.MOTOR2_POWER + 1)
