@@ -32,17 +32,17 @@ class PID(object):
     zv_sum = [0.0]
     def __init__(self):
         # 外环pid参数
-        self.kp = 0.6
-        self.ki = 0.1
-        self.kd = 0.4
+        self.kp = 0.0459
+        self.ki = 0.0
+        self.kd = 0.0001
         # 内环pid参数
-        self.v_kp = 0.3
-        self.v_ki = 0.005
-        self.v_kd = 0.5
+        self.v_kp = 0.0459
+        self.v_ki = 0.0
+        self.v_kd = 0.0004
 
     # 外环角速度限幅
     def engine_limit_palstance(self,val):
-        MAX_PALSTANCE = 60  # 允许的最大角速度（度/秒）
+        MAX_PALSTANCE = 15  # 允许的最大角速度（度/秒）
         if val > MAX_PALSTANCE:
             return MAX_PALSTANCE
         elif val < -MAX_PALSTANCE:
@@ -50,9 +50,9 @@ class PID(object):
         return val
 
     # 内环PWM限幅
-    # 油门调整限幅不超过20%
+    # 油门调整限幅不超过7%
     def engine_limit_pwm(self,pwm):
-        MAX_PWM = 20  # 对油门的调整幅度不能超过20%
+        MAX_PWM = 7  # 对油门的调整幅度不能超过7%
         if pwm > MAX_PWM:
             return MAX_PWM
         elif pwm < -MAX_PWM:
@@ -74,7 +74,7 @@ class PID(object):
         cfg.MOTOR4_POWER = lm.limit_power_range(cfg.MOTOR4_POWER - x_pwm/2 - y_pwm/2 + z_pwm)
 
         #print("油门调整幅度：X_PWM=%d,Y_PWM=%d,Z_PWM=%d" % (x_pwm,y_pwm,z_pwm))
-        #print("调整后的油门：MOTOR1=%d,MOTOR2=%d,MOTOR3=%d,MOTOR4=%d" % (cfg.MOTOR1_POWER, cfg.MOTOR2_POWER, cfg.MOTOR3_POWER, cfg.MOTOR4_POWER))
+        print("调整后的油门：MOTOR1=%d,MOTOR2=%d,MOTOR3=%d,MOTOR4=%d" % (cfg.MOTOR1_POWER, cfg.MOTOR2_POWER, cfg.MOTOR3_POWER, cfg.MOTOR4_POWER))
     '''
     外环PID输入角度输出角速度
     et:当前角度误差
