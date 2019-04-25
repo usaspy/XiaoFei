@@ -93,7 +93,8 @@ class PID(object):
         # 积分限幅
         sum[0] = self.engine_limit_palstance(sum[0])
         # XY轴PID反馈控制
-        palstance = self.kp * et + sum[0] + self.kd * (et - et2)
+        #palstance = self.kp * et + sum[0] + self.kd * (et - et2)
+        palstance = self.kp * et + sum[0]
         # 输出限幅
         palstance = self.engine_limit_palstance(palstance)
         return palstance
