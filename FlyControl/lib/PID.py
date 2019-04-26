@@ -32,17 +32,17 @@ class PID(object):
     zv_sum = [0.0]
     def __init__(self):
         # 外环pid参数
-        self.kp = 0.0459
+        self.kp = 0.759
         self.ki = 0.0
-        self.kd = 0.0001
+        self.kd = 0.3
         # 内环pid参数
-        self.v_kp = 0.0459
+        self.v_kp = 0.459
         self.v_ki = 0.0
-        self.v_kd = 0.0004
+        self.v_kd = 0.02
 
     # 外环角速度限幅
     def engine_limit_palstance(self,val):
-        MAX_PALSTANCE = 15  # 允许的最大角速度（度/秒）
+        MAX_PALSTANCE = 35  # 允许的最大角速度（度/秒）
         if val > MAX_PALSTANCE:
             return MAX_PALSTANCE
         elif val < -MAX_PALSTANCE:
@@ -52,7 +52,7 @@ class PID(object):
     # 内环PWM限幅
     # 油门调整限幅不超过7%
     def engine_limit_pwm(self,pwm):
-        MAX_PWM = 7  # 对油门的调整幅度不能超过7%
+        MAX_PWM = 15  # 对油门的调整幅度不能超过7%
         if pwm > MAX_PWM:
             return MAX_PWM
         elif pwm < -MAX_PWM:
@@ -74,7 +74,7 @@ class PID(object):
         cfg.MOTOR4_POWER = lm.limit_power_range(cfg.MOTOR4_POWER - x_pwm/2 - y_pwm/2 + z_pwm)
 
         #print("油门调整幅度：X_PWM=%d,Y_PWM=%d,Z_PWM=%d" % (x_pwm,y_pwm,z_pwm))
-        print("调整后的油门：MOTOR1=%d,MOTOR2=%d,MOTOR3=%d,MOTOR4=%d" % (cfg.MOTOR1_POWER, cfg.MOTOR2_POWER, cfg.MOTOR3_POWER, cfg.MOTOR4_POWER))
+        #print("调整后的油门：MOTOR1=%d,MOTOR2=%d,MOTOR3=%d,MOTOR4=%d" % (cfg.MOTOR1_POWER, cfg.MOTOR2_POWER, cfg.MOTOR3_POWER, cfg.MOTOR4_POWER))
     '''
     外环PID输入角度输出角速度
     et:当前角度误差
@@ -146,7 +146,7 @@ class PID(object):
         xv_et = self.engine_outside_pid(x_et, self.x_last, self.x_sum)
         yv_et = self.engine_outside_pid(y_et, self.y_last, self.y_sum)
         zv_et = self.engine_outside_pid(z_et, self.z_last, None)
-        # print(y_et,self.y_last,self.y_sum,yv_et)
+        print(xv_et,yv_et,zv_et,xv,yv,zv)
 
         # 内环输入调整：实际期望角速度 = 期望角速度 - 当前角速度 （补偿当前角速度）
         xv_et -= xv
