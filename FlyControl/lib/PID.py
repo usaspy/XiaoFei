@@ -52,7 +52,7 @@ class PID(object):
     # 内环PWM限幅
     # 油门调整限幅不超过7%
     def engine_limit_pwm(self,pwm):
-        MAX_PWM = 15  # 对油门的调整幅度不能超过7%
+        MAX_PWM = 7  # 对油门的调整幅度不能超过7%
         if pwm > MAX_PWM:
             return MAX_PWM
         elif pwm < -MAX_PWM:
