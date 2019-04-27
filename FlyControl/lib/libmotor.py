@@ -9,7 +9,7 @@ def set_curr_power(No,new_value):
 '''
 def limit_power_range(power):
     MIN_POWER=5
-    MAX_POWER=20
+    MAX_POWER=50
     if power > MAX_POWER:
         return MAX_POWER
     if power < MIN_POWER:

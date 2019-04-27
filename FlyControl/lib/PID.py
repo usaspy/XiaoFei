@@ -34,7 +34,7 @@ class PID(object):
         # 外环pid参数
         self.kp = 0.759
         self.ki = 0.0
-        self.kd = 0.3
+        self.kd = 0.0
         # 内环pid参数
         self.v_kp = 0.459
         self.v_ki = 0.0
@@ -52,7 +52,7 @@ class PID(object):
     # 内环PWM限幅
     # 油门调整限幅不超过7%
     def engine_limit_pwm(self,pwm):
-        MAX_PWM = 7  # 对油门的调整幅度不能超过7%
+        MAX_PWM = 9  # 对油门的调整幅度不能超过7%
         if pwm > MAX_PWM:
             return MAX_PWM
         elif pwm < -MAX_PWM:
@@ -93,8 +93,7 @@ class PID(object):
         # 积分限幅
         sum[0] = self.engine_limit_palstance(sum[0])
         # XY轴PID反馈控制
-        #palstance = self.kp * et + sum[0] + self.kd * (et - et2)
-        palstance = self.kp * et + sum[0]
+        palstance = self.kp * et + sum[0] + self.kd * (et - et2)
         # 输出限幅
         palstance = self.engine_limit_palstance(palstance)
         return palstance
@@ -146,7 +145,7 @@ class PID(object):
         xv_et = self.engine_outside_pid(x_et, self.x_last, self.x_sum)
         yv_et = self.engine_outside_pid(y_et, self.y_last, self.y_sum)
         zv_et = self.engine_outside_pid(z_et, self.z_last, None)
-        print(xv_et,yv_et,zv_et,xv,yv,zv)
+        #print(xv_et,yv_et,zv_et,xv,yv,zv)
 
         # 内环输入调整：实际期望角速度 = 期望角速度 - 当前角速度 （补偿当前角速度）
         xv_et -= xv
