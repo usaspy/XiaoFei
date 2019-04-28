@@ -31,11 +31,11 @@ class PID(object):
     yv_sum = [0.0]
     zv_sum = [0.0]
     def __init__(self):
-        # 外环pid参数
+        # 外环pid参数   外环只做P，不做I和D
         self.kp = 0.759
-        self.ki = 0.0
-        self.kd = 0.0
-        # 内环pid参数
+        self.ki = 0.0  #外环不做I
+        self.kd = 0.0  #外环不做D
+        # 内环pid参数   内环要做P+I+D
         self.v_kp = 0.459
         self.v_ki = 0.0
         self.v_kd = 0.02
