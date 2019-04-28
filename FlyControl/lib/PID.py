@@ -96,7 +96,7 @@ class PID(object):
         palstance = self.kp * et + sum[0] + self.kd * (et - et2)
         # 输出限幅
         palstance = self.engine_limit_palstance(palstance)
-        return palstance
+        return round(palstance,1)
 
     '''
     内环PID输入角速度输出PWM
@@ -115,7 +115,7 @@ class PID(object):
         sum[0] = self.engine_limit_pwm(sum[0])
         pwm = self.v_kp * et + sum[0] + self.v_kd * (et - et2)
         pwm = self.engine_limit_pwm(pwm)
-        return pwm
+        return round(pwm,1)
 
     '''
        飞控核心自平衡算法 计算x,y,z三个向量上得PWM调整幅度，
@@ -145,7 +145,7 @@ class PID(object):
         xv_et = self.engine_outside_pid(x_et, self.x_last, self.x_sum)
         yv_et = self.engine_outside_pid(y_et, self.y_last, self.y_sum)
         zv_et = self.engine_outside_pid(z_et, self.z_last, None)
-        #print(xv_et,yv_et,zv_et,xv,yv,zv)
+        print("%s,%s,%s"%(xv_et,yv_et,zv_et))
 
         # 内环输入调整：实际期望角速度 = 期望角速度 - 当前角速度 （补偿当前角速度）
         xv_et -= xv
@@ -156,7 +156,6 @@ class PID(object):
         x_pwm = self.engine_inside_pid(xv_et, self.xv_last, self.xv_sum)
         y_pwm = self.engine_inside_pid(yv_et, self.yv_last, self.yv_sum)
         z_pwm = self.engine_inside_pid(zv_et, self.zv_last, None)
-        #print("----------------------------yv=%f,et=%f,et2=%f,sum=%f,pwm=%f" % (yv, yv_et, self.yv_last, self.yv_sum[0], y_pwm))
 
         # 记录欧拉角的上一次读数
         self.x_last = x_et
@@ -168,6 +167,6 @@ class PID(object):
         self.yv_last = yv_et
         self.zv_last = zv_et
 
-        self.set_power(x_pwm, y_pwm, z_pwm)
+        self.set_power(x_pwm, 0, 0)
         return
 
