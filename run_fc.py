@@ -12,6 +12,7 @@ from FlyControl import communication
 from FlyControl import engine
 from FlyControl import sensor
 #import affinity
+import os
 
 if __name__ == "__main__":
     try:
@@ -34,6 +35,12 @@ if __name__ == "__main__":
         #affinity.set_process_affinity_mask(p1.pid, 7L)
         #affinity.set_process_affinity_mask(p2.pid, 7L)
         #affinity.set_process_affinity_mask(p3.pid, 7L)
+        #以上方法在python3以后貌似失效了
+        #可以用下面的方法来做
+        os.sched_setaffinity(p1.pid,[0x00])
+        os.sched_setaffinity(p2.pid,[0x01])
+        os.sched_setaffinity(p3.pid,[0x02])
+
 
         p1.join()
         p2.join()
