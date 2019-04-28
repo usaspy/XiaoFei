@@ -37,10 +37,10 @@ if __name__ == "__main__":
         #affinity.set_process_affinity_mask(p3.pid, 7L)
         #以上方法在python3以后貌似失效了
         #可以用下面的方法来做
-        os.sched_setaffinity(p1.pid,[0x00])
-        os.sched_setaffinity(p2.pid,[0x01])
-        os.sched_setaffinity(p3.pid,[0x02])
-
+        os.sched_setaffinity(p1.pid,[0x00])  #通信进程固定在CPU1上执行
+        os.sched_setaffinity(p2.pid,[0x01])  #传感器进程固定在CPU2上执行
+        os.sched_setaffinity(p3.pid,[0x02])  #动力进程固定在CPU3上执行
+        #CPU2-3已被禁用调度策略
 
         p1.join()
         p2.join()
