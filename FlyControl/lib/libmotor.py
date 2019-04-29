@@ -35,7 +35,7 @@ def exec_plan_b(cfg):
 
 
 def output_to_datalog(data):
-    with open('/data.txt', 'a') as f:
+    with open('/data.log', 'a') as f:
         f.write(data + '\n')
 
 
