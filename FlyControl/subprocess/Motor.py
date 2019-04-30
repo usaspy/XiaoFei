@@ -110,6 +110,8 @@ def controller(_1553b,_1553a):
                     cfg.FLY_LOCKED = False
                     #指南针补偿角
                     cfg.COMPASS_OFFSET = int(_1553b.get('YAW', 0))
+                if cmd == b'\x20\x19\x07\xFF': #电机测试
+                    lm.test_motor(cfg)
                 time.sleep(2)
     except Exception as e:
         print(e)
