@@ -1,4 +1,5 @@
 from FlyControl.param import config
+import time
 
 #设置指定马达的当前油门值
 def set_curr_power(No,new_value):
@@ -38,5 +39,21 @@ def output_to_datalog(data):
     with open('/data.log', 'a') as f:
         f.write(data + '\n')
 
+#电机测试
+def test_motor(cfg):
+    cfg.MOTOR1_OBJ.ChangeDutyCycle(real_pwm(10))
+    time.sleep(3)
+    cfg.MOTOR1_OBJ.ChangeDutyCycle(real_pwm(0))
 
+    cfg.MOTOR2_OBJ.ChangeDutyCycle(real_pwm(10))
+    time.sleep(3)
+    cfg.MOTOR2_OBJ.ChangeDutyCycle(real_pwm(0))
+
+    cfg.MOTOR3_OBJ.ChangeDutyCycle(real_pwm(10))
+    time.sleep(3)
+    cfg.MOTOR3_OBJ.ChangeDutyCycle(real_pwm(0))
+
+    cfg.MOTOR4_OBJ.ChangeDutyCycle(real_pwm(10))
+    time.sleep(3)
+    cfg.MOTOR4_OBJ.ChangeDutyCycle(real_pwm(0))
 
