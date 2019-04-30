@@ -32,7 +32,9 @@ class PID(object):
     zv_sum = [0.0]
     def __init__(self):
         # 外环pid参数   外环只做P，不做I和D
-        self.kp = 0.759
+        self.kp = 0.0
+        self.ki = 0.0  #外环不做I
+        self.kd = 0.0  #外环不做D
         # 内环pid参数   内环要做P+I+D
         self.v_kp = 0.459
         self.v_ki = 0.0
@@ -50,7 +52,7 @@ class PID(object):
     # 内环PWM限幅
     # 油门调整限幅不超过7%
     def engine_limit_pwm(self,pwm):
-        MAX_PWM = 9  # 对油门的调整幅度不能超过7%
+        MAX_PWM = 16  # 对油门的调整幅度不能超过7%
         if pwm > MAX_PWM:
             return MAX_PWM
         elif pwm < -MAX_PWM:
@@ -60,6 +62,11 @@ class PID(object):
     根据x、y、z方向上的补偿值计算每个电机实际调整幅度
     '''
     def set_power(self,x_pwm, y_pwm, z_pwm):
+        #十字型
+        #cfg.MOTOR1_POWER = lm.limit_power_range(cfg.MOTOR1_POWER + x_pwm - z_pwm)
+        #cfg.MOTOR2_POWER = lm.limit_power_range(cfg.MOTOR2_POWER + y_pwm + z_pwm)
+        #cfg.MOTOR3_POWER = lm.limit_power_range(cfg.MOTOR3_POWER - x_pwm - z_pwm)
+        #cfg.MOTOR4_POWER = lm.limit_power_range(cfg.MOTOR4_POWER - y_pwm + z_pwm)
         #X型
         cfg.MOTOR1_POWER = lm.limit_power_range(cfg.MOTOR1_POWER + x_pwm/2 - y_pwm/2 - z_pwm)
         cfg.MOTOR2_POWER = lm.limit_power_range(cfg.MOTOR2_POWER + x_pwm/2 + y_pwm/2 + z_pwm)
@@ -68,7 +75,6 @@ class PID(object):
 
         #print("油门调整幅度：X_PWM=%d,Y_PWM=%d,Z_PWM=%d" % (x_pwm,y_pwm,z_pwm))
         #print("调整后的油门：MOTOR1=%d,MOTOR2=%d,MOTOR3=%d,MOTOR4=%d" % (cfg.MOTOR1_POWER, cfg.MOTOR2_POWER, cfg.MOTOR3_POWER, cfg.MOTOR4_POWER))
-        lm.output_to_datalog(cfg.MOTOR1_POWER+','+cfg.MOTOR2_POWER+','+cfg.MOTOR3_POWER+','+cfg.MOTOR4_POWER)
     '''
     外环PID输入角度输出角速度
     et:当前角度误差
@@ -76,8 +82,18 @@ class PID(object):
     输出：期望角速度
     '''
     def engine_outside_pid(self,et, et2, sum):
+        # 输出期望角速度
+        palstance = 0.0
+        if sum is None:
+            # Z轴PID中只做P和D
+            palstance = self.kp * et + self.kd * (et - et2)
+            palstance = self.engine_limit_palstance(palstance)
+            return palstance
+        sum[0] += self.ki * et
+        # 积分限幅
+        sum[0] = self.engine_limit_palstance(sum[0])
         # XY轴PID反馈控制
-        palstance = self.kp * et
+        palstance = self.kp * et + sum[0] + self.kd * (et - et2)
         # 输出限幅
         palstance = self.engine_limit_palstance(palstance)
         return round(palstance,2)
@@ -129,6 +145,7 @@ class PID(object):
         xv_et = self.engine_outside_pid(x_et, self.x_last, self.x_sum)
         yv_et = self.engine_outside_pid(y_et, self.y_last, self.y_sum)
         zv_et = self.engine_outside_pid(z_et, self.z_last, None)
+        print("%s,%s,%s"%(xv_et,yv_et,zv_et))
 
         # 内环输入调整：实际期望角速度 = 期望角速度 - 当前角速度 （补偿当前角速度）
         xv_et -= xv
