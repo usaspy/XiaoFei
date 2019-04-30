@@ -88,4 +88,8 @@ def show_flydata():
 
 
 def test_motor():
-    pass
+    CMD = b'\x20\x19\x07\xFF'
+    try:
+        vars.remote_sock.send(CMD)
+    except Exception as e:
+        print(e)
