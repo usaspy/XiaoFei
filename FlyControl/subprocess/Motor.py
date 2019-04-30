@@ -87,12 +87,12 @@ def controller(_1553b,_1553a):
                 elif cmd == b'W': #设置前倾30°，前进
                     #修改期望角度
                     cfg.ROLL_SET = 0
-                    cfg.PITCH_SET = -30
+                    cfg.PITCH_SET = -25
                     cfg.YAW_SET = 0
                 elif cmd == b'S': #设置后倾30°，后退
                     # 修改期望角度
                     cfg.ROLL_SET = 0
-                    cfg.PITCH_SET = +30
+                    cfg.PITCH_SET = +25
                     cfg.YAW_SET = 0
                 else: #当前没有新指令,或输入了无效指令时，维持自稳状态
                     cfg.ROLL_SET = 0
