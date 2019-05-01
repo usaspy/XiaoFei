@@ -5,7 +5,7 @@
 '''
 
 #地面站IP
-IPADDRESS_GS = "192.168.0.102"
+IPADDRESS_GS = "192.168.0.103"
 #地面站控制链路端口(上行/TCP/长连接)
 PORT_GS_CONTROL = 13130
 #地面站数据链路端口(下行/UDP)
@@ -42,6 +42,8 @@ MOTOR4_OBJ = None
 #马达功率 %百分比  0~100%
 POWER = 0
 
+#起飞油门 预计值
+FLY_POWER=30
 
 #引擎安全锁
 FLY_LOCKED = True
