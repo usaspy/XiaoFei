@@ -122,7 +122,7 @@ def controller(_1553b,_1553a):
 '''
 def set_power(x_pwm, y_pwm, z_pwm):
     #当前油门低于起飞油门 （<30%）就不进行PID油门调整
-    if cfg.POWER  < 30:
+    if cfg.POWER  < cfg.FLY_POWER:
         x_pwm = 0
         y_pwm = 0
         z_pwm = 0
