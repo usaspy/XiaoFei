@@ -40,10 +40,7 @@ MOTOR3_OBJ = None
 MOTOR4_OBJ = None
 
 #马达功率 %百分比  0~100%
-MOTOR1_POWER = 0
-MOTOR2_POWER = 0
-MOTOR3_POWER = 0
-MOTOR4_POWER = 0
+POWER = 0
 
 
 #引擎安全锁
