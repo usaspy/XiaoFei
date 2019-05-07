@@ -36,7 +36,7 @@ class PID(object):
         self.ki = 0.0  #外环不做I
         self.kd = 0.0  #外环不做D
         # 内环pid参数   内环要做P+I+D
-        self.v_kp = 0.459
+        self.v_kp = 0.31    #经测试0.32~0.29之间比较合适
         self.v_ki = 0.0
         self.v_kd = 0.00
 
