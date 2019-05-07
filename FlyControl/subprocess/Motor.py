@@ -13,7 +13,11 @@ from FlyControl.lib import PIDv2
 from FlyControl.param import config as cfg
 from FlyControl.lib.PID import PID
 
-#https://blog.csdn.net/qq_22169787/article/details/83379935
+'''
+timeit测试性能
+https://blog.csdn.net/qq_22169787/article/details/83379935
+'''
+
 #开机后引擎状态初始化，然后设置安全锁
 def __motor_init():
     GPIO.setmode(GPIO.BOARD)
@@ -26,12 +30,13 @@ def __motor_init():
     p2 = GPIO.PWM(cfg.MOTOR2, 50)
     p3 = GPIO.PWM(cfg.MOTOR3, 50)
     p4 = GPIO.PWM(cfg.MOTOR4, 50)
+    time.sleep(1)
 
     p1.start(lm.real_pwm(0))
     p2.start(lm.real_pwm(0))
     p3.start(lm.real_pwm(0))
     p4.start(lm.real_pwm(0))
-    time.sleep(2)
+    time.sleep(1)
 
     cfg.MOTOR1_OBJ = p1
     cfg.MOTOR2_OBJ = p2
@@ -41,18 +46,14 @@ def __motor_init():
 '''
 飞行控制器主线程 
 大循环
-
-1）系统开机后首先初始化所有马达，马达油门归零
-2）if FLY_LOCKED = False and FLY_STATUS = 1 计算自平衡时的PID值，然后马达执行步长=1
-3）if FLY_LOCKED = True  只输出PID值，马达不执行
-4）if FLY_LOCKED = False and 
 '''
 def controller(_1553b,_1553a):
     try:
-        #马达初始化
+        #初始化四轴马达
         __motor_init()
         #初始化PID引擎
         pid = PID()
+        #大循环
         while True:
             if cfg.FLY_LOCKED is False:  #如果安全锁打开，则允许飞行
                 cmd = _1553a.pop(0) if _1553a else None
@@ -92,8 +93,8 @@ def controller(_1553b,_1553a):
                     cfg.ROLL_SET = 0
                     cfg.PITCH_SET = 0
                     cfg.YAW_SET = 0
-                x_pwm,y_pwm,z_pwm = pid.calculate(_1553b)
-                set_power(x_pwm,y_pwm,z_pwm)
+                x_pwm,y_pwm,z_pwm = pid.calculate(_1553b) #飞控PID计算电机调整量
+                set_power(x_pwm,y_pwm,z_pwm) #发送PWM调整量给电机
                 time.sleep(0.03)
             else: #如果安全锁关闭，则不能执行任何飞行指令
                 cmd = _1553a.pop(0) if _1553a else None
