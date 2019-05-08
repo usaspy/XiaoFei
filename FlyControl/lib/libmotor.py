@@ -9,8 +9,8 @@ def set_curr_power(No,new_value):
 油门限制，在5%~100%之间
 '''
 def limit_power_range(power):
-    MIN_POWER=5
-    MAX_POWER=50
+    MIN_POWER=0
+    MAX_POWER=100
     if power > MAX_POWER:
         return MAX_POWER
     if power < MIN_POWER:
@@ -28,10 +28,7 @@ def real_pwm(curr_power):
 
 
 def exec_plan_b(cfg):
-    cfg.MOTOR1_POWER = 0
-    cfg.MOTOR2_POWER = 0
-    cfg.MOTOR3_POWER = 0
-    cfg.MOTOR4_POWER = 0
+    cfg.CURR_POWER = 0
     pass
 
 
