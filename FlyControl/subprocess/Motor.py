@@ -66,9 +66,9 @@ def controller(_1553b,_1553a):
                     lm.exec_plan_b(cfg)
                     break
                 elif cmd == b'O': #加油门 每一个O 油门+1
-                    cfg.POWER = lm.limit_power_range(cfg.POWER + 1)
+                    cfg.CURR_POWER = lm.limit_power_range(cfg.CURR_POWER + 1)
                 elif cmd == b'P': #减油门
-                    cfg.POWER = lm.limit_power_range(cfg.POWER - 1)
+                    cfg.CURR_POWER = lm.limit_power_range(cfg.CURR_POWER - 1)
                 elif cmd == b'K': #持续左转
                     # 修改期望角度
                     cfg.ROLL_SET = 0
@@ -123,15 +123,15 @@ def controller(_1553b,_1553a):
 '''
 def set_power(x_pwm, y_pwm, z_pwm):
     #当前油门低于起飞油门 （<30%）就不进行PID油门调整
-    if cfg.POWER  < cfg.FLY_POWER:
+    if cfg.CURR_POWER  < cfg.FLY_POWER:
         x_pwm = 0
         y_pwm = 0
         z_pwm = 0
     # X型
-    MOTOR1_POWER = cfg.POWER + x_pwm/2 - y_pwm/2 - z_pwm
-    MOTOR2_POWER = cfg.POWER + x_pwm/2 + y_pwm/2 + z_pwm
-    MOTOR3_POWER = cfg.POWER - x_pwm/2 + y_pwm/2 - z_pwm
-    MOTOR4_POWER = cfg.POWER - x_pwm/2 - y_pwm/2 + z_pwm
+    MOTOR1_POWER = cfg.CURR_POWER + x_pwm/2 - y_pwm/2 - z_pwm
+    MOTOR2_POWER = cfg.CURR_POWER + x_pwm/2 + y_pwm/2 + z_pwm
+    MOTOR3_POWER = cfg.CURR_POWER - x_pwm/2 + y_pwm/2 - z_pwm
+    MOTOR4_POWER = cfg.CURR_POWER - x_pwm/2 - y_pwm/2 + z_pwm
     cfg.MOTOR1_OBJ.ChangeDutyCycle(lm.real_pwm(MOTOR1_POWER))
     cfg.MOTOR2_OBJ.ChangeDutyCycle(lm.real_pwm(MOTOR2_POWER))
     cfg.MOTOR3_OBJ.ChangeDutyCycle(lm.real_pwm(MOTOR3_POWER))
