@@ -39,11 +39,11 @@ MOTOR2_OBJ = None
 MOTOR3_OBJ = None
 MOTOR4_OBJ = None
 
-#马达功率 %百分比  0~100%
-POWER = 0
+#当前油门 %百分比  0~100%
+CURR_POWER = 0
 
 #起飞油门 预计值
-FLY_POWER=30
+FLY_POWER=50
 
 #引擎安全锁
 FLY_LOCKED = True
