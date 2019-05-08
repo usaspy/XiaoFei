@@ -128,10 +128,11 @@ def set_power(x_pwm, y_pwm, z_pwm):
         y_pwm = 0
         z_pwm = 0
     # X型
-    MOTOR1_POWER = cfg.CURR_POWER + x_pwm/2 - y_pwm/2 - z_pwm
-    MOTOR2_POWER = cfg.CURR_POWER + x_pwm/2 + y_pwm/2 + z_pwm
-    MOTOR3_POWER = cfg.CURR_POWER - x_pwm/2 + y_pwm/2 - z_pwm
-    MOTOR4_POWER = cfg.CURR_POWER - x_pwm/2 - y_pwm/2 + z_pwm
+    MOTOR1_POWER = lm.limit_power_range(cfg.CURR_POWER + x_pwm/2 - y_pwm/2 - z_pwm)
+    MOTOR2_POWER = lm.limit_power_range(cfg.CURR_POWER + x_pwm/2 + y_pwm/2 + z_pwm)
+    MOTOR3_POWER = lm.limit_power_range(cfg.CURR_POWER - x_pwm/2 + y_pwm/2 - z_pwm)
+    MOTOR4_POWER = lm.limit_power_range(cfg.CURR_POWER - x_pwm/2 - y_pwm/2 + z_pwm)
+
     cfg.MOTOR1_OBJ.ChangeDutyCycle(lm.real_pwm(MOTOR1_POWER))
     cfg.MOTOR2_OBJ.ChangeDutyCycle(lm.real_pwm(MOTOR2_POWER))
     cfg.MOTOR3_OBJ.ChangeDutyCycle(lm.real_pwm(MOTOR3_POWER))
