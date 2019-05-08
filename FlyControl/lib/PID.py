@@ -52,7 +52,7 @@ class PID(object):
     # 内环PWM限幅
     # 油门调整限幅不超过7%
     def engine_limit_pwm(self,pwm):
-        MAX_PWM = cfg.CURR_POWER # 对油门的调整幅度不能超过当前油门
+        MAX_PWM = cfg.CURR_POWER / 2 # 对油门的调整幅度不能超过当前油门的一半
         if pwm > MAX_PWM:
             return MAX_PWM
         elif pwm < -MAX_PWM:
@@ -150,5 +150,5 @@ class PID(object):
         self.yv_last = yv_et
         self.zv_last = zv_et
 
-        return x_pwm,y_pwm,z_pwm
+        return x_pwm, y_pwm, z_pwm
 
