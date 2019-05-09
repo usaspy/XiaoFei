@@ -32,11 +32,11 @@ class PID(object):
     zv_sum = [0.0]
     def __init__(self):
         # 外环pid参数   外环只做P，不做I和D
-        self.kp = 0.2
+        self.kp = 0.0
         self.ki = 0.0  #外环不做I
         self.kd = 0.0  #外环不做D
         # 内环pid参数   内环要做P+I+D
-        self.v_kp = 0.31    #经测试0.32~0.159之间比较合适
+        self.v_kp = 0.19    #经测试0.29~0.15之间比较合适
         self.v_ki = 0.0
         self.v_kd = 0.00
 
