@@ -4,7 +4,7 @@ import GroundStation.vars as vars
 
 window =tk.Tk()
 window.title('XiaoFei无人机遥控地面站')
-window.geometry('800x450')
+window.geometry('1000x450')
 window.resizable(0,0)
 
 x0=0
@@ -273,4 +273,83 @@ vars.but_7 = tk.Button(window,
     width=25, height=2,
     command=fun.test_motor)
 vars.but_7.place(x=offsetX+540,y=offsetY+300,anchor='nw')
+
+#PID调试参数
+l = tk.Label(window,text="PID测试",
+             anchor="w",
+             font=('Arial',14),
+             width=100,height=2)
+l.place(x=offsetX+790,y=offsetY,anchor='nw')
+
+l = tk.Label(window,text="外环p",
+             anchor="w",
+             font=('Arial',10),
+             width=100,height=2)
+l.place(x=offsetX+790,y=offsetY+40,anchor='nw')
+var1 = tk.Variable()
+vars.e1 = tk.Entry(window, textvariable=var1, bd=3, fg='green',width=12)
+var1.set(0) # 设置文本框中的值
+vars.e1.place(x=offsetX+850,y=offsetY+40,anchor='nw')
+
+l = tk.Label(window,text="外环i",
+             anchor="w",
+             font=('Arial',10),
+             width=100,height=2)
+l.place(x=offsetX+790,y=offsetY+70,anchor='nw')
+var1 = tk.Variable()
+vars.e2 = tk.Entry(window, textvariable=var1, bd=3, fg='green',width=12)
+var1.set(0) # 设置文本框中的值
+vars.e2.place(x=offsetX+850,y=offsetY+70,anchor='nw')
+
+l = tk.Label(window,text="外环d",
+             anchor="w",
+             font=('Arial',10),
+             width=100,height=2)
+l.place(x=offsetX+790,y=offsetY+100,anchor='nw')
+var1 = tk.Variable()
+vars.e3 = tk.Entry(window, textvariable=var1, bd=3, fg='green',width=12)
+var1.set(0) # 设置文本框中的值
+vars.e3.place(x=offsetX+850,y=offsetY+100,anchor='nw')
+
+
+l = tk.Label(window,text="内环p",
+             anchor="w",
+             font=('Arial',10),
+             width=100,height=2)
+l.place(x=offsetX+790,y=offsetY+150,anchor='nw')
+var1 = tk.Variable()
+vars.e4 = tk.Entry(window, textvariable=var1, bd=3, fg='blue',width=12)
+var1.set(0.179) # 设置文本框中的值
+vars.e4.place(x=offsetX+850,y=offsetY+150,anchor='nw')
+
+
+l = tk.Label(window,text="内环i",
+             anchor="w",
+             font=('Arial',10),
+             width=100,height=2)
+l.place(x=offsetX+790,y=offsetY+180,anchor='nw')
+var1 = tk.Variable()
+vars.e5 = tk.Entry(window, textvariable=var1, bd=3, fg='blue',width=12)
+var1.set(0) # 设置文本框中的值
+vars.e5.place(x=offsetX+850,y=offsetY+180,anchor='nw')
+
+l = tk.Label(window,text="内环d",
+             anchor="w",
+             font=('Arial',10),
+             width=100,height=2)
+l.place(x=offsetX+790,y=offsetY+210,anchor='nw')
+var1 = tk.Variable()
+vars.e6 = tk.Entry(window, textvariable=var1, bd=3, fg='blue',width=12)
+var1.set(0) # 设置文本框中的值
+vars.e6.place(x=offsetX+850,y=offsetY+210,anchor='nw')
+
+
+vars.but_100 = tk.Button(window,
+    text='更新PID参数',
+    activeforeground='red',
+    width=25, height=2,
+    command=fun.set_pid)
+vars.but_100.place(x=offsetX+790,y=offsetY+250,anchor='nw')
+
+
 window.mainloop()
