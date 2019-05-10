@@ -4,6 +4,7 @@ from GroundStation.subprocess import Control_Link
 from GroundStation.subprocess import Data_Link
 import threading
 import GroundStation.vars as vars
+import time
 
 
 
@@ -91,5 +92,23 @@ def test_motor():
     CMD = b'\x20\x19\x07\xFF'
     try:
         vars.remote_sock.send(CMD)
+    except Exception as e:
+        print(e)
+
+def set_pid():
+    CMD = b'\x20\x19\x10\x0E'
+    try:
+        vars.remote_sock.send(CMD)
+        pids = []
+        pids.append(vars.e1.get())
+        pids.append(vars.e2.get())
+        pids.append(vars.e3.get())
+        pids.append(vars.e4.get())
+        pids.append(vars.e5.get())
+        pids.append(vars.e6.get())
+
+        print(pids)
+        time.sleep(0.05)
+        vars.remote_sock.send(pids)
     except Exception as e:
         print(e)
