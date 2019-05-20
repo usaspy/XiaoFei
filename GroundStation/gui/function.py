@@ -96,9 +96,8 @@ def test_motor():
         print(e)
 
 def set_pid():
-    CMD = b'\x20\x19\x10\x0E'
     try:
-        vars.remote_sock.send(CMD)
+        cmd = b'\x20\x19\x10\x0e'
         pids = []
         pids.append(vars.e1.get())
         pids.append(vars.e2.get())
@@ -106,9 +105,7 @@ def set_pid():
         pids.append(vars.e4.get())
         pids.append(vars.e5.get())
         pids.append(vars.e6.get())
-
-        print(pids)
-        time.sleep(0.05)
-        vars.remote_sock.send(pids)
+        s = str(pids).encode("utf-8")
+        vars.remote_sock.send(cmd + s)
     except Exception as e:
         print(e)
