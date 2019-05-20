@@ -1,4 +1,4 @@
-#电调 无刷电机测试
+#电调 无刷电机测试程序
 #这是接了光耦隔离后的
 import RPi.GPIO as GPIO
 import time
@@ -6,7 +6,7 @@ import time
 print("py:%s"%GPIO.VERSION)
 
 GPIO.setmode(GPIO.BOARD)
-ctl_1 = 29
+ctl_1 = 29  #树莓派上29针脚
 ctl_2 = 31
 ctl_3 = 33
 ctl_4 = 35
