@@ -38,15 +38,15 @@ def working(_1553b):
             print("串口%s已经打开"% cfg.SERIAL_PORT_GY99)
             #首先输出设置
             sr.write(cmd1)
-            time.sleep(0.2)
+            time.sleep(0.5)
             sr.write(cmd2)
-            time.sleep(0.2)
+            time.sleep(0.5)
             sr.write(cmd3)
-            time.sleep(0.2)
+            time.sleep(0.5)
             sr.write(cmd4)
-            time.sleep(0.2)
-            sr.write(cmd5)
-            time.sleep(0.2)
+            time.sleep(0.5)
+            #sr.write(cmd5) #加陀校准时要保证至少三秒以上静止状态
+            #time.sleep(5)
 
             while True:
                 sr.flushInput()
