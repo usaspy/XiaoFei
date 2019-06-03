@@ -76,6 +76,11 @@ def __hex2dec(d):
 #处理数据并写入_1553b数据总线
 def __resolve_data(data,_1553b):
     if data[:4] == b'\x5A\x5A\xFF\x29':
+        #获取加速度计
+        ACC_X = (__hex2dec((data[4]<< 8) | data[5]))
+        ACC_Y = (__hex2dec((data[6]<< 8) | data[7]))
+        ACC_Z = (__hex2dec((data[8]<< 8) | data[9]))
+
         #获取陀螺仪 (角度/秒)  >>为什么除以16.4? 看http://www.openedv.com/forum.php?mod=viewthread&tid=80200&page=1
         GYRO_X = (__hex2dec((data[10]<< 8) | data[11])) / 16.4
         _1553b['GYRO_X'] = round(GYRO_X,2)
