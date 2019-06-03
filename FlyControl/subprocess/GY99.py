@@ -45,8 +45,8 @@ def working(_1553b):
             time.sleep(0.5)
             sr.write(cmd4)
             time.sleep(0.5)
-            #sr.write(cmd5) #加陀校准时要保证至少三秒以上静止状态
-            #time.sleep(5)
+            #sr.write(cmd5) #模块上电后会自动校准，可不用再执行校准程序
+            #time.sleep(5) #加陀校准时要保证至少三秒以上静止状态
 
             while True:
                 sr.flushInput()
