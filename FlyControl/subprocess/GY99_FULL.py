@@ -18,7 +18,7 @@ cmd1 = b'\xA5\x55\xFF\xF9'
 cmd2 = b'\xA5\x56\x02\xFD'
 # 波特率设置指=115200
 cmd3 = b'\xA5\x58\x01\xFE'
-# 设置刷新频率=10HZ
+# 设置刷新频率=10HZ  获取全部数据，数据量太大刷新频率只能设成10HZ。
 cmd4 = b'\xA5\x59\x01\xFF'
 # 加速度陀螺仪校准指令
 cmd5 = b'\xA5\x57\x01\xFD'
@@ -45,8 +45,8 @@ def working(_1553b):
             time.sleep(0.5)
             sr.write(cmd4)
             time.sleep(0.5)
-            #sr.write(cmd5) #加陀校准时要保证至少三秒以上静止状态
-            #time.sleep(5)
+            #sr.write(cmd5) #模块上电后会自动校准，可不用再执行校准程序
+            #time.sleep(5) #加陀校准时要保证至少三秒以上静止状态
 
             while True:
                 sr.flushInput()
@@ -76,12 +76,15 @@ def __hex2dec(d):
 #处理数据并写入_1553b数据总线
 def __resolve_data(data,_1553b):
     if data[:4] == b'\x5A\x5A\xFF\x29':
-        #获取加速度计
-        ACC_X = (__hex2dec((data[4]<< 8) | data[5]))
-        ACC_Y = (__hex2dec((data[6]<< 8) | data[7]))
-        ACC_Z = (__hex2dec((data[8]<< 8) | data[9]))
+        #获取加速度计ACC (G) 默认量程2G 为何除以16383 https://blog.csdn.net/u013636775/article/details/69668860
+        ACC_X = (__hex2dec((data[4]<< 8) | data[5])) / 16383
+        _1553b['ACC_X'] = round(ACC_X,2)
+        ACC_Y = (__hex2dec((data[6] << 8) | data[7])) / 16383
+        _1553b['ACC_Y'] = round(ACC_Y,2)
+        ACC_Z = (__hex2dec((data[8] << 8) | data[9])) / 16383
+        _1553b['ACC_Z'] = round(ACC_Z,2)
 
-        #获取陀螺仪 (角度/秒)  >>为什么除以16.4? 看http://www.openedv.com/forum.php?mod=viewthread&tid=80200&page=1
+        #获取陀螺仪 (角度/秒) 默认量程2000  >>为什么除以16.4? 看http://www.openedv.com/forum.php?mod=viewthread&tid=80200&page=1
         GYRO_X = (__hex2dec((data[10]<< 8) | data[11])) / 16.4
         _1553b['GYRO_X'] = round(GYRO_X,2)
         GYRO_Y = (__hex2dec((data[12] << 8) | data[13])) / 16.4
