@@ -1,11 +1,19 @@
 import tkinter as tk
 import GroundStation.gui.function as fun
 import GroundStation.vars as vars
+from tkinter import messagebox
 
 window =tk.Tk()
 window.title('XiaoFei无人机遥控地面站')
-window.geometry('1000x450')
+window.geometry('1050x450')
 window.resizable(0,0)
+
+def by_manual():
+    window.withdraw()
+    msg1 = messagebox._show("提示", "已进入手控模式，点[确定]回到主窗口！")
+    if msg1 == "ok":
+        window.update()
+        window.deiconify()
 
 x0=0
 y0=0
@@ -16,8 +24,8 @@ y1=450
 menubar=tk.Menu(window)
 filemenu=tk.Menu(menubar,tearoff=0)
 menubar.add_cascade(label='功能',menu=filemenu)
-filemenu.add_command(label='打开发射器',command=fun.open_transmitter)
-filemenu.add_command(label='关闭发射器',command=fun.close_transmitter)
+filemenu.add_command(label='打开接收器',command=fun.open_transmitter)
+filemenu.add_command(label='关闭接收器',command=fun.close_transmitter)
 filemenu.add_separator()
 filemenu.add_command(label='Exit',command=window.quit)
 
@@ -218,10 +226,22 @@ vars.label_15 = tk.Label(window,text="N/A",
              font=('Arial',12),
              width=100,height=2)
 vars.label_15.place(x=offsetX+360,y=offsetY+240,anchor='nw')
+
+l = tk.Label(window,text="当前油门(%)",
+             anchor="w",
+             font=('Arial',14),
+             width=100,height=2)
+l.place(x=offsetX+240,y=offsetY+280,anchor='nw')
+vars.label_16 = tk.Label(window,text="N/A",
+             anchor="w",
+             foreground='red',
+             font=('Arial',12),
+             width=100,height=2)
+vars.label_16.place(x=offsetX+360,y=offsetY+280,anchor='nw')
 #-----------------
 offsetY=50
 vars.but_1 = tk.Button(window,
-    text='打开地面站发射器',
+    text='打开地面站接收器',
     activeforeground='red',
     width=25, height=2,
     command=fun.open_transmitter)
@@ -259,11 +279,11 @@ vars.but_5 = tk.Button(window,
 vars.but_5.place(x=offsetX+540,y=offsetY+200,anchor='nw')
 
 vars.but_6 = tk.Button(window,
-    text='传感器校准',
+    text='手控',
     activeforeground='red',
     state='disabled',
     width=25, height=2,
-    command=fun.do_job)
+    command=by_manual)
 vars.but_6.place(x=offsetX+540,y=offsetY+250,anchor='nw')
 
 vars.but_7 = tk.Button(window,
@@ -279,7 +299,8 @@ l = tk.Label(window,text="PID测试",
              anchor="w",
              font=('Arial',14),
              width=100,height=2)
-l.place(x=offsetX+790,y=offsetY,anchor='nw')
+l.place(x=offsetX+790,y=offsetY-20,anchor='nw')
+
 
 l = tk.Label(window,text="外环p",
              anchor="w",
@@ -287,61 +308,61 @@ l = tk.Label(window,text="外环p",
              width=100,height=2)
 l.place(x=offsetX+790,y=offsetY+40,anchor='nw')
 var1 = tk.Variable()
-vars.e1 = tk.Entry(window, textvariable=var1, bd=3, fg='green',width=12)
-var1.set(0) # 设置文本框中的值
-vars.e1.place(x=offsetX+850,y=offsetY+40,anchor='nw')
+vars.e1 = tk.Scale(window,from_=0.0,to=5.0,resolution=0.2,orient=tk.HORIZONTAL,length=150,variable=var1)
+var1.set(2.0)
+vars.e1.place(x=offsetX+850,y=offsetY+25,anchor='nw')
 
 l = tk.Label(window,text="外环i",
              anchor="w",
              font=('Arial',10),
              width=100,height=2)
-l.place(x=offsetX+790,y=offsetY+70,anchor='nw')
+l.place(x=offsetX+790,y=offsetY+80,anchor='nw')
 var1 = tk.Variable()
-vars.e2 = tk.Entry(window, textvariable=var1, bd=3, fg='green',width=12)
-var1.set(0) # 设置文本框中的值
+vars.e2 = tk.Scale(window,from_=0.0,to=5.0,resolution=0.2,orient=tk.HORIZONTAL,length=150,variable=var1)
+var1.set(0.0) # 设置文本框中的值
 vars.e2.place(x=offsetX+850,y=offsetY+70,anchor='nw')
 
 l = tk.Label(window,text="外环d",
              anchor="w",
              font=('Arial',10),
              width=100,height=2)
-l.place(x=offsetX+790,y=offsetY+100,anchor='nw')
+l.place(x=offsetX+790,y=offsetY+125,anchor='nw')
 var1 = tk.Variable()
-vars.e3 = tk.Entry(window, textvariable=var1, bd=3, fg='green',width=12)
-var1.set(0) # 设置文本框中的值
-vars.e3.place(x=offsetX+850,y=offsetY+100,anchor='nw')
+vars.e3 = tk.Scale(window,from_=0.0,to=5.0,resolution=0.2,orient=tk.HORIZONTAL,length=150,variable=var1)
+var1.set(0.0) # 设置文本框中的值
+vars.e3.place(x=offsetX+850,y=offsetY+115,anchor='nw')
 
 
 l = tk.Label(window,text="内环p",
              anchor="w",
              font=('Arial',10),
              width=100,height=2)
-l.place(x=offsetX+790,y=offsetY+150,anchor='nw')
+l.place(x=offsetX+790,y=offsetY+170,anchor='nw')
 var1 = tk.Variable()
-vars.e4 = tk.Entry(window, textvariable=var1, bd=3, fg='blue',width=12)
-var1.set(0.179) # 设置文本框中的值
-vars.e4.place(x=offsetX+850,y=offsetY+150,anchor='nw')
+vars.e4 = tk.Scale(window,from_=0.0,to=0.5,resolution=0.01,orient=tk.HORIZONTAL,length=150,variable=var1)
+var1.set(0.27) # 设置文本框中的值
+vars.e4.place(x=offsetX+850,y=offsetY+160,anchor='nw')
 
 
 l = tk.Label(window,text="内环i",
              anchor="w",
              font=('Arial',10),
              width=100,height=2)
-l.place(x=offsetX+790,y=offsetY+180,anchor='nw')
+l.place(x=offsetX+790,y=offsetY+210,anchor='nw')
 var1 = tk.Variable()
-vars.e5 = tk.Entry(window, textvariable=var1, bd=3, fg='blue',width=12)
-var1.set(0) # 设置文本框中的值
-vars.e5.place(x=offsetX+850,y=offsetY+180,anchor='nw')
+vars.e5 = tk.Scale(window,from_=0.0,to=0.9,resolution=0.01,orient=tk.HORIZONTAL,length=150,variable=var1)
+var1.set(0.0) # 设置文本框中的值
+vars.e5.place(x=offsetX+850,y=offsetY+205,anchor='nw')
 
 l = tk.Label(window,text="内环d",
              anchor="w",
              font=('Arial',10),
              width=100,height=2)
-l.place(x=offsetX+790,y=offsetY+210,anchor='nw')
+l.place(x=offsetX+790,y=offsetY+260,anchor='nw')
 var1 = tk.Variable()
-vars.e6 = tk.Entry(window, textvariable=var1, bd=3, fg='blue',width=12)
-var1.set(0) # 设置文本框中的值
-vars.e6.place(x=offsetX+850,y=offsetY+210,anchor='nw')
+vars.e6 = tk.Scale(window,from_=0.0,to=0.5,resolution=0.01,orient=tk.HORIZONTAL,length=150,variable=var1)
+var1.set(0.27) # 设置文本框中的值
+vars.e6.place(x=offsetX+850,y=offsetY+250,anchor='nw')
 
 
 vars.but_100 = tk.Button(window,
@@ -349,7 +370,7 @@ vars.but_100 = tk.Button(window,
     activeforeground='red',
     width=25, height=2,
     command=fun.set_pid)
-vars.but_100.place(x=offsetX+790,y=offsetY+250,anchor='nw')
+vars.but_100.place(x=offsetX+790,y=offsetY+300,anchor='nw')
 
 
 window.mainloop()
