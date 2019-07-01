@@ -12,14 +12,14 @@ import serial
 import time
 from FlyControl.param import config as cfg
 
-# 输出数据设置指令,0xFF=输出全部参数
-cmd1 = b'\xA5\x55\xFF\xF9'
+# 输出数据设置指令,0x12=输出部分数据  欧拉角、GYRO角速度
+cmd1 = b'\xA5\x55\x12\x0C'
 # 自动输出数据指令
 cmd2 = b'\xA5\x56\x02\xFD'
 # 波特率设置指=115200
 cmd3 = b'\xA5\x58\x01\xFE'
-# 设置刷新频率=10HZ
-cmd4 = b'\xA5\x59\x01\xFF'
+# 设置刷新频率=50HZ
+cmd4 = b'\xA5\x59\x02\x00'
 # 加速度陀螺仪校准指令
 cmd5 = b'\xA5\x57\x01\xFD'
 # 磁力计校准指令 (需人工操作，故不可轻易使用)
@@ -52,11 +52,11 @@ def working(_1553b):
                 sr.flushInput()
                 while True:
                     n = sr.inWaiting()
-                    if n == 46:
+                    if n == 18:
                         rec = sr.read(n)
                         __resolve_data(rec,_1553b)
                         break
-                    elif n > 46:
+                    elif n > 18:
                         break
     except Exception as e:
         print(e)
@@ -75,36 +75,24 @@ def __hex2dec(d):
 
 #处理数据并写入_1553b数据总线
 def __resolve_data(data,_1553b):
-    if data[:4] == b'\x5A\x5A\xFF\x29':
-        #获取陀螺仪 (角度/秒)  >>为什么除以16.4? 看http://www.openedv.com/forum.php?mod=viewthread&tid=80200&page=1
-        GYRO_X = (__hex2dec((data[10]<< 8) | data[11])) / 16.4
+    if data[:4] == b'\x5A\x5A\x12\x0D':
+        #获取陀螺仪 (角度/秒) 默认量程2000  >>为什么除以16.4? 看http://www.openedv.com/forum.php?mod=viewthread&tid=80200&page=1
+        GYRO_X = (__hex2dec((data[4]<< 8) | data[5])) / 16.4
         _1553b['GYRO_X'] = round(GYRO_X,2)
-        GYRO_Y = (__hex2dec((data[12] << 8) | data[13])) / 16.4
+        GYRO_Y = (__hex2dec((data[6] << 8) | data[7])) / 16.4
         _1553b['GYRO_Y'] = round(GYRO_Y,2)
-        GYRO_Z = (__hex2dec((data[14] << 8) | data[15])) / 16.4
+        GYRO_Z = (__hex2dec((data[8] << 8) | data[9])) / 16.4
         _1553b['GYRO_Z'] = round(GYRO_Z,2)
 
         #获取欧拉角 (度)
-        ROLL = (__hex2dec((data[30]<< 8) | data[31])) / 100
+        ROLL = (__hex2dec((data[10]<< 8) | data[11])) / 100
         _1553b['ROLL'] = ROLL
-        PITCH = (__hex2dec((data[32] << 8) | data[33])) / 100
+        PITCH = (__hex2dec((data[12] << 8) | data[13])) / 100
         _1553b['PITCH'] = PITCH
-        YAW = (__hex2dec((data[34] << 8) | data[35])) / 100
+        YAW = (__hex2dec((data[14] << 8) | data[15])) / 100
         _1553b['YAW'] = YAW
 
-        #获取气压(KPa)
-        Pressure = ((data[36] << 24) | (data[37] << 16) | (data[38] << 8) | data[39]) / 100 / 1000
-        _1553b['Pressure'] = round(Pressure,3)
-
-        #获取温度(摄氏度)
-        Temp = ((data[40] << 8) | data[41]) / 100
-        _1553b['Temp'] = round(Temp,1)
-
-        #获取海拔(米)
-        Altitude = ((data[42] << 8) | data[43]) / 100
-        _1553b['Altitude'] = round(Altitude,2)
-
         #已校准
-        _1553b['Calibrated'] = data[44]
+        _1553b['Calibrated'] = data[16]
 
         #print(_1553b)
