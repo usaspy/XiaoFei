@@ -5,20 +5,20 @@
 '''
 
 #地面站IP
-IPADDRESS_GS = "192.168.0.103"
+IPADDRESS_GS = "192.168.0.102"
 #地面站控制链路端口(上行/TCP/长连接)
 PORT_GS_CONTROL = 13130
 #地面站数据链路端口(下行/UDP)
 PORT_GS_DATA = 13133
 
 #GY-99串口
-SERIAL_PORT_GY99="/dev/ttyAMA0"
+SERIAL_PORT_GY99 = "/dev/ttyAMA0"
 
 #GPS数据串口
-SERIAL_PORT_GPS="/dev/ttyUSB2"
+SERIAL_PORT_GPS = "/dev/ttyUSB2"
 
 #GPRS拨号串口
-SERIAL_PORT_GPRS="/dev/ttyUSB3"
+SERIAL_PORT_GPRS = "/dev/ttyUSB3"
 
 #指南针偏移量
 COMPASS_OFFSET = -37.2
@@ -40,10 +40,10 @@ MOTOR3_OBJ = None
 MOTOR4_OBJ = None
 
 #当前油门 %百分比  0~100%
-CURR_POWER = 0
+CURR_POWER = 60
 
-#起飞油门 预计值
-FLY_POWER=50
+#起飞油门筏值
+FLY_POWER = 55
 
 #引擎安全锁
 FLY_LOCKED = True
@@ -62,6 +62,9 @@ ROLL_SET = 0
 PITCH_SET = 0
 YAW_SET = 0
 
-#-------------------------------------------------高度指示器-----------------------------------------
+'''
+高度指示器
+超声波模块的GPIO插脚
+'''
 Trig = 16
 Echo = 18
