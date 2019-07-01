@@ -95,6 +95,10 @@ def test_motor():
     except Exception as e:
         print(e)
 
+'''
+调试PID参数
+飞行过程中动态修改PID参数，查找最优PID值
+'''
 def set_pid():
     try:
         cmd = b'\x20\x19\x10\x0e'
@@ -105,6 +109,7 @@ def set_pid():
         pids.append(vars.e4.get())
         pids.append(vars.e5.get())
         pids.append(vars.e6.get())
+        print(pids)
         s = str(pids).encode("utf-8")
         vars.remote_sock.send(cmd + s)
     except Exception as e:
