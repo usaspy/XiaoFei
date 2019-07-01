@@ -36,13 +36,13 @@ class PID(object):
         self.ki = 0.0  #外环不做I
         self.kd = 0.0  #外环不做D
         # 内环pid参数   内环要做P+I+D
-        self.v_kp = 0.19    #经测试0.29~0.15之间比较合适
+        self.v_kp = 0.0  #经测试0.29~0.15之间比较合适
         self.v_ki = 0.0
-        self.v_kd = 0.00
+        self.v_kd = 0.0
 
     # 外环角速度限幅
     def engine_limit_palstance(self,val):
-        MAX_PALSTANCE = 35  # 允许的最大角速度（度/秒）
+        MAX_PALSTANCE = 70  # 允许的最大角速度（度/秒）
         if val > MAX_PALSTANCE:
             return MAX_PALSTANCE
         elif val < -MAX_PALSTANCE:
@@ -52,7 +52,7 @@ class PID(object):
     # 内环PWM限幅
     # 油门调整限幅不超过7%
     def engine_limit_pwm(self,pwm):
-        MAX_PWM = cfg.CURR_POWER / 2 # 对油门的调整幅度不能超过当前油门的一半
+        MAX_PWM = cfg.CURR_POWER # 对油门的调整幅度不能超过当前油门的一半
         if pwm > MAX_PWM:
             return MAX_PWM
         elif pwm < -MAX_PWM:
@@ -109,23 +109,23 @@ class PID(object):
     '''
     def calculate(self,_1553b):
         # GY-99传感器测量的当前角度
-        x = int(_1553b.get('ROLL', 0))  #横滚角 X  -180~+180
-        y = int(_1553b.get('PITCH', 0)) #俯仰角 Y  -90~+90
-        z = int(_1553b.get('YAW', 0)) #偏移角 Z    -180~+180
+        x = _1553b.get('ROLL', 0)  #横滚角 X  -180~+180
+        y = _1553b.get('PITCH', 0) #俯仰角 Y  -90~+90
+        z = _1553b.get('YAW', 0) #偏移角 Z    -180~+180
 
-        # GY-99传感器测量的当前角度 + 遥控器得指令角度 = 当前实际角度误差
+        #控制者预期角度 - GY99传感器测量的当前角度 = 当前实际角度误差 （0 - 30 = -30）
         x_et = cfg.ROLL_SET - x
         y_et = cfg.PITCH_SET - y
         #z_et = cfg.YAW_SET  + cfg.COMPASS_OFFSET - z
         z_et = cfg.YAW_SET
 
         # 传感器测量的当前角速度
-        xv = int(_1553b.get('GYRO_X', 0))
-        yv = int(_1553b.get('GYRO_Y', 0))
-        zv = int(_1553b.get('GYRO_Z', 0))
+        xv = _1553b.get('GYRO_X', 0)
+        yv = _1553b.get('GYRO_Y', 0)
+        zv = _1553b.get('GYRO_Z', 0)
 
         # 外环PID根据欧拉角计算出期望角速度
-        # 这里应该是期望角度 - 当前实际角度，所以这里为 0 - x_et
+        # 这里应该是期望角度 - 当前实际角度，所以这里为 0 - x
         xv_et = self.engine_outside_pid(x_et, self.x_last, self.x_sum)
         yv_et = self.engine_outside_pid(y_et, self.y_last, self.y_sum)
         zv_et = self.engine_outside_pid(z_et, self.z_last, None)
@@ -150,5 +150,6 @@ class PID(object):
         self.yv_last = yv_et
         self.zv_last = zv_et
 
-        return x_pwm, y_pwm, z_pwm
+        #print(self.kp, self.ki, self.kd, self.v_kp, self.v_ki, self.v_kd)
 
+        return x_pwm, y_pwm, z_pwm
