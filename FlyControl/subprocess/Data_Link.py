@@ -19,7 +19,7 @@ def working(_1553b):
                 #每隔0.3秒将_1553b中数据传给地面站
                 bytes_1553b = str(_1553b).encode("utf-8")
                 sock_client.sendto(bytes_1553b,(server_ipaddr, server_port))
-                time.sleep(0.2)
+                time.sleep(0.9)
 
         except Exception as e:
             print(e)
