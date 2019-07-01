@@ -36,7 +36,7 @@ def __motor_init():
     p2.start(lm.real_pwm(0))
     p3.start(lm.real_pwm(0))
     p4.start(lm.real_pwm(0))
-    time.sleep(1)
+    time.sleep(5) #等待5秒，确保电调初始化完成
 
     cfg.MOTOR1_OBJ = p1
     cfg.MOTOR2_OBJ = p2
@@ -89,13 +89,22 @@ def controller(_1553b,_1553a):
                     cfg.ROLL_SET = 0
                     cfg.PITCH_SET = +25
                     cfg.YAW_SET = 0
+                elif cmd != None and cmd[0:4] == b'\x20\x19\x10\x0e':  # 调试模式：设置PID参数
+                    pids = eval(cmd[4:].decode("utf-8"))
+                    pid.kp = float(pids[0])
+                    pid.ki = float(pids[1])
+                    pid.kd = float(pids[2])
+                    pid.v_kp = float(pids[3])
+                    pid.v_ki = float(pids[4])
+                    pid.v_kd = float(pids[5])
                 else: #当前没有新指令,或输入了无效指令时，维持自稳状态
                     cfg.ROLL_SET = 0
                     cfg.PITCH_SET = 0
                     cfg.YAW_SET = 0
                 x_pwm,y_pwm,z_pwm = pid.calculate(_1553b) #飞控PID计算电机调整量
                 set_power(x_pwm,y_pwm,z_pwm) #发送PWM调整量给电机
-                time.sleep(0.03)
+                _1553b['CURR_POWER'] = cfg.CURR_POWER #往数据总线里更新当前油门
+                time.sleep(0.01)
             else: #如果安全锁关闭，则不能执行任何飞行指令
                 cmd = _1553a.pop(0) if _1553a else None
                 if cmd == b'\x20\x19\x04\xFD': #开锁
@@ -122,21 +131,21 @@ def controller(_1553b,_1553a):
     根据x、y、z方向上的补偿值计算每个电机实际调整幅度
 '''
 def set_power(x_pwm, y_pwm, z_pwm):
-    #当前油门低于起飞油门 （<30%）就不进行PID油门调整
+    #当前油门低于起飞油门 （<50%）就不进行PID油门调整
+    #并且在起飞之前不做积分，避免还没起飞就累积了较大误差
     if cfg.CURR_POWER  < cfg.FLY_POWER:
         x_pwm = 0
         y_pwm = 0
         z_pwm = 0
-    # X型
+    # X型 计算四个电机的PWM值
     MOTOR1_POWER = lm.limit_power_range(cfg.CURR_POWER + x_pwm/2 - y_pwm/2 - z_pwm)
     MOTOR2_POWER = lm.limit_power_range(cfg.CURR_POWER + x_pwm/2 + y_pwm/2 + z_pwm)
     MOTOR3_POWER = lm.limit_power_range(cfg.CURR_POWER - x_pwm/2 + y_pwm/2 - z_pwm)
     MOTOR4_POWER = lm.limit_power_range(cfg.CURR_POWER - x_pwm/2 - y_pwm/2 + z_pwm)
-
+    #设置四个电机的PWM
     cfg.MOTOR1_OBJ.ChangeDutyCycle(lm.real_pwm(MOTOR1_POWER))
     cfg.MOTOR2_OBJ.ChangeDutyCycle(lm.real_pwm(MOTOR2_POWER))
     cfg.MOTOR3_OBJ.ChangeDutyCycle(lm.real_pwm(MOTOR3_POWER))
     cfg.MOTOR4_OBJ.ChangeDutyCycle(lm.real_pwm(MOTOR4_POWER))
 
-    #print("油门调整幅度：X_PWM=%d,Y_PWM=%d,Z_PWM=%d" % (x_pwm,y_pwm,z_pwm))
-    print("调整后的油门：MOTOR1=%d,MOTOR2=%d,MOTOR3=%d,MOTOR4=%d" % (MOTOR1_POWER, MOTOR2_POWER, MOTOR3_POWER, MOTOR4_POWER))
+    #print("%f,%f,%f,%f" % (MOTOR1_POWER, MOTOR2_POWER, MOTOR3_POWER, MOTOR4_POWER))
