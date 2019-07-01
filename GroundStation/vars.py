@@ -27,6 +27,7 @@ label_12 = None
 label_13 = None
 label_14 = None
 label_15 = None
+label_16 = None
 
 but_1 = None
 but_2 = None
@@ -35,6 +36,7 @@ but_4 = None
 but_5 = None
 but_6 = None
 but_7 = None
+but_100 = None
 
 e1 = None
 e2 = None
