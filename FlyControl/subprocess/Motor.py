@@ -104,7 +104,7 @@ def controller(_1553b,_1553a):
                 x_pwm,y_pwm,z_pwm = pid.calculate(_1553b) #飞控PID计算电机调整量
                 set_power(x_pwm,y_pwm,z_pwm) #发送PWM调整量给电机
                 _1553b['CURR_POWER'] = cfg.CURR_POWER #往数据总线里更新当前油门
-                time.sleep(0.01)
+                time.sleep(0.01)  #经过计算以上程序0.005秒内执行完，延迟0.01秒 ，频率= 0.15秒， GY99 频率为50HZ 0.02秒，基本合适
             else: #如果安全锁关闭，则不能执行任何飞行指令
                 cmd = _1553a.pop(0) if _1553a else None
                 if cmd == b'\x20\x19\x04\xFD': #开锁
