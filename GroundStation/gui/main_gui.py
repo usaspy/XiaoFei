@@ -308,7 +308,7 @@ l = tk.Label(window,text="外环p",
              width=100,height=2)
 l.place(x=offsetX+790,y=offsetY+40,anchor='nw')
 var1 = tk.Variable()
-vars.e1 = tk.Scale(window,from_=0.0,to=5.0,resolution=0.2,orient=tk.HORIZONTAL,length=150,variable=var1)
+vars.e1 = tk.Scale(window,from_=0.0,to=5.0,resolution=0.1,orient=tk.HORIZONTAL,length=150,variable=var1)
 var1.set(3.0)
 vars.e1.place(x=offsetX+850,y=offsetY+25,anchor='nw')
 
@@ -318,7 +318,7 @@ l = tk.Label(window,text="外环i",
              width=100,height=2)
 l.place(x=offsetX+790,y=offsetY+80,anchor='nw')
 var1 = tk.Variable()
-vars.e2 = tk.Scale(window,from_=0.0,to=5.0,resolution=0.2,orient=tk.HORIZONTAL,length=150,variable=var1)
+vars.e2 = tk.Scale(window,from_=0.0,to=0.9,resolution=0.01,orient=tk.HORIZONTAL,length=150,variable=var1)
 var1.set(0.0) # 设置文本框中的值
 vars.e2.place(x=offsetX+850,y=offsetY+70,anchor='nw')
 
@@ -328,7 +328,7 @@ l = tk.Label(window,text="外环d",
              width=100,height=2)
 l.place(x=offsetX+790,y=offsetY+125,anchor='nw')
 var1 = tk.Variable()
-vars.e3 = tk.Scale(window,from_=0.0,to=5.0,resolution=0.2,orient=tk.HORIZONTAL,length=150,variable=var1)
+vars.e3 = tk.Scale(window,from_=0.0,to=5.0,resolution=0.1,orient=tk.HORIZONTAL,length=150,variable=var1)
 var1.set(0.0) # 设置文本框中的值
 vars.e3.place(x=offsetX+850,y=offsetY+115,anchor='nw')
 
@@ -350,8 +350,8 @@ l = tk.Label(window,text="内环i",
              width=100,height=2)
 l.place(x=offsetX+790,y=offsetY+210,anchor='nw')
 var1 = tk.Variable()
-vars.e5 = tk.Scale(window,from_=0.0,to=0.9,resolution=0.01,orient=tk.HORIZONTAL,length=150,variable=var1)
-var1.set(0.02) # 设置文本框中的值
+vars.e5 = tk.Scale(window,from_=0.0,to=0.09,resolution=0.001,orient=tk.HORIZONTAL,length=150,variable=var1)
+var1.set(0.028) # 设置文本框中的值
 vars.e5.place(x=offsetX+850,y=offsetY+205,anchor='nw')
 
 l = tk.Label(window,text="内环d",
@@ -360,7 +360,7 @@ l = tk.Label(window,text="内环d",
              width=100,height=2)
 l.place(x=offsetX+790,y=offsetY+260,anchor='nw')
 var1 = tk.Variable()
-vars.e6 = tk.Scale(window,from_=0.0,to=0.5,resolution=0.01,orient=tk.HORIZONTAL,length=150,variable=var1)
+vars.e6 = tk.Scale(window,from_=0.0,to=1.0,resolution=0.01,orient=tk.HORIZONTAL,length=150,variable=var1)
 var1.set(0.33) # 设置文本框中的值
 vars.e6.place(x=offsetX+850,y=offsetY+250,anchor='nw')
 
