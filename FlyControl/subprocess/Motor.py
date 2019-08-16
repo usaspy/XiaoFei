@@ -9,7 +9,6 @@
 import RPi.GPIO as GPIO
 import time
 from FlyControl.lib import libmotor as lm
-from FlyControl.lib import PIDv2
 from FlyControl.param import config as cfg
 from FlyControl.lib.PID import PID
 
@@ -138,10 +137,10 @@ def set_power(x_pwm, y_pwm, z_pwm):
         y_pwm = 0
         z_pwm = 0
     # X型 计算四个电机的PWM值
-    MOTOR1_POWER = lm.limit_power_range(cfg.CURR_POWER + x_pwm/2 - y_pwm/2 - z_pwm)
-    MOTOR2_POWER = lm.limit_power_range(cfg.CURR_POWER + x_pwm/2 + y_pwm/2 + z_pwm)
-    MOTOR3_POWER = lm.limit_power_range(cfg.CURR_POWER - x_pwm/2 + y_pwm/2 - z_pwm)
-    MOTOR4_POWER = lm.limit_power_range(cfg.CURR_POWER - x_pwm/2 - y_pwm/2 + z_pwm)
+    MOTOR1_POWER = lm.limit_power_range(cfg.CURR_POWER + x_pwm/2 + y_pwm/2 - z_pwm)
+    MOTOR2_POWER = lm.limit_power_range(cfg.CURR_POWER + x_pwm/2 - y_pwm/2 + z_pwm)
+    MOTOR3_POWER = lm.limit_power_range(cfg.CURR_POWER - x_pwm/2 - y_pwm/2 - z_pwm)
+    MOTOR4_POWER = lm.limit_power_range(cfg.CURR_POWER - x_pwm/2 + y_pwm/2 + z_pwm)
     #设置四个电机的PWM
     cfg.MOTOR1_OBJ.ChangeDutyCycle(lm.real_pwm(MOTOR1_POWER))
     cfg.MOTOR2_OBJ.ChangeDutyCycle(lm.real_pwm(MOTOR2_POWER))
