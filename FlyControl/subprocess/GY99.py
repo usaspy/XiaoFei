@@ -4,6 +4,8 @@
     GY-99传感器，通过串口方式获取以下数据并同步到_1553b_data总线：
     1）欧拉角 Roll  Pitch  Yaw
     2）角速度GYRO X  Y  Z
+
+    经测试，最高只能设为50HZ,再大接收数据会卡顿，MPU解算不过来
 '''
 import serial
 import time

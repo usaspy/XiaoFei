@@ -7,6 +7,8 @@
     3）温度
     4）气压
     5）海拔高度
+
+    数据量太大只能设为10HZ
 '''
 import serial
 import time
