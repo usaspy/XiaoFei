@@ -14,8 +14,8 @@ class MPU9255(object):
     I2C_SLV0_ADDR = 0x25
     USER_CTRL = 0x6a
     INTERRUPT_ENABLE = 0x38
-
     BY_PASS = 0x37
+
 
     # 初始化MPU9255芯片
     def __init__(self,bus,addr):
