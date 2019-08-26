@@ -50,24 +50,23 @@ class BMP280x(object):
         adc_T = self.__bmp280_MultipleReadThree(self.BMP280_TEMP_ADDR)
         adc_P = self.__bmp280_MultipleReadThree(self.BMP280_PRESS_ADDR)
         #温度
-        var1 = (adc_T/ 16384.0 - self.dig_T1 / 1024.0) * self.dig_T2
-        var2 = ((adc_T / 131072.0 - self.dig_T1 / 8192.0) * (adc_T / 131072.0 - self.dig_T1 / 8192.0)) * self.dig_T3
-
+        var1 = ((((adc_T >> 3)-(self.dig_T1 << 1))) *(self.dig_T2)) >> 11
+        var2 = (((((adc_T >> 4)-(self.dig_T1)) * ((adc_T >> 4)-(self.dig_T1))) >> 12) * (self.dig_T3)) >> 14
         t_fine = var1 + var2
-
-        T = var1+var2/5120.0
+        T = (t_fine * 5 + 128) >> 8
 
         #气压
-        var1 = t_fine / 2.0 - 64000.0
-        var2 = var1 * var1 * self.dig_P6 / 32768.0
-        var2 = var2 + var1 * self.dig_P5 * 2.0
-        var2 = var2 / 4.0 + self.dig_P4 * 65536.0
-        var1 = (self.dig_P3 * var1 * var1 / 524288.0 + self.dig_P2 * var1) / 524288.0
-        var1 = (1.0 + var1 / 32768.0) * self.dig_P1
-        p = 1048576.0 - adc_P
-        p = (p - (var2 / 4096.0)) * 6250.0 / var1
-        var1 = self.dig_P9 * p * p / 2147483648.0
-        var2 = p * self.dig_P8 / 32768.0
-        p = p + (var1 + var2 + self.dig_P7) / 16.0
-
-        return T,p
+        var1 = t_fine - 128000
+        var2 = var1 * var1 * self.dig_P6
+        var2 = var2 + ((var1 * self.dig_P5) << 17)
+        var2 = var2 + (self.dig_P4 << 35)
+        var1 = ((var1 * var1 * self.dig_P3) >> 8) + ((var1 * self.dig_P2) << 12)
+        var1 = ((1 << 47) + var1) * self.dig_P1 >> 33
+        p = 1048576 - adc_P
+        p = (((p << 31) - var2) * 3125)/var1
+        p = int(p)
+        var1 = ((self.dig_P9) * (p >> 13) * (p >> 13)) >> 25
+        var2 = ((self.dig_P8) * p) >> 19
+        p = ((p + var1 + var2) >> 8) + ((self.dig_P7) << 4)
+        #摄氏度  千帕
+        return T/100,p/256/1000
