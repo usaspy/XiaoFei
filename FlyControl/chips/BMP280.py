@@ -51,7 +51,7 @@ class BMP280x(object):
         adc_P = self.__bmp280_MultipleReadThree(self.BMP280_PRESS_ADDR)
         #温度
         var1 = (adc_T/ 16384.0 - self.dig_T1 / 1024.0) * self.dig_T2
-        var2 = ((adc_T / 131072.0 - self.dig_T1 / 8192.0) * (adc_T / 131072.0 - self.dig_T1 / 8192.0) ) * self.dig_T3
+        var2 = ((adc_T / 131072.0 - self.dig_T1 / 8192.0) * (adc_T / 131072.0 - self.dig_T1 / 8192.0)) * self.dig_T3
 
         t_fine = var1 + var2
 
@@ -61,13 +61,13 @@ class BMP280x(object):
         var1 = t_fine / 2.0 - 64000.0
         var2 = var1 * var1 * self.dig_P6 / 32768.0
         var2 = var2 + var1 * self.dig_P5 * 2.0
-        var2 = (var2 / 4.0) + (self.dig_P4 * 65536.0)
-        var1 = ((self.dig_P3) * var1 * var1 / 524288.0 + (self.dig_P2) * var1) / 524288.0
-        var1 = (1.0 + var1 / 32768.0) * (self.dig_P1)
+        var2 = var2 / 4.0 + self.dig_P4 * 65536.0
+        var1 = (self.dig_P3 * var1 * var1 / 524288.0 + self.dig_P2 * var1) / 524288.0
+        var1 = (1.0 + var1 / 32768.0) * self.dig_P1
         p = 1048576.0 - adc_P
         p = (p - (var2 / 4096.0)) * 6250.0 / var1
-        var1 = (self.dig_P9) * p * p / 2147483648.0
-        var2 = p * (self.dig_P8) / 32768.0
-        p = p + (var1 + var2 + (self.dig_P7)) / 16.0
+        var1 = self.dig_P9 * p * p / 2147483648.0
+        var2 = p * self.dig_P8 / 32768.0
+        p = p + (var1 + var2 + self.dig_P7) / 16.0
 
         return T,p
