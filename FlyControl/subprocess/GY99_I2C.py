@@ -29,8 +29,8 @@ def working(_1553b):
             try:
                 acc_x,acc_y,acc_z = mpu9255.getACC()
                 gyro_x,gyro_y,gyro_z = mpu9255.getGYRO()
-                if count >= 100:  #
-                    temp,press = BMP280.getTEMP_PRESS()
+                if count >= 1000:  #
+                    temp,press = BMP280.getTEMP_PRESS()   #摄氏度  千帕
                     count = 0
                 count = count + 1
                 print(round(acc_x,2),round(acc_y,2),round(acc_z,2), round(gyro_x,2),round(gyro_y,2),round(gyro_z,2))
