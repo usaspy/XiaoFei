@@ -10,12 +10,6 @@ class MPU9255(object):
     ACCEL_CONFIG2 = 0x1d
     PWR_MGMT_1 = 0x6b
     PWR_MGMT_2 = 0x6c
-    I2C_SLV0_CTRL = 0x27
-    I2C_SLV0_ADDR = 0x25
-    USER_CTRL = 0x6a
-    INTERRUPT_ENABLE = 0x38
-    BY_PASS = 0x37
-
 
     # 初始化MPU9255芯片
     def __init__(self,bus,addr):
@@ -35,17 +29,6 @@ class MPU9255(object):
             bus.write_byte_data(self.addr, self.CONFIG, 0x06)  # 陀螺仪低通滤波器  典型值0x06 5hz
             # bus.write_byte_data(MPU9255,PWR_MGMT_2,0x00)  # 电源管理2　使加速度陀螺仪都工作
 
-            # I2C Master方式读取地磁计
-            # bus.write_byte_data(MPU9255,I2C_SLV0_CTRL,0x86)    #10000110=接收6个字节的磁力计数据     https://www.cnblogs.com/leptonation/p/5225889.html
-            # bus.write_byte_data(MPU9255,I2C_SLV0_ADDR,0x8c)    #Slave 0 I2C Address
-            # bus.write_byte_data(MPU9255,USER_CTRL,0x20)    #I2C Master Mode Enable
-            # bus.write_byte_data(MPU9255,0x26,0x0a)    #
-
-            # ByPass方式读取地磁计
-            bus.write_byte_data(self.addr, self.BY_PASS, 0x02)  # 设置ByPass从0x0c设备读取地磁计数据
-            time.sleep(0.1)
-            bus.write_byte_data(self.addr, 0x0a, 0x12)  # 设置ByPass从0x0c设备读取地磁计数据
-            time.sleep(0.1)
             print("MPU9255初始化完成")
 
     # 根据十六进制数转化为带符号的十进制数
