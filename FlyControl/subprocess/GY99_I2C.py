@@ -11,7 +11,7 @@
 
 '''
 import smbus
-from FlyControl.chips import MPU9255
+from FlyControl.chips.MPU9255 import MPU9255
 import time
 #from FlyControl.param import config as cfg
 
@@ -20,7 +20,7 @@ MPU9255_ADDR = 0x68
 def working(_1553b):
     bus = smbus.SMBus(1)
     try:
-        mpu9255 = MPU9255()
+        mpu9255 = MPU9255(bus,MPU9255)
         while True:
             acc_x,acc_y,acc_z = mpu9255.getACC()
             gyro_x,gyro_y,gyro_z = mpu9255.getGYRO()
