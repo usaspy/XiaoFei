@@ -13,6 +13,7 @@
 import smbus
 from FlyControl.chips.MPU9255 import MPU9255
 from FlyControl.chips.BMP280 import BMP280x
+from FlyControl.chips.AK8963 import AK8963x
 import time
 #from FlyControl.param import config as cfg
 
@@ -25,10 +26,12 @@ def working(_1553b):
     try:
         mpu9255 = MPU9255(bus,MPU9255_ADDR)
         BMP280 = BMP280x(bus,BMP280_ADDR)
+        AK8963 = AK8963x(bus,MPU9255_ADDR)
         while True:
             try:
                 acc_x,acc_y,acc_z = mpu9255.getACC()
                 gyro_x,gyro_y,gyro_z = mpu9255.getGYRO()
+                mag_x,mag_y,mag_z = AK8963.getMG()
                 if count >= 1000:  #
                     temp,press = BMP280.getTEMP_PRESS()   #摄氏度  千帕
                     count = 0
