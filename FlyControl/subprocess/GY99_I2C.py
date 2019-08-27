@@ -19,6 +19,7 @@ import time
 
 MPU9255_ADDR = 0x68
 BMP280_ADDR = 0x76
+AK8963_ADDR = 0x0c
 
 def working(_1553b):
     bus = smbus.SMBus(1)
@@ -26,17 +27,17 @@ def working(_1553b):
     try:
         mpu9255 = MPU9255(bus,MPU9255_ADDR)
         BMP280 = BMP280x(bus,BMP280_ADDR)
-        AK8963 = AK8963x(bus,MPU9255_ADDR)
+        AK8963 = AK8963x(bus,AK8963_ADDR)
         while True:
             try:
                 acc_x,acc_y,acc_z = mpu9255.getACC()
                 gyro_x,gyro_y,gyro_z = mpu9255.getGYRO()
-                mag_x,mag_y,mag_z = AK8963.getMG()
+                mag_x,mag_y,mag_z = AK8963.getMAG()
                 if count >= 1000:  #
                     temp,press = BMP280.getTEMP_PRESS()   #摄氏度  千帕
                     count = 0
                 count = count + 1
-                print(round(acc_x,2),round(acc_y,2),round(acc_z,2), round(gyro_x,2),round(gyro_y,2),round(gyro_z,2))
+                print(round(acc_x,2),round(acc_y,2),round(acc_z,2), round(gyro_x,2),round(gyro_y,2),round(gyro_z,2),mag_x,mag_y,mag_z)
                 time.sleep(0.2)
             except Exception as e:
                 print("数据读取错误" + e)
