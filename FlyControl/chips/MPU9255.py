@@ -11,6 +11,12 @@ class MPU9255(object):
     PWR_MGMT_1 = 0x6b
     PWR_MGMT_2 = 0x6c
 
+    #I2C_SLV0_CTRL = 0x27
+    #I2C_SLV0_ADDR = 0x25
+    #I2C_SLV0_REG = 0x26
+    #USER_CTRL = 0x6a
+
+    INT_PIN_BYPASS = 0x37
     # 初始化MPU9255芯片
     def __init__(self,bus,addr):
         self.bus = bus
@@ -28,6 +34,17 @@ class MPU9255(object):
             bus.write_byte_data(self.addr, self.ACCEL_CONFIG2, 0x06)  # 加速度计低通滤波器 0x06 5hz
             bus.write_byte_data(self.addr, self.CONFIG, 0x06)  # 陀螺仪低通滤波器  典型值0x06 5hz
             # bus.write_byte_data(MPU9255,PWR_MGMT_2,0x00)  # 电源管理2　使加速度陀螺仪都工作
+            time.sleep(0.1)
+
+            # I2C Master方式读取AKM8963模块的地磁数据
+            #bus.write_byte_data(self.addr,self.I2C_SLV0_CTRL,0x86)    #  0x80 | 8 启用第一个从机配置,读取6byte数据。10000110=接收6个字节的磁力计数据     https://www.cnblogs.com/leptonation/p/5225889.html
+            #bus.write_byte_data(self.addr,self.I2C_SLV0_REG,0x03)    #起始读取位置设置 0x00
+            #bus.write_byte_data(self.addr,self.I2C_SLV0_ADDR,0x8c)    #Slave 0 I2C Address    AK8963_I2C_ADDR | 0x80
+            #bus.write_byte_data(self.addr,self.USER_CTRL,0x20)    #I2C Master Mode Enable  启用
+
+            # Pass Through Mode，从 Host 用 I2C 总线直接连 AKM8963
+            bus.write_byte_data(self.addr, self.INT_PIN_BYPASS, 0x02)  # 设置ByPass从0x0c AKM8963设备读取地磁数据
+            time.sleep(0.1)
 
             print("MPU9255初始化完成")
 
@@ -42,8 +59,7 @@ class MPU9255(object):
     # 获取加速度值 x,y,z
     def getACC(self):
         acc = self.bus.read_i2c_block_data(self.addr, 0x3b, 6)
-        acc_x = self.__hex2dec(
-            (acc[0] << 8) | acc[1]) / 16384  # 16384 https://blog.csdn.net/u013636775/article/details/69668860
+        acc_x = self.__hex2dec((acc[0] << 8) | acc[1]) / 16384  # 16384 https://blog.csdn.net/u013636775/article/details/69668860
         acc_y = self.__hex2dec((acc[2] << 8) | acc[3]) / 16384
         acc_z = self.__hex2dec((acc[4] << 8) | acc[5]) / 16384
 
