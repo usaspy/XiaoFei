@@ -7,12 +7,23 @@ import time
 '''
 class AK8963x(object):
     AK8963_CNTL1 = 0x0A
+    AK8963_REST = 0x0B
+
+    ASAX = 0
+    ASAY = 0
+    ASAZ = 0
     # 初始化AK8963芯片
     def __init__(self,bus,addr):
         self.bus = bus
         self.addr = addr
         WHOAMI = bus.read_i2c_block_data(addr, 0x00, 1)
         if WHOAMI[0] == 0x48:
+            time.sleep(0.5)
+            #重启REST  https://blog.csdn.net/u013256018/article/details/52795043
+            bus.write_byte_data(self.addr, self.AK8963_REST, 0x01)
+            time.sleep(0.2)
+            # 进入Fuse ROM access mode，读取校准值
+            self.__read_ASA_Value()
             #设置为连续测量模式 100Hz，16bit Output
             bus.write_byte_data(self.addr, self.AK8963_CNTL1, 0x16)  #https://wenku.baidu.com/view/7247cf7a5bcfa1c7aa00b52acfc789eb172d9e5e.html
             time.sleep(0.1)
@@ -24,4 +35,19 @@ class AK8963x(object):
         mag_x = ((mag[1] << 8) | mag[0])
         mag_y = ((mag[3] << 8) | mag[2])
         mag_z = ((mag[5] << 8) | mag[4])
+
+        #校准后输出    Hadj = H * (((ASA - 128) * 0.5 / 128) + 1)
+        mag_x = mag_x * (((self.ASAX - 128) * 0.5 / 128) + 1)
+        mag_y = mag_y * (((self.ASAY - 128) * 0.5 / 128) + 1)
+        mag_z = mag_z * (((self.ASAZ - 128) * 0.5 / 128) + 1)
         return mag_x,mag_y,mag_z
+
+    # 进入Fuse ROM access mode，读取校准值
+    def __read_ASA_Value(self):
+        self.bus.write_byte_data(self.addr, self.AK8963_CNTL1, 0x1F)
+        time.sleep(0.5)
+        ASA = self.bus.read_i2c_block_data(self.addr, 0x10, 3)
+        self.ASAX = ASA[0]
+        self.ASAY = ASA[1]
+        self.ASAZ = ASA[2]
+
