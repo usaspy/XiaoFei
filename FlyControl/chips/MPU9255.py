@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 # coding=utf-8
 import time
-
+'''
+从MPU9255模块获取实时的陀螺计、加速度计数据
+'''
 class MPU9255(object):
     SMPLRT_DIV = 0x19
     CONFIG = 0x1a
