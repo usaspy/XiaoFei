@@ -37,9 +37,9 @@ class AK8963x(object):
         mag_z = ((mag[5] << 8) | mag[4])
 
         #校准后输出    Hadj = H * (((ASA - 128) * 0.5 / 128) + 1)
-        mag_x = mag_x * (((self.ASAX - 128) * 0.5 / 128) + 1)
-        mag_y = mag_y * (((self.ASAY - 128) * 0.5 / 128) + 1)
-        mag_z = mag_z * (((self.ASAZ - 128) * 0.5 / 128) + 1)
+        mag_x = self.__hex2dec(mag_x) * (((self.ASAX - 128) * 0.5 / 128) + 1)
+        mag_y = self.__hex2dec(mag_y) * (((self.ASAY - 128) * 0.5 / 128) + 1)
+        mag_z = self.__hex2dec(mag_z) * (((self.ASAZ - 128) * 0.5 / 128) + 1)
         return mag_x,mag_y,mag_z
 
     # 进入Fuse ROM access mode，读取校准值
@@ -51,3 +51,10 @@ class AK8963x(object):
         self.ASAY = ASA[1]
         self.ASAZ = ASA[2]
 
+    # 根据十六进制数转化为带符号的十进制数
+    # 最高位是符号位，最高为位1是负数， 为0是正数
+    def __hex2dec(self,d):
+        if d & 0x8000 == 0x8000:
+            d = d ^ 0xFFFF  # 异或，相同为0，不同为1
+            d = ~d  # ~符号表示运算：~d = -(d+1)
+        return d
