@@ -34,6 +34,8 @@ class AK8963x(object):
     # 获取地磁数据x,y,z
     def getMAG(self):
         mag = self.bus.read_i2c_block_data(self.addr, 0x03, 6)
+        #在连续模式下，每次读完数据必须读一下st2寄存器地址，这样9250才会刷新新的数据。不然他会认为你没有读完，就会处于锁定状态。
+        self.bus.read_i2c_block_data(self.addr, 0x09, 6)
         mag_x = ((mag[1] << 8) | mag[0])
         mag_y = ((mag[3] << 8) | mag[2])
         mag_z = ((mag[5] << 8) | mag[4])
