@@ -25,7 +25,7 @@ def working(_1553b):
     bus = smbus.SMBus(1)
     count = 0
     try:
-        mpu9255 = MPU9255(bus,MPU9255_ADDR)
+        mpu9255 = MPU9255(bus,MPU9255_ADDR,_1553b)
         BMP280 = BMP280x(bus,BMP280_ADDR)
         AK8963 = AK8963x(bus,AK8963_ADDR)
         while True:
