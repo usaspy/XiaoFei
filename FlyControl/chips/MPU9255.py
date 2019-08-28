@@ -19,8 +19,17 @@ class MPU9255(object):
     #USER_CTRL = 0x6a
 
     INT_PIN_BYPASS = 0x37
+
+    #加速度、角速度的零偏补偿值
+    ACC_X_OFFSET = 0
+    ACC_Y_OFFSET = 0
+    ACC_Z_OFFSET = 0
+    GYRO_X_OFFSET = 0
+    GYRO_Y_OFFSET = 0
+    GYRO_Z_OFFSET = 0
+
     # 初始化MPU9255芯片
-    def __init__(self,bus,addr):
+    def __init__(self,bus,addr,_1553b):
         self.bus = bus
         self.addr = addr
         WHOAMI = bus.read_i2c_block_data(addr, 0x75, 1)
@@ -48,6 +57,8 @@ class MPU9255(object):
             bus.write_byte_data(self.addr, self.INT_PIN_BYPASS, 0x02)  # 设置ByPass从0x0c AKM8963设备读取地磁数据
             time.sleep(0.1)
 
+            #计算加速度计、陀螺计零偏补偿值
+            self.do_Calibrating(_1553b)
             print("MPU9255初始化完成")
 
     # 根据十六进制数转化为带符号的十进制数
@@ -65,6 +76,10 @@ class MPU9255(object):
         acc_y = self.__hex2dec((acc[2] << 8) | acc[3]) / 16384
         acc_z = self.__hex2dec((acc[4] << 8) | acc[5]) / 16384
 
+        acc_x = acc_x + self.ACC_X_OFFSET
+        acc_y = acc_y + self.ACC_Y_OFFSET
+        acc_z = acc_z + self.ACC_Z_OFFSET
+
         return acc_x, acc_y, acc_z
 
     # 获取陀螺仪值 x,y,z
@@ -74,4 +89,52 @@ class MPU9255(object):
         gyro_y = self.__hex2dec((gyro[2] << 8) | gyro[3]) / 16.4
         gyro_z = self.__hex2dec((gyro[4] << 8) | gyro[5]) / 16.4
 
+        gyro_x = gyro_x + self.GYRO_X_OFFSET
+        gyro_y = gyro_y + self.GYRO_Y_OFFSET
+        gyro_z = gyro_z + self.GYRO_Z_OFFSET
+
         return gyro_x, gyro_y, gyro_z
+
+    '''
+        计算加速度和陀螺的零偏补偿值
+        开机初始化时执行一次
+        允许前端触发执行校准操作
+        需飞机水平静置5秒左右时间
+    '''
+    def do_Calibrating(self,_1553b):
+        _1553b['Calibrated'] = 0x3F #正在校准
+        #补偿值清零
+        self.ACC_X_OFFSET = 0
+        self.ACC_Y_OFFSET = 0
+        self.ACC_Z_OFFSET = 0
+        self.GYRO_X_OFFSET = 0
+        self.GYRO_Y_OFFSET = 0
+        self.GYRO_Z_OFFSET = 0
+
+        sum_acc_x = 0
+        sum_acc_y = 0
+        sum_acc_z = 0
+        sum_gyro_x = 0
+        sum_gyro_y = 0
+        sum_gyro_z = 0
+
+        for i in range(120):
+            acc_x, acc_y, acc_z = self.getACC()
+            gyro_x, gyro_y, gyro_z = self.getGYRO()
+            sum_acc_x += acc_x
+            sum_acc_y += acc_y
+            sum_acc_z += acc_z
+
+            sum_gyro_x += gyro_x
+            sum_gyro_y += gyro_y
+            sum_gyro_z += gyro_z
+            time.sleep(0.02)
+        self.ACC_X_OFFSET = 0 - sum_acc_x/ 120
+        self.ACC_Y_OFFSET = 0 - sum_acc_y / 120
+        self.ACC_Z_OFFSET = 1 - sum_acc_z / 120
+        self.GYRO_X_OFFSET = 0 - sum_gyro_x / 120
+        self.GYRO_Y_OFFSET = 0 - sum_gyro_y / 120
+        self.GYRO_Z_OFFSET = 0 - sum_gyro_z / 120
+
+        _1553b['Calibrated'] = 0x7F  #已校准
+        print("已校准，补偿值为",self.ACC_X_OFFSET,self.ACC_Y_OFFSET,self.ACC_Z_OFFSET,self.GYRO_X_OFFSET,self.GYRO_Y_OFFSET,self.GYRO_Z_OFFSET)
