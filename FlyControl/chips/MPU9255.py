@@ -39,10 +39,10 @@ class MPU9255(object):
             # bus.write_byte_data(MPU9255,PWR_MGMT_1,0x00)  # 电源管理1，解除休眠状态，正常启动
             # time.sleep(0.5)
             # bus.write_byte_data(MPU9255,PWR_MGMT_1,0x03)  # 电源管理1，选时钟
-            bus.write_byte_data(self.addr, self.SMPLRT_DIV, 0x00)  # 采样频率  典型值为0X07 1000/(1+0)=1000HZ
+            bus.write_byte_data(self.addr, self.SMPLRT_DIV, 0x02)  # 采样频率  典型值为0X07 1000/(1+2)=333HZ  频率越高，噪音越大
             bus.write_byte_data(self.addr, self.GYRO_CONFIG, 0x18)  # 陀螺仪测量范围 0X18 ±2000 dps
             bus.write_byte_data(self.addr, self.ACCEL_CONFIG, 0x00)  # 加速度计测量范围 0X18 ±2g 16384LSB/g
-            bus.write_byte_data(self.addr, self.ACCEL_CONFIG2, 0x06)  # 加速度计低通滤波器 0x06 5hz
+            bus.write_byte_data(self.addr, self.ACCEL_CONFIG2, 0x06)  # 加速度计低通滤波器 0x06 5hz    过滤噪音，但频率太高会导致较大延迟
             bus.write_byte_data(self.addr, self.CONFIG, 0x06)  # 陀螺仪低通滤波器  典型值0x06 5hz
             # bus.write_byte_data(MPU9255,PWR_MGMT_2,0x00)  # 电源管理2　使加速度陀螺仪都工作
             time.sleep(0.1)
