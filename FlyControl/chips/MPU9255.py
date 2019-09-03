@@ -129,7 +129,7 @@ class MPU9255(object):
             sum_gyro_y += gyro_y
             sum_gyro_z += gyro_z
             time.sleep(0.02)
-        self.ACC_X_OFFSET = 0 - sum_acc_x/ 120
+        self.ACC_X_OFFSET = 0 - sum_acc_x / 120
         self.ACC_Y_OFFSET = 0 - sum_acc_y / 120
         self.ACC_Z_OFFSET = 1 - sum_acc_z / 120
         self.GYRO_X_OFFSET = 0 - sum_gyro_x / 120
