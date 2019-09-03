@@ -27,6 +27,11 @@ static float q0 = 1.0f, q1 = 0.0f, q2 = 0.0f, q3 = 0.0f;//四元数
 static float rMat[3][3];//四元数的旋转矩阵
 static float smallAngleCosZ;//水平最小角余弦值
 
+static float invSqrt(float x)
+{
+    return 1.0f / sqrtf(x);
+}
+
 static void imuComputeRotationMatrix(void)
 {
     float q1q1 = q1 * q1;
@@ -181,11 +186,6 @@ static void imuMahonyAHRSupdate(float gx, float gy, float gz,
 
     //计算四元数的旋转矩阵
     imuComputeRotationMatrix();
-}
-
-static float invSqrt(float x)
-{
-    return 1.0f / sqrtf(x);
 }
 
 float imuAttitudeYaw;//范围：-180~180，用于上传到匿名上位机（支持范围-180~180）
