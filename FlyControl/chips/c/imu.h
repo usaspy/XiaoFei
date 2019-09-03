@@ -5,6 +5,13 @@
 #include "maths.h"
 #include "stabilizer_types.h"
 
+typedef struct AHRS
+{
+        float roll;
+        float pitch;
+        float yaw;
+}AHRS, *StructPointer;
+
 /********************************************************************************
  * 本程序只供学习使用，未经作者许可，不得用于其它任何用途
  * ATKflight飞控固件
@@ -24,5 +31,5 @@ void imuInit(void);
 void imuTransformVectorBodyToEarth(Axis3f * v);
 void imuTransformVectorEarthToBody(Axis3f * v);
 void imuUpdateAttitude(const sensorData_t *sensorData, state_t *state, float dt);
-
+StructPointer getAHRS(float gx, float gy, float gz, float ax, float ay, float az, float mx, float my, float mz, float dt);
 #endif
