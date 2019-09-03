@@ -1,10 +1,15 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include "axis.h"
 #include "maths.h"
 #include "imu.h"
+#include "stabilizer_types.h"
+attitude_t attitude;
 /**
  * 姿态解算规则如下：
  *     ROLL  = 绕X轴旋转，右手定则，逆时针为正顺时针为负。
@@ -244,4 +249,33 @@ void imuInit(void)
 {
 	smallAngleCosZ = cos_approx(degreesToRadians(IMU_SMALL_ANGLE));//最小倾角余弦值
     imuComputeRotationMatrix();
+}
+
+
+StructPointer getAHRS(float gx, float gy, float gz,
+                                float ax, float ay, float az,
+                                float mx, float my, float mz,
+								bool useMag,float dt)
+{
+        StructPointer p = (StructPointer)malloc(sizeof(AHRS));
+
+        //角速度单位由度转为弧度
+	    gx = gx * DEG2RAD;
+	    gy = gy * DEG2RAD;
+	    gz = gz * DEG2RAD;
+
+	    //计算四元数和旋转矩阵
+        imuMahonyAHRSupdate(gx, gy, gz,
+                        ax, ay, az,
+                        mx, my, mz,
+						true,dt);
+
+        //计算欧拉角
+        imuUpdateEulerAngles(&attitude);
+
+        p->roll = attitude.roll;
+        p->pitch = attitude.pitch;
+        p->yaw = attitude.yaw;
+
+        return p;
 }
