@@ -2,7 +2,7 @@
 # coding=utf-8
 import time
 '''
-从AK8963芯片获取地磁数据
+从AK8963传感器获取地磁数据
 注意：此程序要在MPU9255初始化完后执行
 https://wenku.baidu.com/view/7247cf7a5bcfa1c7aa00b52acfc789eb172d9e5e.html
 https://blog.csdn.net/u013256018/article/details/52795043
@@ -14,7 +14,7 @@ class AK8963x(object):
     ASAX = 0
     ASAY = 0
     ASAZ = 0
-    # 初始化AK8963芯片
+    # 初始化AK8963传感器
     def __init__(self,bus,addr):
         self.bus = bus
         self.addr = addr
