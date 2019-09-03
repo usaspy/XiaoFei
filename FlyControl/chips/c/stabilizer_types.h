@@ -5,15 +5,15 @@
 #include "sensors_types.h"
 
 /********************************************************************************
- * ±¾³ÌĞòÖ»¹©Ñ§Ï°Ê¹ÓÃ£¬Î´¾­×÷ÕßĞí¿É£¬²»µÃÓÃÓÚÆäËüÈÎºÎÓÃÍ¾
- * ATKflight·É¿Ø¹Ì¼ş
- * ½á¹¹ÌåÀàĞÍ¶¨Òå
- * ÕıµãÔ­×Ó@ALIENTEK
- * ¼¼ÊõÂÛÌ³:www.openedv.com
- * ´´½¨ÈÕÆÚ:2018/5/2
- * °æ±¾£ºV1.0
- * °æÈ¨ËùÓĞ£¬µÁ°æ±Ø¾¿¡£
- * Copyright(C) ¹ãÖİÊĞĞÇÒíµç×Ó¿Æ¼¼ÓĞÏŞ¹«Ë¾ 2014-2024
+ * æœ¬ç¨‹åºåªä¾›å­¦ä¹ ä½¿ç”¨ï¼Œæœªç»ä½œè€…è®¸å¯ï¼Œä¸å¾—ç”¨äºå…¶å®ƒä»»ä½•ç”¨é€”
+ * ATKflighté£æ§å›ºä»¶
+ * ç»“æ„ä½“ç±»å‹å®šä¹‰
+ * æ­£ç‚¹åŸå­@ALIENTEK
+ * æŠ€æœ¯è®ºå›:www.openedv.com
+ * åˆ›å»ºæ—¥æœŸ:2018/5/2
+ * ç‰ˆæœ¬ï¼šV1.0
+ * ç‰ˆæƒæ‰€æœ‰ï¼Œç›—ç‰ˆå¿…ç©¶ã€‚
+ * Copyright(C) å¹¿å·å¸‚æ˜Ÿç¿¼ç”µå­ç§‘æŠ€æœ‰é™å…¬å¸ 2014-2024
  * All rights reserved
 ********************************************************************************/
 
@@ -32,10 +32,10 @@
 #define RATE_DO_EXECUTE(RATE_HZ, TICK) ((TICK % (RATE_1000_HZ / RATE_HZ)) == 0)
 
 
-//×ËÌ¬Êı¾İ½á¹¹
+//å§¿æ€æ•°æ®ç»“æ„
 typedef struct
 {
-	uint32_t timestamp;	/*Ê±¼ä´Á*/
+	uint32_t timestamp;	/*æ—¶é—´æˆ³*/
 	float roll;
 	float pitch;
 	float yaw;
@@ -53,14 +53,14 @@ typedef struct vec3_s point_t;
 typedef struct vec3_s velocity_t;
 typedef struct vec3_s acc_t;
 
-//ZÖá¾àÀë´«¸ĞÆ÷Êı¾İ½á¹¹
+//Zè½´è·ç¦»ä¼ æ„Ÿå™¨æ•°æ®ç»“æ„
 typedef struct zDistance_s
 {
 	uint32_t timestamp;
 	float distance;
 } zDistance_t;
 
-//¹âÁ÷Êı¾İ½á¹¹
+//å…‰æµæ•°æ®ç»“æ„
 typedef struct flowMeasurement_s
 {
 	uint32_t timestamp;
@@ -78,7 +78,7 @@ typedef struct flowMeasurement_s
 	float dt;           // Time during which pixels were accumulated
 } flowMeasurement_t;
 
-//TOFÊı¾İ½á¹¹
+//TOFæ•°æ®ç»“æ„
 typedef struct tofMeasurement_s
 {
 	uint32_t timestamp;
@@ -86,7 +86,7 @@ typedef struct tofMeasurement_s
 	float stdDev;
 } tofMeasurement_t;
 
-//ÆøÑ¹Êı¾İ½á¹¹
+//æ°”å‹æ•°æ®ç»“æ„
 typedef struct
 {
 	uint32_t timestamp;
@@ -95,22 +95,22 @@ typedef struct
 	uint16_t asl;
 } baro_t;
 
-//ËùÓĞ´«¸ĞÆ÷Êı¾İ¼¯ºÏ
+//æ‰€æœ‰ä¼ æ„Ÿå™¨æ•°æ®é›†åˆ
 typedef struct
 {
-	Axis3f acc;				//¼ÓËÙ¶È£¨G£©
-	Axis3f gyro;			//ÍÓÂİÒÇ£¨deg/s£©
-	Axis3f mag;				//´ÅÁ¦¼Æ£¨gauss£©
+	Axis3f acc;				//åŠ é€Ÿåº¦ï¼ˆGï¼‰
+	Axis3f gyro;			//é™€èºä»ªï¼ˆdeg/sï¼‰
+	Axis3f mag;				//ç£åŠ›è®¡ï¼ˆgaussï¼‰
 	baro_t baro;
 } sensorData_t;
 
-//ËÄÖá×ËÌ¬Êı¾İ½á¹¹
+//å››è½´å§¿æ€æ•°æ®ç»“æ„
 typedef struct
 {
-	attitude_t 	attitude;	//×ËÌ¬½Ç¶È£¨deg£©
-	point_t 	position;	//¹ÀËãµÄÎ»ÖÃ£¨cm£©
-	velocity_t 	velocity;	//¹ÀËãµÄËÙ¶È£¨cm/s£©
-	acc_t acc;				//¹ÀËãµÄ¼ÓËÙ¶È£¨cm/ss£©
+	attitude_t 	attitude;	//å§¿æ€è§’åº¦ï¼ˆdegï¼‰
+	point_t 	position;	//ä¼°ç®—çš„ä½ç½®ï¼ˆcmï¼‰
+	velocity_t 	velocity;	//ä¼°ç®—çš„é€Ÿåº¦ï¼ˆcm/sï¼‰
+	acc_t acc;				//ä¼°ç®—çš„åŠ é€Ÿåº¦ï¼ˆcm/ssï¼‰
 } state_t;
 
 
@@ -131,18 +131,18 @@ typedef struct
 	mode_e yaw;
 }mode_tt;
 
-//Ä¿±ê×ËÌ¬Êı¾İ½á¹¹
+//ç›®æ ‡å§¿æ€æ•°æ®ç»“æ„
 typedef struct
 {
-	attitude_t attitude;		//Ä¿±ê×ËÌ¬½Ç¶È£¨deg£©
-	attitude_t attitudeRate;	//Ä¿±ê½ÇËÙ¶È£¨deg/s£©
-	point_t position;         	//Ä¿±êÎ»ÖÃ£¨cm£©
-	velocity_t velocity;      	//Ä¿±êËÙ¶È£¨cm/s£©
+	attitude_t attitude;		//ç›®æ ‡å§¿æ€è§’åº¦ï¼ˆdegï¼‰
+	attitude_t attitudeRate;	//ç›®æ ‡è§’é€Ÿåº¦ï¼ˆdeg/sï¼‰
+	point_t position;         	//ç›®æ ‡ä½ç½®ï¼ˆcmï¼‰
+	velocity_t velocity;      	//ç›®æ ‡é€Ÿåº¦ï¼ˆcm/sï¼‰
 	mode_tt mode;
 	float thrust;
 } setpoint_t;
 
-//¿ØÖÆÊı¾İ½á¹¹
+//æ§åˆ¶æ•°æ®ç»“æ„
 typedef struct
 {
 	float roll;
