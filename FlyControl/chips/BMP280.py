@@ -11,7 +11,7 @@ class BMP280x(object):
     BMP280_TEMP_ADDR = 0xfa
     BMP280_PRESS_ADDR = 0xf7
 
-    # 初始化BMP280芯片
+    # 初始化BMP280传感器
     def __init__(self,bus,addr):
         self.bus = bus
         self.addr = addr
@@ -38,11 +38,11 @@ class BMP280x(object):
             print("BMP280初始化完成")
 
     def __bmp280_MultipleReadTwo(self,loc):
-        data = self.bus.read_i2c_block_data(self.addr,loc,2);
+        data = self.bus.read_i2c_block_data(self.addr,loc,2)
         return (data[1] << 8) | data[0]
 
     def __bmp280_MultipleReadThree(self,loc):
-        data = self.bus.read_i2c_block_data(self.addr,loc,3);
+        data = self.bus.read_i2c_block_data(self.addr,loc,3)
         return (data[0] << 12) | (data[1] << 4 )| (data[2] >> 4)
 
     # 获取温度和气压数据
