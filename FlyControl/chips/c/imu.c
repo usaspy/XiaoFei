@@ -254,8 +254,7 @@ void imuInit(void)
 
 StructPointer getAHRS(float gx, float gy, float gz,
                                 float ax, float ay, float az,
-                                float mx, float my, float mz,
-								bool useMag,float dt)
+                                float mx, float my, float mz, float dt)
 {
         StructPointer p = (StructPointer)malloc(sizeof(AHRS));
 
