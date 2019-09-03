@@ -48,7 +48,7 @@ def working(_1553b):
         print(e)
 
 
-#处理数据并写入_1553b数据总线
+#调用九轴融合算法计算欧拉角并写入_1553b数据总线
 def __resolve_data(acc_x,acc_y,acc_z,gyro_x,gyro_y,gyro_z,mag_x,mag_y,mag_z,_1553b):
     ll = ctypes.cdll.LoadLibrary
     lib = ll("/home/pi/libAHRS.so")
