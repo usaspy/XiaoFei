@@ -31,5 +31,5 @@ void imuInit(void);
 void imuTransformVectorBodyToEarth(Axis3f * v);
 void imuTransformVectorEarthToBody(Axis3f * v);
 void imuUpdateAttitude(const sensorData_t *sensorData, state_t *state, float dt);
-StructPointer getAHRS(float gx, float gy, float gz, float ax, float ay, float az, float mx, float my, float mz, float dt);
+StructPointer imuUpdateEA(float gx, float gy, float gz, float ax, float ay, float az, float mx, float my, float mz, float dt);
 #endif
