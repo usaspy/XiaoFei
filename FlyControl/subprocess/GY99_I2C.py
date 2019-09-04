@@ -39,7 +39,8 @@ def working(_1553b):
                     count = 0
                 count = count + 1
 
-                print(round(acc_x,2),round(acc_y,2),round(acc_z,2), round(gyro_x,2),round(gyro_y,2),round(gyro_z,2),mag_x,mag_y,mag_z)
+                #print(round(acc_x,2),round(acc_y,2),round(acc_z,2), round(gyro_x,2),round(gyro_y,2),round(gyro_z,2),mag_x,mag_y,mag_z)
+                __resolve_data(acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z, mag_x, mag_y, mag_z, _1553b)
                 time.sleep(0.2)
 
             except Exception as e:
@@ -56,7 +57,7 @@ def __resolve_data(acc_x,acc_y,acc_z,gyro_x,gyro_y,gyro_z,mag_x,mag_y,mag_z,_155
     class StructPointer(ctypes.Structure):
         _fields_ = [("roll", ctypes.c_float), ("yitch", ctypes.c_float), ("yaw", ctypes.c_float)]
 
-    lib.getAHRS.restype = ctypes.POINTER(StructPointer)
+    lib.imuUpdateEA.restype = ctypes.POINTER(StructPointer)
 
     gx = ctypes.c_float(gyro_x)
     gy = ctypes.c_float(gyro_y)
@@ -72,7 +73,7 @@ def __resolve_data(acc_x,acc_y,acc_z,gyro_x,gyro_y,gyro_z,mag_x,mag_y,mag_z,_155
 
     dt = ctypes.c_float(0.002)
 
-    p = lib.getAHRS(gx, gy, gz, ax, ay, az, mx, my, mz, dt)
+    p = lib.imuUpdateEA(gx, gy, gz, ax, ay, az, mx, my, mz, dt)
 
     _1553b['GYRO_X'] = round(gyro_x, 2)
     _1553b['GYRO_Y'] = round(gyro_y, 2)
