@@ -215,9 +215,6 @@ static void imuUpdateEulerAngles(attitude_t *attitude)
 	*/
 }
 
-/*
-主函数，通过9轴原始数据计算欧拉角
-*/
 void imuUpdateAttitude(const sensorData_t *sensorData, state_t *state, float dt)
 {
 	//bool useMag = compassIsHealthy();
@@ -252,7 +249,7 @@ void imuInit(void)
 }
 
 /*
-计算返回当前得欧拉角
+通过9轴原始数据计算欧拉角
 add by zhanghong
 */
 StructPointer imuUpdateEA(float gx, float gy, float gz,
