@@ -251,14 +251,17 @@ void imuInit(void)
     imuComputeRotationMatrix();
 }
 
-
-StructPointer getAHRS(float gx, float gy, float gz,
+/*
+计算返回当前得欧拉角
+add by zhanghong
+*/
+StructPointer imuUpdateEA(float gx, float gy, float gz,
                                 float ax, float ay, float az,
                                 float mx, float my, float mz, float dt)
 {
         StructPointer p = (StructPointer)malloc(sizeof(AHRS));
 
-        //角速度单位由度转为弧度
+        //角速度单位由度转为弧度    DEG2RAD = Π/180
 	    gx = gx * DEG2RAD;
 	    gy = gy * DEG2RAD;
 	    gz = gz * DEG2RAD;
