@@ -103,7 +103,7 @@ def controller(_1553b,_1553a):
                 x_pwm,y_pwm,z_pwm = pid.calculate(_1553b) #双环PID计算电机调整量
                 set_power(x_pwm,y_pwm,z_pwm) #发送PWM调整量给电调执行
                 _1553b['CURR_POWER'] = cfg.CURR_POWER #更新1553B数据总线中得当前油门值
-                time.sleep(0.01)  #经过计算以上程序0.005秒内执行完，延迟0.01秒 ，频率= 0.015秒， GY99 频率为50HZ 0.02秒，基本合适
+                #time.sleep(0.01)  #经过计算以上程序0.005秒内执行完，延迟0.01秒 ，频率= 0.015秒， GY99 频率为50HZ 0.02秒，基本合适  &&如果是200HZ，则不需要延时
             else: #如果安全锁关闭，则不能执行任何飞行指令
                 cmd = _1553a.pop(0) if _1553a else None
                 if cmd == b'\x20\x19\x04\xFD': #开锁
