@@ -37,7 +37,7 @@ def resolve_data(data_bytes):
         vars.label_9.config(text=data.get('GYRO_X'))
         vars.label_10.config(text=data.get('GYRO_Y'))
         vars.label_11.config(text=data.get('GYRO_Z'))
-        vars.label_12.config(text=(data.get('Calibrated') == 0x7F and  '已校准' or '校准失败[%s]'%data.get('Calibrated')))
+        vars.label_12.config(text=(data.get('Calibrated') == 0xFF and  '已校准' or '校准失败[%s]'%data.get('Calibrated')))
         vars.label_13.config(text=data.get('LOG'))
         vars.label_14.config(text=data.get('LAT'))
         vars.label_15.config(text=data.get('SPEED'))
