@@ -9,6 +9,7 @@
 '''
 import serial
 import time
+import datetime
 from FlyControl.param import config as cfg
 
 # 输出数据设置指令,0x12=输出部分数据  欧拉角、GYRO角速度
@@ -46,17 +47,23 @@ def working(_1553b):
             time.sleep(0.5)
             #sr.write(cmd5) #模块上电后会自动校准，可不用再执行校准程序
             #time.sleep(5) #加陀校准时要保证至少三秒以上静止状态
-
+            ba = bytearray()
             while True:
-                sr.flushInput()
-                while True:
-                    n = sr.inWaiting()
-                    if n == 18:
-                        rec = sr.read(n)
-                        __resolve_data(rec,_1553b)
-                        break
-                    elif n > 18:
-                        break
+                n = sr.inWaiting()
+                if n > 0:
+                    rec = sr.read(n)
+                    ba.extend(rec)
+                    if ba.__len__() > 32:
+                        try:
+                            i = ba.index(b'\x5A\x5A\x12\x0D')
+                            data = ba[i:18]
+                            del ba[0:18 + i]
+                            __resolve_data(data,_1553b)
+                            #time_now = datetime.datetime.now().strftime('%H:%M:%S.%f')
+                            #print(time_now)
+                        except Exception:
+                            ba.clear()
+                            continue
     except Exception as e:
         print(e)
         print("[GY-99]通过串口[%s]获取飞控数据时发生异常..."% cfg.SERIAL_PORT_GY99)
@@ -74,24 +81,23 @@ def __hex2dec(d):
 
 #处理数据并写入_1553b数据总线
 def __resolve_data(data,_1553b):
-    if data[:4] == b'\x5A\x5A\x12\x0D':
-        #获取陀螺仪 (角度/秒) 默认量程2000  >>为什么除以16.4? 看http://www.openedv.com/forum.php?mod=viewthread&tid=80200&page=1
-        GYRO_X = (__hex2dec((data[4]<< 8) | data[5])) / 16.4
-        _1553b['GYRO_X'] = round(GYRO_X,2)
-        GYRO_Y = (__hex2dec((data[6] << 8) | data[7])) / 16.4
-        _1553b['GYRO_Y'] = round(GYRO_Y,2)
-        GYRO_Z = (__hex2dec((data[8] << 8) | data[9])) / 16.4
-        _1553b['GYRO_Z'] = round(GYRO_Z,2)
+    #获取陀螺仪 (角度/秒) 默认量程2000  >>为什么除以16.4? 看http://www.openedv.com/forum.php?mod=viewthread&tid=80200&page=1
+    GYRO_X = (__hex2dec((data[4]<< 8) | data[5])) / 16.4
+    _1553b['GYRO_X'] = round(GYRO_X,2)
+    GYRO_Y = (__hex2dec((data[6] << 8) | data[7])) / 16.4
+    _1553b['GYRO_Y'] = round(GYRO_Y,2)
+    GYRO_Z = (__hex2dec((data[8] << 8) | data[9])) / 16.4
+    _1553b['GYRO_Z'] = round(GYRO_Z,2)
 
-        #获取欧拉角 (度)
-        ROLL = (__hex2dec((data[10]<< 8) | data[11])) / 100
-        _1553b['ROLL'] = ROLL
-        PITCH = (__hex2dec((data[12] << 8) | data[13])) / 100
-        _1553b['PITCH'] = PITCH
-        YAW = (__hex2dec((data[14] << 8) | data[15])) / 100
-        _1553b['YAW'] = YAW
+    #获取欧拉角 (度)
+    ROLL = (__hex2dec((data[10]<< 8) | data[11])) / 100
+    _1553b['ROLL'] = ROLL
+    PITCH = (__hex2dec((data[12] << 8) | data[13])) / 100
+    _1553b['PITCH'] = PITCH
+    YAW = (__hex2dec((data[14] << 8) | data[15])) / 100
+    _1553b['YAW'] = YAW
 
-        #已校准
-        _1553b['Calibrated'] = data[16]
+    #已校准
+    _1553b['Calibrated'] = data[16]
 
-        #print(_1553b)
+    #print(_1553b)
