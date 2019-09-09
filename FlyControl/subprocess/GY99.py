@@ -29,7 +29,7 @@ cmd7 = b'\xA5\x5A\x01\x00'
 # 恢复出厂设置
 cmd8 = b'\xA5\x5A\x02\x01'
 
-def working(_1553b):
+def working(_1553b,lock):
     try:
         sr = serial.Serial(port=cfg.SERIAL_PORT_GY99, baudrate=115200, timeout=15, bytesize=serial.EIGHTBITS,
                             parity=serial.PARITY_NONE, stopbits=1)
@@ -58,7 +58,7 @@ def working(_1553b):
                             i = ba.index(b'\x5A\x5A\x12\x0D')
                             data = ba[i:18]
                             del ba[0:18 + i]
-                            __resolve_data(data,_1553b)
+                            __resolve_data(data,_1553b,lock)
                             #time_now = datetime.datetime.now().strftime('%H:%M:%S.%f')
                             #print(time_now)
                         except Exception:
@@ -80,24 +80,24 @@ def __hex2dec(d):
 
 
 #处理数据并写入_1553b数据总线
-def __resolve_data(data,_1553b):
+def __resolve_data(data,_1553b,lock):
     #获取陀螺仪 (角度/秒) 默认量程2000  >>为什么除以16.4? 看http://www.openedv.com/forum.php?mod=viewthread&tid=80200&page=1
     GYRO_X = (__hex2dec((data[4]<< 8) | data[5])) / 16.4
-    _1553b['GYRO_X'] = round(GYRO_X,2)
     GYRO_Y = (__hex2dec((data[6] << 8) | data[7])) / 16.4
-    _1553b['GYRO_Y'] = round(GYRO_Y,2)
     GYRO_Z = (__hex2dec((data[8] << 8) | data[9])) / 16.4
-    _1553b['GYRO_Z'] = round(GYRO_Z,2)
 
-    #获取欧拉角 (度)
+        #获取欧拉角 (度)
     ROLL = (__hex2dec((data[10]<< 8) | data[11])) / 100
-    _1553b['ROLL'] = ROLL
     PITCH = (__hex2dec((data[12] << 8) | data[13])) / 100
-    _1553b['PITCH'] = PITCH
     YAW = (__hex2dec((data[14] << 8) | data[15])) / 100
-    _1553b['YAW'] = YAW
 
-    #已校准
-    _1553b['Calibrated'] = data[16]
+    with lock:  # 不加锁而操作共享的数据,肯定会出现数据错乱
+        _1553b['GYRO_X'] = round(GYRO_X,2)
+        _1553b['GYRO_Y'] = round(GYRO_Y,2)
+        _1553b['GYRO_Z'] = round(GYRO_Z,2)
+        _1553b['ROLL'] = ROLL
+        _1553b['PITCH'] = PITCH
+        _1553b['YAW'] = YAW
+        _1553b['Calibrated'] = data[16]   #已校准
 
     #print(_1553b)
