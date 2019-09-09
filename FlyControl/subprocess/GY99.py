@@ -91,7 +91,7 @@ def __resolve_data(data,_1553b,lock):
     PITCH = (__hex2dec((data[12] << 8) | data[13])) / 100
     YAW = (__hex2dec((data[14] << 8) | data[15])) / 100
 
-    with lock:  # 不加锁而操作共享的数据,肯定会出现数据错乱
+    with lock:  # Manager默认是加了锁的，这里再加锁是为了同步更新以下这一批数据
         _1553b['GYRO_X'] = round(GYRO_X,2)
         _1553b['GYRO_Y'] = round(GYRO_Y,2)
         _1553b['GYRO_Z'] = round(GYRO_Z,2)
