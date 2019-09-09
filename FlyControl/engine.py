@@ -9,10 +9,10 @@
 from FlyControl.subprocess import Motor
 import threading
 
-def init(_1553b,_1553a):
+def init(_1553b,_1553a,lock):
     thread_list = []
     try:
-        t0 = threading.Thread(target=Motor.controller, args=(_1553b,_1553a,))
+        t0 = threading.Thread(target=Motor.controller, args=(_1553b,_1553a,lock,))
         #t1 = threading.Thread(target=Motor.working, args=())
         thread_list.append(t0)
         #thread_list.append(t1)

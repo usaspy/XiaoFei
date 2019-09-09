@@ -46,7 +46,7 @@ def __motor_init():
 飞行控制器主线程 
 大循环
 '''
-def controller(_1553b,_1553a):
+def controller(_1553b,_1553a,lock):
     try:
         #初始化四轴马达
         __motor_init()
@@ -100,7 +100,7 @@ def controller(_1553b,_1553a):
                     cfg.ROLL_SET = 0
                     cfg.PITCH_SET = 0
                     cfg.YAW_SET = 0
-                x_pwm,y_pwm,z_pwm = pid.calculate(_1553b) #双环PID计算电机调整量
+                x_pwm,y_pwm,z_pwm = pid.calculate(_1553b,lock) #双环PID计算电机调整量
                 set_power(x_pwm,y_pwm,z_pwm) #发送PWM调整量给电调执行
                 _1553b['CURR_POWER'] = cfg.CURR_POWER #更新1553B数据总线中得当前油门值
                 #time.sleep(0.01)  #经过计算以上程序0.005秒内执行完，延迟0.01秒 ，频率= 0.015秒， GY99 频率为50HZ 0.02秒，基本合适  &&如果是200HZ，则不需要延时
