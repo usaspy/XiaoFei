@@ -5,7 +5,7 @@
 飞行控制系统的启动入口
  主进程
 '''
-from multiprocessing import Process,Lock
+from multiprocessing import Process
 from FlyControl import _1553b
 from FlyControl import _1553a
 from FlyControl import communication
@@ -17,7 +17,6 @@ import os
 if __name__ == "__main__":
     try:
         print("系统开机...")
-        lock = Lock()
         #p1 控制通信进程
         p1 = Process(target=communication.start,args=(_1553b,_1553a,),name='p1')
         #p2 姿态传感器进程
