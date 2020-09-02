@@ -21,9 +21,9 @@ if __name__ == "__main__":
         #p1 控制通信进程
         p1 = Process(target=communication.start,args=(_1553b,_1553a,),name='p1')
         #p2 姿态传感器进程
-        p2 = Process(target=sensor.start,args=(_1553b,lock,),name='p2')
+        p2 = Process(target=sensor.start,args=(_1553b,),name='p2')
         #p3 动力引擎进程
-        p3 = Process(target=engine.init,args=(_1553b,_1553a,lock,),name='p3')
+        p3 = Process(target=engine.init,args=(_1553b,_1553a,),name='p3')
 
         p1.daemon = True
         p2.daemon = True

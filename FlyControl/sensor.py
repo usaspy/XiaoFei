@@ -5,10 +5,10 @@ from FlyControl.subprocess import GY99
 import threading
 
 
-def start(_1553b,lock):
+def start(_1553b):
     thread_list = []
     try:
-        t1 = threading.Thread(target=GY99.working, args=(_1553b,lock,))
+        t1 = threading.Thread(target=GY99.working, args=(_1553b,))
         #t2 = threading.Thread(target=sim7600.working, args=(_1553b,))
         thread_list.append(t1)
         #thread_list.append(t2)

@@ -40,7 +40,7 @@ def __hex2dec(d):
 
 
 #处理数据并写入_1553b数据总线
-def __resolve_data(data,_1553b,lock):
+def __resolve_data(data,_1553b):
     #获取陀螺仪 (角度/秒) 默认量程2000  >>为什么除以16.4? 看http://www.openedv.com/forum.php?mod=viewthread&tid=80200&page=1
     GYRO_X = (__hex2dec((data[4]<< 8) | data[5])) / 16.4
     GYRO_Y = (__hex2dec((data[6] << 8) | data[7])) / 16.4
@@ -51,18 +51,17 @@ def __resolve_data(data,_1553b,lock):
     PITCH = (__hex2dec((data[12] << 8) | data[13])) / 100
     YAW = (__hex2dec((data[14] << 8) | data[15])) / 100
 
-    with lock:  # Manager默认是加了锁的，这里再加锁是为了同步更新以下这一批数据
-        _1553b['GYRO_X'] = round(GYRO_X,2)
-        _1553b['GYRO_Y'] = round(GYRO_Y,2)
-        _1553b['GYRO_Z'] = round(GYRO_Z,2)
-        _1553b['ROLL'] = ROLL
-        _1553b['PITCH'] = PITCH
-        _1553b['YAW'] = YAW
-        _1553b['Calibrated'] = data[16]   #已校准
+    _1553b['GYRO_X'] = round(GYRO_X,2)
+    _1553b['GYRO_Y'] = round(GYRO_Y,2)
+    _1553b['GYRO_Z'] = round(GYRO_Z,2)
+    _1553b['ROLL'] = ROLL
+    _1553b['PITCH'] = PITCH
+    _1553b['YAW'] = YAW
+    _1553b['Calibrated'] = data[16]   #已校准
 
     #print(_1553b)
 
-def working(_1553b,lock):
+def working(_1553b):
     try:
         sr = serial.Serial(port=cfg.SERIAL_PORT_GY99, baudrate=115200, timeout=15, bytesize=serial.EIGHTBITS,
                             parity=serial.PARITY_NONE, stopbits=1)
@@ -91,7 +90,7 @@ def working(_1553b,lock):
                             i = ba.index(b'\x5A\x5A\x12\x0D')
                             data = ba[i:18]
                             del ba[0:18 + i]
-                            __resolve_data(data,_1553b,lock)
+                            __resolve_data(data,_1553b)
                             #time_now = datetime.datetime.now().strftime('%H:%M:%S.%f')
                             #print(time_now)
                         except Exception:
