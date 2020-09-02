@@ -107,17 +107,16 @@ class PID(object):
              传感器数据队列_1553b
        输出：无
     '''
-    def calculate(self,_1553b,lock):
-        with lock:   #与传感器共享锁，避免脏读。脏读对自稳影响很小，如果加锁对控制频率没有太大影响，最好还是加上
-            # GY-99传感器测量的当前角度
-            x = _1553b.get('ROLL', 0)  #横滚角 X  -180~+180
-            y = _1553b.get('PITCH', 0) #俯仰角 Y  -90~+90
-            z = _1553b.get('YAW', 0) #偏移角 Z    -180~+180
+    def calculate(self,_1553b):
+        # GY-99传感器测量的当前角度
+        x = _1553b.get('ROLL', 0)  #横滚角 X  -180~+180
+        y = _1553b.get('PITCH', 0) #俯仰角 Y  -90~+90
+        z = _1553b.get('YAW', 0) #偏移角 Z    -180~+180
 
-            # 传感器测量的当前角速度
-            xv = _1553b.get('GYRO_X', 0)
-            yv = _1553b.get('GYRO_Y', 0)
-            zv = _1553b.get('GYRO_Z', 0)
+        # 传感器测量的当前角速度
+        xv = _1553b.get('GYRO_X', 0)
+        yv = _1553b.get('GYRO_Y', 0)
+        zv = _1553b.get('GYRO_Z', 0)
 
         #控制者预期角度 - GY99传感器测量的当前角度 = 当前实际角度误差 （0 - 30 = -30）
         x_et = cfg.ROLL_SET - x
